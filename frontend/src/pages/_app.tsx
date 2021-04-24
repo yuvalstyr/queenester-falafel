@@ -1,11 +1,21 @@
+import { ChakraProvider, CSSReset } from "@chakra-ui/react";
 import { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
 import theme from "../styles/theme";
+import "react-datepicker/dist/react-datepicker.css";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+
+const queryClient = new QueryClient();
+// import theme from "../styles/theme";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider theme={theme}>
-      <Component {...pageProps} />;
-    </ChakraProvider>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider theme={theme}>
+        <CSSReset />
+        <Component {...pageProps} />;
+      </ChakraProvider>
+      <ReactQueryDevtools />
+    </QueryClientProvider>
   );
 }

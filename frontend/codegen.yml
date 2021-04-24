@@ -1,0 +1,10 @@
+# codegen.yaml
+schema: http://localhost:5000/api/graphql
+generates:
+  ./src/generates.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-query
+    config:
+      fetcher: graphql-request
