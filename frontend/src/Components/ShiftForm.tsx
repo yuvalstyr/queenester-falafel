@@ -1,13 +1,12 @@
-import * as React from "react"
 import { VStack } from "@chakra-ui/layout"
+import * as React from "react"
 import { EmployeesCard } from "./EmployeesCard"
 import { Expense } from "./Expense"
-import { Employee } from "../generates"
 
-export function ShiftForm({ data }: { data: { employees: Employee[] } }) {
+export function ShiftForm() {
   return (
     <VStack>
-      <EmployeesCard employees={data.employees} />
+      <EmployeesCard />
       <Expense />
     </VStack>
   )
