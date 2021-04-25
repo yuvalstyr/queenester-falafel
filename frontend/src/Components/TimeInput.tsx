@@ -1,13 +1,18 @@
-import { Input } from "@chakra-ui/input";
-import * as React from "react";
-import DatePicker from "react-datepicker";
-import { Controller, useController, useFormContext } from "react-hook-form";
-import { EmployeeFormInputs } from "./EmployeesCard";
+import { Input } from "@chakra-ui/input"
+import * as React from "react"
+import DatePicker from "react-datepicker"
+import { Controller, useController, useFormContext } from "react-hook-form"
 
-type inputType = keyof EmployeeFormInputs;
+export type EmployeeFormInputs = {
+  name: HTMLInputElement
+  start: HTMLInputElement
+  end: HTMLInputElement
+}
+
+type inputType = keyof EmployeeFormInputs
 
 export function TimeInput({ name }: { name: inputType }) {
-  const { control } = useFormContext();
+  const { control } = useFormContext()
   const {
     field: { ref, value, ...inputProps },
     fieldState: { invalid },
@@ -15,7 +20,7 @@ export function TimeInput({ name }: { name: inputType }) {
     name,
     control,
     rules: { required: { value: true, message: "Most Pick Date!!" } },
-  });
+  })
   return (
     <DatePicker
       placeholderText="Select date"
@@ -35,5 +40,5 @@ export function TimeInput({ name }: { name: inputType }) {
         />
       }
     />
-  );
+  )
 }
