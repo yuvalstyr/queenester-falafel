@@ -1,9 +1,11 @@
 import { Avatar } from "@chakra-ui/avatar"
+import { Button, IconButton } from "@chakra-ui/button"
+import { DeleteIcon } from "@chakra-ui/icons"
 import { HStack, Text, VStack } from "@chakra-ui/layout"
 import { Spinner } from "@chakra-ui/spinner"
 import { format } from "date-fns"
 import * as React from "react"
-import { useShifts } from "../utils/shifts"
+import { useShifts, useDeleteShift } from "../utils/shifts"
 import { ErrorBox } from "./ErrorBox"
 
 export function ShiftList() {
@@ -14,6 +16,8 @@ export function ShiftList() {
     error,
     isIdle,
   } = useShifts()
+
+  const { mutate: remove } = useDeleteShift()
 
   if (isIdle) return null
   if (isLoading) return <Spinner />
@@ -32,6 +36,7 @@ export function ShiftList() {
             borderBottomColor="black"
             borderBottomWidth="2px"
             fontSize="1.25rem"
+            justifyContent="space-between"
           >
             <Avatar
               background="black"
@@ -61,6 +66,17 @@ export function ShiftList() {
             >
               {format(s.end, "DD-MM-YY HH:mm")}
             </Text>
+            <IconButton
+              aria-label="Remove Shift"
+              icon={<DeleteIcon />}
+              onClick={() => remove(s.id)}
+              borderColor="brand.blue.400"
+              borderWidth="4px"
+              borderStyle="solid"
+              color="brand.red"
+              background="brand.yellow"
+              size="lg"
+            />
           </HStack>
         </VStack>
       ))}

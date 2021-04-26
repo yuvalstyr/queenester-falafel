@@ -20,6 +20,14 @@ const shifts = gql`
   }
 `
 
+const deleteShift = gql`
+  mutation deleteShift($shiftId: ID!) {
+    deleteShift(id: $shiftId) {
+      id
+    }
+  }
+`
+
 const createShift = gql`
   mutation CreateShift($start: String!, $end: String!, $employeeId: ID!) {
     createShift(
@@ -43,6 +51,27 @@ function useShifts() {
   })
 
   return { ...result, data: result.data ?? { allShifts: [] } }
+}
+
+function useDeleteShift() {
+  const queryClient = useQueryClient()
+  const defaultMutationOptions = {
+    onError: (_err, _variables, recover) =>
+      typeof recover === "function" ? recover() : null,
+    onSettled: () => queryClient.invalidateQueries("shifts"),
+  }
+  return useMutation((shiftId) => request(endpoint, deleteShift, { shiftId }), {
+    onMutate(removedItem: Shift) {
+      const previousShifts = queryClient.getQueryData<Shift[]>("shifts")
+      queryClient.setQueryData<{ allShifts: Shift[] }>("shifts", (old) => {
+        const { allShifts: shifts } = old
+        const newData = shifts.filter((s) => s.id === removedItem.id)
+        return { allShifts: newData }
+      })
+      return () => queryClient.setQueryData("shifts", previousShifts)
+    },
+    ...defaultMutationOptions,
+  })
 }
 
 function useCreateShifts() {
@@ -74,8 +103,7 @@ function useCreateShifts() {
 
         const newShift: Shift = {
           id: "tbd",
-          // start: start.toISOString(),
-          start: "1",
+          start: start.toISOString(),
           end: end.toISOString(),
           worker: name,
         }
@@ -98,4 +126,4 @@ function useCreateShifts() {
   )
 }
 
-export { useCreateShifts, useShifts }
+export { useCreateShifts, useShifts, useDeleteShift }

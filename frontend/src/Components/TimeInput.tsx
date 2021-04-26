@@ -1,7 +1,8 @@
 import { Input } from "@chakra-ui/input"
+import { addDays } from "date-fns"
 import * as React from "react"
 import DatePicker from "react-datepicker"
-import { Controller, useController, useFormContext } from "react-hook-form"
+import { useController, useFormContext } from "react-hook-form"
 
 export type EmployeeFormInputs = {
   name: HTMLInputElement
@@ -21,16 +22,18 @@ export function TimeInput({ name }: { name: inputType }) {
     control,
     rules: { required: { value: true, message: "Most Pick Date!!" } },
   })
+  const delta = name === "end" ? 1 : 0
   return (
     <DatePicker
       placeholderText="Select date"
       {...inputProps}
       selected={value}
       showTimeSelect
-      inputRef={ref}
       timeFormat="HH:mm"
       dateFormat="dd/MM/yyyy h:mm aa"
       timeIntervals={15}
+      // TODO  change the iclude date to the day the user picks
+      includeDates={[new Date(), addDays(new Date(), delta)]}
       customInput={
         <Input
           isInvalid={invalid}
