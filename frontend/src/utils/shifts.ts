@@ -1,11 +1,24 @@
-import { format } from "date-fns"
 import request, { ClientError, gql } from "graphql-request"
 import getConfig from "next/config"
-import { useMutation, useQuery, useQueryClient } from "react-query"
+import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query"
 import { EmployeeFormData } from "../Components/EmployeesShiftForm"
-import { Employee, Query, Shift } from "../generates"
+import { Query, Shift } from "../generates"
+import { v4 as uuidv4 } from "uuid"
+
 const { publicRuntimeConfig } = getConfig()
 const endpoint = publicRuntimeConfig.GRAPHQL_URL
+
+function getDefualtMutationOptions({
+  queryClient,
+}: {
+  queryClient: QueryClient
+}) {
+  return {
+    onError: (_err, _variables, recover) =>
+      typeof recover === "function" ? recover() : null,
+    onSettled: () => queryClient.invalidateQueries("shifts"),
+  }
+}
 
 const shifts = gql`
   query shifts {
@@ -53,37 +66,10 @@ function useShifts() {
   return { ...result, data: result.data ?? { allShifts: [] } }
 }
 
-function useDeleteShift() {
-  const queryClient = useQueryClient()
-  const defaultMutationOptions = {
-    onError: (_err, _variables, recover) =>
-      typeof recover === "function" ? recover() : null,
-    onSettled: () => queryClient.invalidateQueries("shifts"),
-  }
-  return useMutation((shiftId) => request(endpoint, deleteShift, { shiftId }), {
-    onMutate(removedItem: Shift) {
-      const previousShifts = queryClient.getQueryData<Shift[]>("shifts")
-      queryClient.setQueryData<{ allShifts: Shift[] }>("shifts", (old) => {
-        const { allShifts: shifts } = old
-        const newData = shifts.filter((s) => s.id === removedItem.id)
-        return { allShifts: newData }
-      })
-      return () => queryClient.setQueryData("shifts", previousShifts)
-    },
-    ...defaultMutationOptions,
-  })
-}
-
 function useCreateShifts() {
   const queryClient = useQueryClient()
-
   // defualt mutation behivors
-  const defaultMutationOptions = {
-    onError: (_err, _variables, recover) =>
-      typeof recover === "function" ? recover() : null,
-    onSettled: () => queryClient.invalidateQueries("shifts"),
-  }
-
+  const defaultMutationOptions = getDefualtMutationOptions({ queryClient })
   return useMutation(
     (data: EmployeeFormData) => {
       const { employee, end, start } = data
@@ -102,7 +88,7 @@ function useCreateShifts() {
         const { start, end } = newItem
 
         const newShift: Shift = {
-          id: "tbd",
+          id: uuidv4(),
           start: start.toISOString(),
           end: end.toISOString(),
           worker: name,
@@ -124,6 +110,23 @@ function useCreateShifts() {
       ...defaultMutationOptions,
     }
   )
+}
+
+function useDeleteShift() {
+  const queryClient = useQueryClient()
+  const defaultMutationOptions = getDefualtMutationOptions({ queryClient })
+  return useMutation((shiftId) => request(endpoint, deleteShift, { shiftId }), {
+    onMutate(removedItem: String) {
+      const previousShifts = queryClient.getQueryData<Shift[]>("shifts")
+      queryClient.setQueryData<{ allShifts: Shift[] }>("shifts", (old) => {
+        const { allShifts: shifts } = old
+        const newData = shifts.filter((s) => s.id !== removedItem)
+        return { allShifts: newData }
+      })
+      return () => queryClient.setQueryData("shifts", previousShifts)
+    },
+    ...defaultMutationOptions,
+  })
 }
 
 export { useCreateShifts, useShifts, useDeleteShift }
