@@ -24,7 +24,8 @@ model Employee {
 }
 
 model Expense {
-  id   Int     @id @default(autoincrement())
+  id   Int       @id @default(autoincrement())
+  date DateTime?
   name String?
   cost Float?
 }

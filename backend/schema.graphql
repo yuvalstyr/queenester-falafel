@@ -202,6 +202,7 @@ input EmployeesCreateInput {
 """ A keystone list """
 type Expense {
   id: ID!
+  date: String
   name: String
   cost: Float
 }
@@ -217,6 +218,14 @@ input ExpenseWhereInput {
   id_gte: ID
   id_in: [ID]
   id_not_in: [ID]
+  date: String
+  date_not: String
+  date_lt: String
+  date_lte: String
+  date_gt: String
+  date_gte: String
+  date_in: [String]
+  date_not_in: [String]
   name: String
   name_not: String
   name_contains: String
@@ -252,6 +261,8 @@ input ExpenseWhereUniqueInput {
 enum SortExpensesBy {
   id_ASC
   id_DESC
+  date_ASC
+  date_DESC
   name_ASC
   name_DESC
   cost_ASC
@@ -259,6 +270,7 @@ enum SortExpensesBy {
 }
 
 input ExpenseUpdateInput {
+  date: String
   name: String
   cost: Float
 }
@@ -269,6 +281,7 @@ input ExpensesUpdateInput {
 }
 
 input ExpenseCreateInput {
+  date: String
   name: String
   cost: Float
 }

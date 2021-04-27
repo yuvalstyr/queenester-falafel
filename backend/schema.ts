@@ -39,6 +39,7 @@ export const lists = createSchema({
   }),
   Expense: list({
     fields: {
+      date: timestamp({ isRequired: true }),
       name: text({ isRequired: true }),
       cost: float({ isRequired: true }),
     },
