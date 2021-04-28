@@ -48,7 +48,7 @@ export function EmployeesShiftForm() {
         <EmployeeSelect employees={employees} />
         <TimeInput name="start" />
         <TimeInput name="end" />
-        <FormButton />
+        <FormButton text="add" />
       </FormBar>
     </FormProvider>
   )

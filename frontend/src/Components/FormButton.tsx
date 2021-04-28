@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Button } from "@chakra-ui/react";
+import * as React from "react"
+import { Button } from "@chakra-ui/react"
 
-export function FormButton() {
+export function FormButton({ text }: { text: String }) {
   return (
     <Button
       variant="solid"
@@ -11,7 +11,7 @@ export function FormButton() {
       fontWeight="700"
       type="submit"
     >
-      Add
+      {text}
     </Button>
-  );
+  )
 }

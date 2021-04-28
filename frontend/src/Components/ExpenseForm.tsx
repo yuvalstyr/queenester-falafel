@@ -59,7 +59,7 @@ export default function ExpenseForm() {
             </NumberInput>
           )}
         />
-        <FormButton />
+        <FormButton text="add" />
       </FormBar>
     </FormProvider>
   )
