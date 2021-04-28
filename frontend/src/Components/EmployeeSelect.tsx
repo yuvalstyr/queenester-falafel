@@ -1,9 +1,7 @@
 import { Select } from "@chakra-ui/select"
-import { Spinner } from "@chakra-ui/spinner"
 import * as React from "react"
 import { useController, useFormContext } from "react-hook-form"
 import { Employee } from "../generates"
-import { ErrorBox } from "./ErrorBox"
 
 export function EmployeeSelect({ employees }) {
   const { control } = useFormContext()
@@ -23,7 +21,10 @@ export function EmployeeSelect({ employees }) {
       placeholder="Select Employee"
       borderColor={"blackAlpha.100"}
       isInvalid={invalid}
-      maxW="300px"
+      maxW={{ base: "125px", md: "300px" }}
+      pl="0"
+      paddingInlineStart="0"
+      fontSize={{ base: "xx-small", md: "md" }}
     >
       {employees.map((e: Employee) => (
         <option value={e.id} key={e.id}>

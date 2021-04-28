@@ -16,11 +16,12 @@ export function FormBar({
       borderWidth="1px"
       borderColor="black"
       shadow="md"
-      p="4"
+      p={{ base: "1", md: "4" }}
       borderRadius="md"
       color="black"
       onSubmit={handleSubmit(onSubmit)}
       justifyContent="center"
+      fontSize={{ base: "x-small", md: "xl" }}
     >
       {children}
     </HStack>

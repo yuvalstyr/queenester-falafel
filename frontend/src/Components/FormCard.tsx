@@ -11,9 +11,9 @@ export function FormCard({
   return (
     <Box
       boxShadow="dark-lg"
-      p="8"
-      mb="32"
-      mt="32"
+      p={{ base: "2", md: "8" }}
+      mb={{ base: "4", md: "16" }}
+      mt={{ base: "4", md: "16" }}
       rounded="md"
       bg="brand.yellow"
       width={["full", "full", "full", , "full", "50%"]}
@@ -22,10 +22,11 @@ export function FormCard({
         as="h1"
         p="2"
         rounded="md"
-        mt="-20"
+        mt={{ base: "-15", md: "-20" }}
         mb="4"
         bg="brand.yellow"
-        borderWidth="16px"
+        fontSize={{ base: "md", md: "2xl" }}
+        borderWidth={{ base: "8px", md: "16px" }}
         borderColor="brand.blue.400"
         color="brand.red"
       >

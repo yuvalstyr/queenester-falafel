@@ -2,6 +2,7 @@ import { Avatar } from "@chakra-ui/avatar"
 import { Button, IconButton } from "@chakra-ui/button"
 import { DeleteIcon } from "@chakra-ui/icons"
 import { HStack, Text, VStack } from "@chakra-ui/layout"
+import { useBreakpointValue } from "@chakra-ui/media-query"
 import { Spinner } from "@chakra-ui/spinner"
 import { addDays, format, formatISO } from "date-fns"
 import * as React from "react"
@@ -20,6 +21,7 @@ export function ShiftList(methods: ISelectedDate) {
     startDay: formatISO(methods.date),
     endDay: formatISO(addDays(methods.date, 1)),
   })
+  const avatarSize = useBreakpointValue({ base: "sm", md: "lg" })
 
   const { mutate: remove } = useDeleteShift()
   new Date()
@@ -32,24 +34,32 @@ export function ShiftList(methods: ISelectedDate) {
   return (
     <React.Fragment>
       {shifts.map((s) => (
-        <VStack m="8" key={s.id}>
+        <VStack
+          m={{ base: "1", md: "8" }}
+          key={s.id}
+          width="100%"
+          p={{ base: "1", md: "4" }}
+          fontSize={{ base: "xs", md: "md" }}
+        >
           <HStack
             shadow="lg"
-            width="100%"
-            p="4"
+            p={{ base: "1", md: "4" }}
             borderBottomColor="black"
             borderBottomWidth="2px"
-            fontSize="1.25rem"
             justifyContent="space-between"
           >
             <Avatar
               background="black"
               name={s.worker.name}
-              src="https://bit.ly/tioluwani-kolawole"
               color="#FAEBEFFF"
               fontWeight="800"
+              size={avatarSize}
             />
-            <Text color="#101820FF" flexBasis="100%">
+            <Text
+              color="#101820FF"
+              flexBasis="100%"
+              fontSize={{ base: "xs", md: "md" }}
+            >
               {s.worker.name}
             </Text>
             <Text
@@ -58,7 +68,7 @@ export function ShiftList(methods: ISelectedDate) {
                 content: `"Start: "`,
                 color: "brand.red",
                 fontWeight: 800,
-                fontSize: "1.5rem",
+                fontSize: { base: "xs", md: "md" },
               }}
             >
               {format(new Date(s.start), "dd-MM-yy HH:mm")}
@@ -69,7 +79,7 @@ export function ShiftList(methods: ISelectedDate) {
                 content: `"End: "`,
                 color: "brand.red",
                 fontWeight: 700,
-                fontSize: "1.5rem",
+                fontSize: { base: "x-sm", md: "md" },
               }}
             >
               {format(new Date(s.end), "dd-MM-yy HH:mm")}
