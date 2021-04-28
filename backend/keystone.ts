@@ -43,7 +43,7 @@ export default auth.withAuth(
       adapter: "prisma_postgresql",
       url:
         process.env.DATABASE_URL ||
-        "postgres://hrvensbygdfmsh:b5918d510bed88616cd6a0c918db51b391d52f9ae54b486ed9b38fc373e40f13@ec2-52-50-171-4.eu-west-1.compute.amazonaws.com:5432/d9ffdi4sphuce4",
+        "postgres://gqzwdakndtppuw:ee301f10c2740e74165aec522c794241784e11eeac0bbd6a9ab72718d82ad205@ec2-54-74-60-70.eu-west-1.compute.amazonaws.com:5432/d7atldq52oj8rm",
     },
     ui: {
       isAccessAllowed: (context) => !!context.session?.data,

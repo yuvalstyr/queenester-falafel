@@ -1,12 +1,12 @@
-import * as React from "react";
-import { Box, Container, Heading } from "@chakra-ui/layout";
+import { Box, Heading } from "@chakra-ui/layout"
+import * as React from "react"
 
 export function FormCard({
   title,
   children,
 }: {
-  title: string;
-  children: React.ReactNode;
+  title: string
+  children: React.ReactNode
 }) {
   return (
     <Box
@@ -33,5 +33,5 @@ export function FormCard({
       </Heading>
       {children}
     </Box>
-  );
+  )
 }

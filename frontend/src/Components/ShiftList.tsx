@@ -3,22 +3,26 @@ import { Button, IconButton } from "@chakra-ui/button"
 import { DeleteIcon } from "@chakra-ui/icons"
 import { HStack, Text, VStack } from "@chakra-ui/layout"
 import { Spinner } from "@chakra-ui/spinner"
-import { format } from "date-fns"
+import { addDays, format, formatISO } from "date-fns"
 import * as React from "react"
 import { useShifts, useDeleteShift } from "../utils/shifts"
 import { ErrorBox } from "./ErrorBox"
+import { ISelectedDate } from "./ShiftForm"
 
-export function ShiftList() {
+export function ShiftList(methods: ISelectedDate) {
   const {
     data: { allShifts: shifts },
     isError,
     isLoading,
     error,
     isIdle,
-  } = useShifts()
+  } = useShifts({
+    startDay: formatISO(methods.date),
+    endDay: formatISO(addDays(methods.date, 1)),
+  })
 
   const { mutate: remove } = useDeleteShift()
-
+  new Date()
   if (isIdle) return null
   if (isLoading) return <Spinner />
   if (isError) {
@@ -57,7 +61,7 @@ export function ShiftList() {
                 fontSize: "1.5rem",
               }}
             >
-              {format(s.start, "DD-MM-YY HH:mm")}
+              {format(new Date(s.start), "dd-MM-yy HH:mm")}
             </Text>
             <Text
               flexBasis="100%"
@@ -68,7 +72,7 @@ export function ShiftList() {
                 fontSize: "1.5rem",
               }}
             >
-              {format(s.end, "DD-MM-YY HH:mm")}
+              {format(new Date(s.end), "dd-MM-yy HH:mm")}
             </Text>
             <IconButton
               aria-label="Remove Shift"

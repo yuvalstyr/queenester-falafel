@@ -7,6 +7,7 @@ import { EmployeeSelect } from "./EmployeeSelect"
 import { ErrorBox } from "./ErrorBox"
 import { FormBar } from "./FormBar"
 import { FormButton } from "./FormButton"
+import { ISelectedDate } from "./ShiftForm"
 import { TimeInput } from "./TimeInput"
 
 export type EmployeeFormData = {

@@ -16,7 +16,7 @@ export default function ExpenseList() {
   }
 
   const { allExpenses: expense } = data
-  console.log(`expenseList`, expense)
+
   return (
     <React.Fragment>
       {expense.map((e) => (

@@ -21,14 +21,15 @@ function getDefualtMutationOptions({
 }
 
 const shifts = gql`
-  query shifts {
-    allShifts {
+  query shifts($startDay: String, $endDay: String) {
+    allShifts(where: { start_gte: $startDay, start_lt: $endDay }) {
       id
-      start
-      end
       worker {
+        id
         name
       }
+      start
+      end
     }
   }
 `
@@ -57,10 +58,15 @@ const createShift = gql`
 type QueryReturnEmployees = { allEmployees: Query["allEmployees"] }
 type QueryReturnShifts = { allShifts: Query["allShifts"] }
 
-function useShifts() {
+type IShiftBoundary = {
+  startDay: String
+  endDay: String
+}
+
+function useShifts({ startDay, endDay }: IShiftBoundary) {
   const result = useQuery<QueryReturnShifts, ClientError>({
-    queryKey: "shifts",
-    queryFn: () => request(endpoint, shifts),
+    queryKey: ["shifts", { startDay, endDay }],
+    queryFn: () => request(endpoint, shifts, { startDay, endDay }),
   })
 
   return { ...result, data: result.data ?? { allShifts: [] } }
