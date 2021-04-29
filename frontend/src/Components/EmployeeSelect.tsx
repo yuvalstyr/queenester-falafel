@@ -18,13 +18,12 @@ export function EmployeeSelect({ employees }) {
   return (
     <Select
       {...inputProps}
-      placeholder="Select Employee"
+      placeholder="Employee"
       borderColor={"blackAlpha.100"}
       isInvalid={invalid}
       maxW={{ base: "125px", md: "300px" }}
-      pl="0"
-      paddingInlineStart="0"
-      fontSize={{ base: "xx-small", md: "md" }}
+      fontSize={{ base: "x-sm", md: "md" }}
+      size="sm"
     >
       {employees.map((e: Employee) => (
         <option value={e.id} key={e.id}>

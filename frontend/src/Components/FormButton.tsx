@@ -1,7 +1,9 @@
 import * as React from "react"
-import { Button } from "@chakra-ui/react"
+import { Button, useBreakpointValue } from "@chakra-ui/react"
 
 export function FormButton({ text }: { text: String }) {
+  const size = useBreakpointValue({ base: "sm", md: "md" })
+
   return (
     <Button
       variant="solid"
@@ -12,6 +14,7 @@ export function FormButton({ text }: { text: String }) {
       color="brand.red"
       fontWeight="700"
       type="submit"
+      size={size}
     >
       {text}
     </Button>

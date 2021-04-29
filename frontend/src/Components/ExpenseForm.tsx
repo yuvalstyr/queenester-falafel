@@ -31,6 +31,8 @@ export default function ExpenseForm() {
             <Input
               borderColor={"blackAlpha.100"}
               color={"blackAlpha.800"}
+              fontSize={{ base: "x-sm", md: "md" }}
+              size="sm"
               onChange={(e) => field.onChange(e.target.value)}
               placeholder="Expense Type"
               _placeholder={{
@@ -43,7 +45,7 @@ export default function ExpenseForm() {
           control={methods.control}
           name="cost"
           render={({ field }) => (
-            <NumberInput>
+            <NumberInput size="sm">
               <NumberInputField
                 onChange={(e) => {
                   field.onChange(+e.target.value)
@@ -51,6 +53,7 @@ export default function ExpenseForm() {
                 borderColor={"blackAlpha.100"}
                 color={"blackAlpha.800"}
                 type="number"
+                fontSize={{ base: "x-sm", md: "md" }}
                 placeholder="Cost"
                 _placeholder={{
                   color: "black",

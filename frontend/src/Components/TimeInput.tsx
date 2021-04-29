@@ -1,4 +1,5 @@
 import { Input } from "@chakra-ui/input"
+import { useBreakpointValue } from "@chakra-ui/media-query"
 import { addDays } from "date-fns"
 import * as React from "react"
 import DatePicker from "react-datepicker"
@@ -14,6 +15,7 @@ type inputType = keyof EmployeeFormInputs
 
 export function TimeInput({ name }: { name: inputType }) {
   const { control } = useFormContext()
+  const size = useBreakpointValue({ base: "sm", md: "md" })
   const {
     field: { ref, value, ...inputProps },
     fieldState: { invalid },
@@ -40,6 +42,7 @@ export function TimeInput({ name }: { name: inputType }) {
           borderColor="blackAlpha.100"
           color="black"
           fontSize="inherit"
+          size={size}
           p={{ base: "1", md: "4" }}
           _placeholder={{ color: "black" }}
         />

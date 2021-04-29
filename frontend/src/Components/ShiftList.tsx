@@ -36,10 +36,10 @@ export function ShiftList(methods: ISelectedDate) {
       {shifts.map((s) => (
         <VStack
           m={{ base: "1", md: "8" }}
-          key={s.id}
           width="100%"
           p={{ base: "1", md: "4" }}
           fontSize={{ base: "xs", md: "md" }}
+          key={s.id}
         >
           <HStack
             shadow="lg"

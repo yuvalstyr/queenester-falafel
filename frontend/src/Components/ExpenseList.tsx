@@ -1,6 +1,7 @@
 import { IconButton } from "@chakra-ui/button"
 import { DeleteIcon } from "@chakra-ui/icons"
 import { Box, HStack, Text, VStack } from "@chakra-ui/layout"
+import { useBreakpointValue } from "@chakra-ui/media-query"
 import { Spinner } from "@chakra-ui/spinner"
 import React from "react"
 import { useDeleteExpense, useExpense } from "../utils/expense"
@@ -8,6 +9,7 @@ import { ErrorBox } from "./ErrorBox"
 
 export default function ExpenseList() {
   const { data, isError, isLoading, error, isIdle } = useExpense()
+  const size = useBreakpointValue({ base: "sm", md: "md" })
   const { mutate: remove } = useDeleteExpense()
   if (isIdle) return null
   if (isLoading) return <Spinner />
@@ -20,17 +22,22 @@ export default function ExpenseList() {
   return (
     <React.Fragment>
       {expense.map((e) => (
-        <VStack m="8" key={e.id}>
+        <VStack
+          m={{ base: "1", md: "8" }}
+          width="100%"
+          p={{ base: "1", md: "4" }}
+          fontSize={{ base: "xs", md: "md" }}
+          key={e.id}
+        >
           <HStack
-            shadow="lg"
             width="100%"
-            p="4"
+            shadow="lg"
+            p={{ base: "1", md: "4" }}
             borderBottomColor="black"
             borderBottomWidth="2px"
-            fontSize="1.25rem"
-            justifyContent="space-between"
+            justifyContent="space-around"
           >
-            <Text color="#101820FF" flexBasis="100%">
+            <Text color="#101820FF" flexBasis="100%" fontSize="inherit">
               {e.name}
             </Text>
             <Text
@@ -40,7 +47,8 @@ export default function ExpenseList() {
                 content: `"$"`,
                 color: "brand.red",
                 fontWeight: 800,
-                fontSize: "1.5rem",
+                pr: "2px",
+                fontSize: size === "sm" ? "1rem" : "1.5rem",
               }}
             >
               {e.cost}
@@ -55,7 +63,7 @@ export default function ExpenseList() {
               borderStyle="solid"
               color="brand.red"
               background="brand.yellow"
-              size="lg"
+              size={size}
             />
           </HStack>
         </VStack>
