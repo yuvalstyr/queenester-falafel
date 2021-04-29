@@ -49,7 +49,7 @@ const createShift = gql`
 type QueryReturnEmployees = { allEmployees: Query["allEmployees"] }
 type QueryReturnShifts = { allShifts: Query["allShifts"] }
 
-type IShiftBoundary = {
+export type DayBoundary = {
   startDay: string
   endDay: string
 }
@@ -61,7 +61,7 @@ function getDefualtMutationOptions() {
   }
 }
 
-function useShifts({ startDay, endDay }: IShiftBoundary) {
+function useShifts({ startDay, endDay }: DayBoundary) {
   const day = format(new Date(startDay), "dd-MM-yy")
   const result = useQuery<QueryReturnShifts, ClientError>({
     queryKey: ["shifts", { day }],
@@ -85,7 +85,7 @@ function useCreateShifts() {
       })
     },
     {
-      onMutate(newItem) {
+      onMutate(newItem: EmployeeFormData) {
         const { allEmployees } = queryClient.getQueryData<QueryReturnEmployees>(
           "employees"
         )

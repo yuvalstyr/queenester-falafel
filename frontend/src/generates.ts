@@ -143,16 +143,19 @@ export type EmployeesUpdateInput = {
 export type Expense = {
   __typename?: 'Expense';
   id: Scalars['ID'];
+  date?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   cost?: Maybe<Scalars['Float']>;
 };
 
 export type ExpenseCreateInput = {
+  date?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   cost?: Maybe<Scalars['Float']>;
 };
 
 export type ExpenseUpdateInput = {
+  date?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   cost?: Maybe<Scalars['Float']>;
 };
@@ -168,6 +171,14 @@ export type ExpenseWhereInput = {
   id_gte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
   id_not_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  date?: Maybe<Scalars['String']>;
+  date_not?: Maybe<Scalars['String']>;
+  date_lt?: Maybe<Scalars['String']>;
+  date_lte?: Maybe<Scalars['String']>;
+  date_gt?: Maybe<Scalars['String']>;
+  date_gte?: Maybe<Scalars['String']>;
+  date_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  date_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
   name?: Maybe<Scalars['String']>;
   name_not?: Maybe<Scalars['String']>;
   name_contains?: Maybe<Scalars['String']>;
@@ -739,6 +750,8 @@ export enum SortEmployeesBy {
 export enum SortExpensesBy {
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  DateAsc = 'date_ASC',
+  DateDesc = 'date_DESC',
   NameAsc = 'name_ASC',
   NameDesc = 'name_DESC',
   CostAsc = 'cost_ASC',

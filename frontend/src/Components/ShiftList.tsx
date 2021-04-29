@@ -4,14 +4,16 @@ import { DeleteIcon } from "@chakra-ui/icons"
 import { Text } from "@chakra-ui/layout"
 import { useBreakpointValue } from "@chakra-ui/media-query"
 import { Spinner } from "@chakra-ui/spinner"
-import { addDays, format, formatISO, startOfDay } from "date-fns"
+import { format } from "date-fns"
 import * as React from "react"
+import { dayBoundaries } from "../utils/dateFns"
 import { useDeleteShift, useShifts } from "../utils/shifts"
 import { ErrorBox } from "./ErrorBox"
 import { List } from "./ExpenseList"
 import { ISelectedDate } from "./ShiftForm"
 
-export function ShiftList(methods: ISelectedDate) {
+export function ShiftList({ date }: ISelectedDate) {
+  const { endDay, startDay } = dayBoundaries(date)
   const {
     data: { allShifts: shifts },
     isError,
@@ -19,8 +21,8 @@ export function ShiftList(methods: ISelectedDate) {
     error,
     isIdle,
   } = useShifts({
-    startDay: formatISO(startOfDay(methods.date)),
-    endDay: formatISO(addDays(startOfDay(methods.date), 1)),
+    endDay,
+    startDay,
   })
   const avatarSize = useBreakpointValue({ base: "sm", md: "lg" })
 

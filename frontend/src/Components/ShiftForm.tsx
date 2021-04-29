@@ -16,8 +16,8 @@ export function ShiftForm() {
     <Box>
       <DateBar date={date} setDate={setDate} />
       <ResponsiveCardLayout>
-        <EmployeesCard date={date} setDate={setDate} />
-        <ExpenseCard />
+        <EmployeesCard date={date} />
+        <ExpenseCard date={date} />
       </ResponsiveCardLayout>
     </Box>
   )

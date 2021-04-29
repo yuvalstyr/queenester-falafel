@@ -36,6 +36,7 @@ export const lists = createSchema({
       }),
       shifts: relationship({ ref: "Shift.worker", many: true }),
     },
+    ui: { listView: { initialColumns: ["name", "shifts", "salaryPerHour"] } },
   }),
   Expense: list({
     fields: {
@@ -43,6 +44,7 @@ export const lists = createSchema({
       name: text({ isRequired: true }),
       cost: float({ isRequired: true }),
     },
+    ui: { listView: { initialColumns: ["name", "cost", "date"] } },
   }),
   Shift: list({
     fields: {

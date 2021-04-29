@@ -6,17 +6,18 @@ import { Expense } from "../generates"
 import { useCreateExpense } from "../utils/expense"
 import { FormBar } from "./FormBar"
 import { FormButton } from "./FormButton"
+import { ISelectedDate } from "./ShiftForm"
+import { startOfISODay } from "../utils/dateFns"
 
-export default function ExpenseForm() {
+export default function ExpenseForm({ date }: ISelectedDate) {
   const methods = useForm<Expense>({
     reValidateMode: "onChange",
     shouldFocusError: true,
   })
-
   const { mutate: create } = useCreateExpense()
 
   function onSubmit<Expense>(data: Expense) {
-    create({ ...data, date: new Date().toISOString() })
+    create({ ...data, date: startOfISODay(date) })
   }
   return (
     <FormProvider {...methods}>

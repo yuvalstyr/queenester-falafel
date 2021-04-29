@@ -4,8 +4,10 @@ import { Box, HStack, Text, VStack } from "@chakra-ui/layout"
 import { useBreakpointValue } from "@chakra-ui/media-query"
 import { Spinner } from "@chakra-ui/spinner"
 import React from "react"
+import { dayBoundaries } from "../utils/dateFns"
 import { useDeleteExpense, useExpense } from "../utils/expense"
 import { ErrorBox } from "./ErrorBox"
+import { ISelectedDate } from "./ShiftForm"
 
 export function List({ children }: { children: React.ReactNode }) {
   return (
@@ -29,8 +31,12 @@ export function List({ children }: { children: React.ReactNode }) {
   )
 }
 
-export default function ExpenseList() {
-  const { data, isError, isLoading, error, isIdle } = useExpense()
+export default function ExpenseList({ date }: ISelectedDate) {
+  const { endDay, startDay } = dayBoundaries(date)
+  const { data, isError, isLoading, error, isIdle } = useExpense({
+    endDay,
+    startDay,
+  })
   const size = useBreakpointValue({ base: "sm", md: "md" })
   const { mutate: remove } = useDeleteExpense()
   if (isIdle) return null
@@ -65,7 +71,7 @@ export default function ExpenseList() {
           <IconButton
             aria-label="Remove Shift"
             icon={<DeleteIcon />}
-            onClick={() => remove(e.id)}
+            onClick={() => remove({ id: e.id, date })}
             borderColor="brand.blue.400"
             borderWidth="4px"
             borderStyle="solid"

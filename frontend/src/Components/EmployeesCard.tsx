@@ -4,11 +4,11 @@ import { EmployeesShiftForm } from "./EmployeesShiftForm"
 import { FormCard } from "./FormCard"
 import { ISelectedDate } from "./ShiftForm"
 
-export function EmployeesCard({ date, setDate }: ISelectedDate): JSX.Element {
+export function EmployeesCard({ date }: ISelectedDate): JSX.Element {
   return (
     <FormCard title={"Employees"}>
       <EmployeesShiftForm />
-      <ShiftList date={date} setDate={setDate} />
+      <ShiftList date={date} />
     </FormCard>
   )
 }

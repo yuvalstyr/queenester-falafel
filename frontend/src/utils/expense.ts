@@ -1,15 +1,17 @@
+import { format, startOfDay } from "date-fns"
 import request, { ClientError, gql } from "graphql-request"
 import getConfig from "next/config"
-import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query"
-import { Expense, Query } from "../generates"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 import { v4 as uuidv4 } from "uuid"
+import { Expense, Query } from "../generates"
+import { DayBoundary } from "./shifts"
 
 const { publicRuntimeConfig } = getConfig()
 const endpoint = publicRuntimeConfig.GRAPHQL_URL
 
 const expense = gql`
-  query expense {
-    allExpenses {
+  query expense($startDay: String, $endDay: String) {
+    allExpenses(where: { date_gte: $startDay, date_lt: $endDay }) {
       id
       date
       name
@@ -22,6 +24,7 @@ const deleteExpense = gql`
   mutation deleteExpense($expenseId: ID!) {
     deleteExpense(id: $expenseId) {
       id
+      date
     }
   }
 `
@@ -30,6 +33,7 @@ const createExpense = gql`
   mutation createExpense($date: String!, $name: String!, $cost: Float!) {
     createExpense(data: { date: $date, name: $name, cost: $cost }) {
       id
+      date
     }
   }
 `
@@ -42,10 +46,11 @@ function getDefualtMutationOptions() {
   }
 }
 
-function useExpense() {
+function useExpense({ endDay, startDay }: DayBoundary) {
+  const day = format(startOfDay(new Date(startDay)), "dd-MM-yy")
   const result = useQuery<QueryReturnExpense, ClientError>({
-    queryKey: "expense",
-    queryFn: () => request(endpoint, expense),
+    queryKey: ["expense", { day }],
+    queryFn: () => request(endpoint, expense, { startDay, endDay }),
   })
 
   return { ...result, data: result.data ?? { allExpenses: [] } }
@@ -54,7 +59,7 @@ function useExpense() {
 function useCreateExpense() {
   const queryClient = useQueryClient()
   // defualt mutation behivors
-  const defaultMutationOptions = getDefualtMutationOptions({ queryClient })
+  const defaultMutationOptions = getDefualtMutationOptions()
 
   return useMutation(
     (data: Expense) => {
@@ -64,13 +69,16 @@ function useCreateExpense() {
     },
     {
       onMutate(newItem: Expense) {
-        const day = format(new Date(start), "dd-MM-yy")
+        const day = format(new Date(newItem.date), "dd-MM-yy")
         // for roll back if the mutation wiil return error
-        const previousExpense = queryClient.getQueryData<Expense[]>("expense")
+        const previousExpense = queryClient.getQueryData<Expense[]>([
+          "expense",
+          { day },
+        ])
         // Optimistically update to the new value
         if (previousExpense) {
           queryClient.setQueryData<{ allExpenses: Expense[] }>(
-            "expense",
+            ["expense", { day }],
             (old) => {
               const { allExpenses: oldExpense } = old
               return {
@@ -79,34 +87,45 @@ function useCreateExpense() {
             }
           )
         } else {
-          queryClient.setQueryData<{ allExpenses: Expense[] }>("expense", {
-            allExpenses: [newItem],
-          })
+          queryClient.setQueryData<{ allExpenses: Expense[] }>(
+            ["expense", { day }],
+            {
+              allExpenses: [newItem],
+            }
+          )
         }
         return () => queryClient.setQueryData("expense", previousExpense)
       },
-      onSettled: () => queryClient.invalidateQueries("expense"),
+      onSettled: ({ createExpense }) => {
+        const day = format(new Date(createExpense.date), "dd-MM-yy")
+        return queryClient.invalidateQueries(["expense", { day }])
+      },
       ...defaultMutationOptions,
     }
   )
 }
 function useDeleteExpense() {
   const queryClient = useQueryClient()
-  const defaultMutationOptions = getDefualtMutationOptions({ queryClient })
+  const defaultMutationOptions = getDefualtMutationOptions()
   return useMutation(
-    (expenseId) => request(endpoint, deleteExpense, { expenseId }),
+    ({ id: expenseId }) => request(endpoint, deleteExpense, { expenseId }),
     {
-      onMutate(removedItem: String) {
-        const previousExpnse = queryClient.getQueryData<Expense[]>("expense")
-        queryClient.setQueryData<{ allExpenses: Expense[] }>(
+      onMutate(removedItem: { id: string; date: Date }) {
+        const day = format(new Date(removedItem.date), "dd-MM-yy")
+        const previousExpnse = queryClient.getQueryData<Expense[]>([
           "expense",
+          { day },
+        ])
+        queryClient.setQueryData<{ allExpenses: Expense[] }>(
+          ["expense", { day }],
           (old) => {
             const { allExpenses: expense } = old
-            const newData = expense.filter((s) => s.id !== removedItem)
+            const newData = expense.filter((s) => s.id !== removedItem.id)
             return { allExpenses: newData }
           }
         )
-        return () => queryClient.setQueryData("expense", previousExpnse)
+        return () =>
+          queryClient.setQueryData(["expense", { day }], previousExpnse)
       },
       ...defaultMutationOptions,
     }
