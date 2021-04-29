@@ -7,18 +7,6 @@ import { v4 as uuidv4 } from "uuid"
 const { publicRuntimeConfig } = getConfig()
 const endpoint = publicRuntimeConfig.GRAPHQL_URL
 
-function getDefualtMutationOptions({
-  queryClient,
-}: {
-  queryClient: QueryClient
-}) {
-  return {
-    onError: (_err, _variables, recover) =>
-      typeof recover === "function" ? recover() : null,
-    onSettled: () => queryClient.invalidateQueries("expense"),
-  }
-}
-
 const expense = gql`
   query expense {
     allExpenses {
@@ -47,6 +35,13 @@ const createExpense = gql`
 `
 type QueryReturnExpense = { allExpenses: Query["allExpenses"] }
 
+function getDefualtMutationOptions() {
+  return {
+    onError: (_err, _variables, recover) =>
+      typeof recover === "function" ? recover() : null,
+  }
+}
+
 function useExpense() {
   const result = useQuery<QueryReturnExpense, ClientError>({
     queryKey: "expense",
@@ -68,7 +63,8 @@ function useCreateExpense() {
       })
     },
     {
-      onMutate(newItem) {
+      onMutate(newItem: Expense) {
+        const day = format(new Date(start), "dd-MM-yy")
         // for roll back if the mutation wiil return error
         const previousExpense = queryClient.getQueryData<Expense[]>("expense")
         // Optimistically update to the new value
@@ -89,6 +85,7 @@ function useCreateExpense() {
         }
         return () => queryClient.setQueryData("expense", previousExpense)
       },
+      onSettled: () => queryClient.invalidateQueries("expense"),
       ...defaultMutationOptions,
     }
   )
