@@ -35,6 +35,7 @@ export default function ExpenseForm() {
               size="sm"
               onChange={(e) => field.onChange(e.target.value)}
               placeholder="Expense Type"
+              w="250px"
               _placeholder={{
                 color: "black",
               }}
@@ -50,8 +51,8 @@ export default function ExpenseForm() {
                 onChange={(e) => {
                   field.onChange(+e.target.value)
                 }}
-                borderColor={"blackAlpha.100"}
-                color={"blackAlpha.800"}
+                borderColor="blackAlpha.100"
+                color="blackAlpha.800"
                 type="number"
                 fontSize={{ base: "x-sm", md: "md" }}
                 placeholder="Cost"

@@ -8,6 +8,7 @@ import { addDays, format, formatISO } from "date-fns"
 import * as React from "react"
 import { useShifts, useDeleteShift } from "../utils/shifts"
 import { ErrorBox } from "./ErrorBox"
+import { List } from "./ExpenseList"
 import { ISelectedDate } from "./ShiftForm"
 
 export function ShiftList(methods: ISelectedDate) {
@@ -34,69 +35,55 @@ export function ShiftList(methods: ISelectedDate) {
   return (
     <React.Fragment>
       {shifts.map((s) => (
-        <VStack
-          m={{ base: "1", md: "8" }}
-          width="100%"
-          p={{ base: "1", md: "4" }}
-          fontSize={{ base: "xs", md: "md" }}
-          key={s.id}
-        >
-          <HStack
-            shadow="lg"
-            p={{ base: "1", md: "4" }}
-            borderBottomColor="black"
-            borderBottomWidth="2px"
-            justifyContent="space-between"
+        <List>
+          <Avatar
+            background="black"
+            name={s.worker.name}
+            color="#FAEBEFFF"
+            fontWeight="800"
+            size={avatarSize}
+          />
+          <Text
+            color="#101820FF"
+            flexBasis="100%"
+            fontSize={{ base: "xs", md: "md" }}
           >
-            <Avatar
-              background="black"
-              name={s.worker.name}
-              color="#FAEBEFFF"
-              fontWeight="800"
-              size={avatarSize}
-            />
-            <Text
-              color="#101820FF"
-              flexBasis="100%"
-              fontSize={{ base: "xs", md: "md" }}
-            >
-              {s.worker.name}
-            </Text>
-            <Text
-              flexBasis="100%"
-              _before={{
-                content: `"Start: "`,
-                color: "brand.red",
-                fontWeight: 800,
-                fontSize: { base: "xs", md: "md" },
-              }}
-            >
-              {format(new Date(s.start), "dd-MM-yy HH:mm")}
-            </Text>
-            <Text
-              flexBasis="100%"
-              _before={{
-                content: `"End: "`,
-                color: "brand.red",
-                fontWeight: 700,
-                fontSize: { base: "x-sm", md: "md" },
-              }}
-            >
-              {format(new Date(s.end), "dd-MM-yy HH:mm")}
-            </Text>
-            <IconButton
-              aria-label="Remove Shift"
-              icon={<DeleteIcon />}
-              onClick={() => remove(s.id)}
-              borderColor="brand.blue.400"
-              borderWidth="4px"
-              borderStyle="solid"
-              color="brand.red"
-              background="brand.yellow"
-              size="lg"
-            />
-          </HStack>
-        </VStack>
+            {s.worker.name}
+          </Text>
+          <Text
+            flexBasis="100%"
+            _before={{
+              content: `"Start: "`,
+              color: "brand.red",
+              fontWeight: 800,
+              fontSize: { base: "xs", md: "md" },
+            }}
+          >
+            {format(new Date(s.start), "dd-MM-yy HH:mm")}
+          </Text>
+          <Text
+            flexBasis="100%"
+            _before={{
+              content: `"End: "`,
+              color: "brand.red",
+              fontWeight: 700,
+              fontSize: { base: "x-sm", md: "md" },
+            }}
+          >
+            {format(new Date(s.end), "dd-MM-yy HH:mm")}
+          </Text>
+          <IconButton
+            aria-label="Remove Shift"
+            icon={<DeleteIcon />}
+            onClick={() => remove(s.id)}
+            borderColor="brand.blue.400"
+            borderWidth="4px"
+            borderStyle="solid"
+            color="brand.red"
+            background="brand.yellow"
+            size="lg"
+          />
+        </List>
       ))}
     </React.Fragment>
   )

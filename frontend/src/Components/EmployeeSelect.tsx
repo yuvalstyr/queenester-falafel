@@ -21,9 +21,13 @@ export function EmployeeSelect({ employees }) {
       placeholder="Employee"
       borderColor={"blackAlpha.100"}
       isInvalid={invalid}
+      width="200px"
       maxW={{ base: "125px", md: "300px" }}
       fontSize={{ base: "x-sm", md: "md" }}
       size="sm"
+      _placeholder={{
+        color: "blackAlpha.400",
+      }}
     >
       {employees.map((e: Employee) => (
         <option value={e.id} key={e.id}>

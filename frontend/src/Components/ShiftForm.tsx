@@ -1,8 +1,9 @@
-import { VStack } from "@chakra-ui/layout"
+import { Box } from "@chakra-ui/layout"
 import * as React from "react"
 import { DateBar } from "./DateBar"
 import { EmployeesCard } from "./EmployeesCard"
 import { ExpenseCard } from "./ExpenseCard"
+import { ResponsiveCardLayout } from "./ResponsiveCardLayout"
 
 export interface ISelectedDate {
   date?: Date
@@ -12,12 +13,12 @@ export interface ISelectedDate {
 export function ShiftForm() {
   const [date, setDate] = React.useState(new Date())
   return (
-    <React.Fragment>
+    <Box>
       <DateBar date={date} setDate={setDate} />
-      <VStack>
+      <ResponsiveCardLayout>
         <EmployeesCard date={date} setDate={setDate} />
         <ExpenseCard />
-      </VStack>
-    </React.Fragment>
+      </ResponsiveCardLayout>
+    </Box>
   )
 }

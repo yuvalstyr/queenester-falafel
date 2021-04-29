@@ -7,6 +7,28 @@ import React from "react"
 import { useDeleteExpense, useExpense } from "../utils/expense"
 import { ErrorBox } from "./ErrorBox"
 
+export function List({ children }: { children: React.ReactNode }) {
+  return (
+    <VStack
+      m={{ base: "1", md: "2" }}
+      width="100%"
+      p={{ base: "1", md: "2" }}
+      fontSize={{ base: "xs", md: "md" }}
+    >
+      <HStack
+        width="100%"
+        shadow="lg"
+        p={{ base: "1", md: "4" }}
+        borderBottomColor="black"
+        borderBottomWidth="2px"
+        justifyContent="space-around"
+      >
+        {children}
+      </HStack>
+    </VStack>
+  )
+}
+
 export default function ExpenseList() {
   const { data, isError, isLoading, error, isIdle } = useExpense()
   const size = useBreakpointValue({ base: "sm", md: "md" })
@@ -22,51 +44,36 @@ export default function ExpenseList() {
   return (
     <React.Fragment>
       {expense.map((e) => (
-        <VStack
-          m={{ base: "1", md: "8" }}
-          width="100%"
-          p={{ base: "1", md: "4" }}
-          fontSize={{ base: "xs", md: "md" }}
-          key={e.id}
-        >
-          <HStack
-            width="100%"
-            shadow="lg"
-            p={{ base: "1", md: "4" }}
-            borderBottomColor="black"
-            borderBottomWidth="2px"
-            justifyContent="space-around"
+        <List key={e.id}>
+          <Text color="#101820FF" flexBasis="100%" fontSize="inherit">
+            {e.name}
+          </Text>
+          <Text
+            color="#101820FF"
+            flexBasis="100%"
+            _before={{
+              content: `"$"`,
+              color: "brand.red",
+              fontWeight: 800,
+              pr: "2px",
+              fontSize: size === "sm" ? "1rem" : "1.5rem",
+            }}
           >
-            <Text color="#101820FF" flexBasis="100%" fontSize="inherit">
-              {e.name}
-            </Text>
-            <Text
-              color="#101820FF"
-              flexBasis="100%"
-              _before={{
-                content: `"$"`,
-                color: "brand.red",
-                fontWeight: 800,
-                pr: "2px",
-                fontSize: size === "sm" ? "1rem" : "1.5rem",
-              }}
-            >
-              {e.cost}
-            </Text>
+            {e.cost}
+          </Text>
 
-            <IconButton
-              aria-label="Remove Shift"
-              icon={<DeleteIcon />}
-              onClick={() => remove(e.id)}
-              borderColor="brand.blue.400"
-              borderWidth="4px"
-              borderStyle="solid"
-              color="brand.red"
-              background="brand.yellow"
-              size={size}
-            />
-          </HStack>
-        </VStack>
+          <IconButton
+            aria-label="Remove Shift"
+            icon={<DeleteIcon />}
+            onClick={() => remove(e.id)}
+            borderColor="brand.blue.400"
+            borderWidth="4px"
+            borderStyle="solid"
+            color="brand.red"
+            background="brand.yellow"
+            size={size}
+          />
+        </List>
       ))}
     </React.Fragment>
   )
