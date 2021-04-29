@@ -1,12 +1,12 @@
 import { Avatar } from "@chakra-ui/avatar"
-import { Button, IconButton } from "@chakra-ui/button"
+import { IconButton } from "@chakra-ui/button"
 import { DeleteIcon } from "@chakra-ui/icons"
-import { HStack, Text, VStack } from "@chakra-ui/layout"
+import { Text } from "@chakra-ui/layout"
 import { useBreakpointValue } from "@chakra-ui/media-query"
 import { Spinner } from "@chakra-ui/spinner"
-import { addDays, format, formatISO } from "date-fns"
+import { addDays, format, formatISO, startOfDay } from "date-fns"
 import * as React from "react"
-import { useShifts, useDeleteShift } from "../utils/shifts"
+import { useDeleteShift, useShifts } from "../utils/shifts"
 import { ErrorBox } from "./ErrorBox"
 import { List } from "./ExpenseList"
 import { ISelectedDate } from "./ShiftForm"
@@ -19,8 +19,8 @@ export function ShiftList(methods: ISelectedDate) {
     error,
     isIdle,
   } = useShifts({
-    startDay: formatISO(methods.date),
-    endDay: formatISO(addDays(methods.date, 1)),
+    startDay: formatISO(startOfDay(methods.date)),
+    endDay: formatISO(addDays(startOfDay(methods.date), 1)),
   })
   const avatarSize = useBreakpointValue({ base: "sm", md: "lg" })
 
@@ -35,7 +35,7 @@ export function ShiftList(methods: ISelectedDate) {
   return (
     <React.Fragment>
       {shifts.map((s) => (
-        <List>
+        <List key={s.id}>
           <Avatar
             background="black"
             name={s.worker.name}
@@ -75,7 +75,7 @@ export function ShiftList(methods: ISelectedDate) {
           <IconButton
             aria-label="Remove Shift"
             icon={<DeleteIcon />}
-            onClick={() => remove(s.id)}
+            onClick={() => remove({ id: s.id, start: s.start })}
             borderColor="brand.blue.400"
             borderWidth="4px"
             borderStyle="solid"

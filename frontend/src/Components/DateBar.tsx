@@ -10,7 +10,6 @@ import { ISelectedDate } from "./ShiftForm"
 export function DateBar({ date, setDate }: ISelectedDate) {
   // todo change format of heading disply
   const dateType = useBreakpointValue({ base: "dd/MM/yy", md: "PPPPpp" })
-  console.log({ dateType })
   return (
     <Box>
       <Box
@@ -32,8 +31,6 @@ export function DateBar({ date, setDate }: ISelectedDate) {
           borderColor="brand.blue.400"
           color="brand.red"
           justifyContent="space-around"
-
-          // flexDirection={{ base: "column", md: "row" }}
         >
           <Heading fontSize={{ base: "md", md: "2xl" }}>
             {format(date, dateType ?? "dd/MM/yy")}
