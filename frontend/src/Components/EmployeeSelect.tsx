@@ -14,7 +14,7 @@ export function EmployeeSelect({ employees }) {
     control,
     rules: { required: { value: true, message: "Most Pick Employee!!" } },
   })
-
+  console.log({ inputProps })
   return (
     <Select
       {...inputProps}

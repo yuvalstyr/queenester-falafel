@@ -21,7 +21,7 @@ export default function ExpenseForm({ date }: ISelectedDate) {
   }
   return (
     <FormProvider {...methods}>
-      <FormBar onSubmit={onSubmit}>
+      <FormBar submitAction={onSubmit}>
         <Controller
           control={methods.control}
           name="name"

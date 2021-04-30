@@ -56,8 +56,10 @@ export type DayBoundary = {
 
 function getDefualtMutationOptions() {
   return {
-    onError: (_err, _variables, recover) =>
-      typeof recover === "function" ? recover() : null,
+    onError: (_err, _variables, recover) => {
+      console.log("error")
+      return typeof recover === "function" ? recover() : null
+    },
   }
 }
 
@@ -110,6 +112,7 @@ function useCreateShifts() {
             ["shifts", { day }],
             (old) => {
               const { allShifts: oldShifts } = old
+              console.log("create setQueryData", [...oldShifts, newShift])
               return {
                 allShifts: [...oldShifts, newShift],
               }
@@ -146,6 +149,7 @@ function useDeleteShift() {
           (old) => {
             const { allShifts: shifts } = old
             const newData = shifts.filter((s) => s.id !== removedItem.id)
+            console.log("delete setQueryData", { newData })
             return { allShifts: newData }
           }
         )
@@ -153,6 +157,7 @@ function useDeleteShift() {
           queryClient.setQueryData(["shifts", { day }], previousShifts)
       },
       onSettled: ({ deleteShift }) => {
+        console.log("onSettled", { deleteShift })
         const day = format(new Date(deleteShift.start), "dd-MM-yy")
         return queryClient.invalidateQueries(["shifts", { day }])
       },

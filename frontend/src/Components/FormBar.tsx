@@ -4,12 +4,16 @@ import { useFormContext } from "react-hook-form"
 
 export function FormBar({
   children,
-  onSubmit,
+  submitAction,
 }: {
   children: React.ReactNode
-  onSubmit: OnSubmit
+  submitAction: OnSubmit
 }) {
-  const { handleSubmit } = useFormContext()
+  const { handleSubmit, reset } = useFormContext()
+  function onSubmit(data) {
+    submitAction(data)
+    reset()
+  }
   return (
     <HStack
       as="form"

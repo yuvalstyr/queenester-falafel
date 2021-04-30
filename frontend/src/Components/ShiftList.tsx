@@ -24,9 +24,9 @@ export function ShiftList({ date }: ISelectedDate) {
     endDay,
     startDay,
   })
-  const avatarSize = useBreakpointValue({ base: "sm", md: "lg" })
+  const avatarSize = useBreakpointValue({ base: "sm", md: "md" })
 
-  const { mutate: remove } = useDeleteShift()
+  const { mutate: remove, isLoading: isDeleteLoading } = useDeleteShift()
   new Date()
   if (isIdle) return null
   if (isLoading) return <Spinner />
@@ -84,6 +84,7 @@ export function ShiftList({ date }: ISelectedDate) {
             color="brand.red"
             background="brand.yellow"
             size="lg"
+            disabled={isDeleteLoading}
           />
         </List>
       ))}

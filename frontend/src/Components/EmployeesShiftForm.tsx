@@ -43,7 +43,7 @@ export function EmployeesShiftForm() {
 
   return (
     <FormProvider {...methods}>
-      <FormBar onSubmit={onSubmit}>
+      <FormBar submitAction={onSubmit}>
         <EmployeeSelect employees={employees} />
         <TimeInput name="start" />
         <TimeInput name="end" />
