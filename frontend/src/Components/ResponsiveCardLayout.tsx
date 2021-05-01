@@ -7,7 +7,7 @@ export function ResponsiveCardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const size = useBreakpointValue({ base: "sm", w3xl: "lg" })
+  const size = useBreakpointValue({ base: "sm", xl: "lg" })
 
   const Component = size === "sm" ? VStack : HStack
   return (
