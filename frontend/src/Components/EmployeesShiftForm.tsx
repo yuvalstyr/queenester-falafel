@@ -1,6 +1,6 @@
 import { Spinner } from "@chakra-ui/spinner"
 import * as React from "react"
-import { FormProvider, useForm } from "react-hook-form"
+import { Controller, FormProvider, useForm } from "react-hook-form"
 import { useActiveEmployees } from "../utils/employees"
 import { useCreateShifts } from "../utils/shifts"
 import { EmployeeAutocomplete } from "./EmployeeAutocomplete"
@@ -44,7 +44,17 @@ export function EmployeesShiftForm() {
   return (
     <FormProvider {...methods}>
       <FormBar submitAction={onSubmit}>
-        <EmployeeAutocomplete employees={employees} />
+        <Controller
+          render={({ field: { ref, onChange, ...rest } }) => (
+            <EmployeeAutocomplete
+              employees={employees}
+              onChange={onChange}
+              {...rest}
+            />
+          )}
+          control={methods.control}
+          name="employee"
+        />
         <TimeInput name="start" />
         <TimeInput name="end" />
         <FormButton text="add" />

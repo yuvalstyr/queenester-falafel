@@ -75,7 +75,7 @@ function useShifts({ startDay, endDay }: DayBoundary) {
 
 function useCreateShifts() {
   const queryClient = useQueryClient()
-  // defualt mutation behivors
+  // defualt mutation behaviors
   const defaultMutationOptions = getDefualtMutationOptions()
   return useMutation(
     (data: EmployeeFormData) => {
