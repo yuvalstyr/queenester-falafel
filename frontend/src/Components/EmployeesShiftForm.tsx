@@ -3,7 +3,7 @@ import * as React from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { useActiveEmployees } from "../utils/employees"
 import { useCreateShifts } from "../utils/shifts"
-import { EmployeeSelect } from "./EmployeeSelect"
+import { EmployeeAutocomplete } from "./EmployeeAutocomplete"
 import { ErrorBox } from "./ErrorBox"
 import { FormBar } from "./FormBar"
 import { FormButton } from "./FormButton"
@@ -44,7 +44,7 @@ export function EmployeesShiftForm() {
   return (
     <FormProvider {...methods}>
       <FormBar submitAction={onSubmit}>
-        <EmployeeSelect employees={employees} />
+        <EmployeeAutocomplete employees={employees} />
         <TimeInput name="start" />
         <TimeInput name="end" />
         <FormButton text="add" />

@@ -32,7 +32,7 @@ export function TimeInput({ name }: { name: inputType }) {
       selected={value}
       showTimeSelect
       timeFormat="HH:mm"
-      dateFormat="dd/MM/yy HH:mm"
+      dateFormat="d/M HH:mm"
       timeIntervals={15}
       // TODO  change the iclude date to the day the user picks
       includeDates={[new Date(), addDays(new Date(), delta)]}
@@ -45,6 +45,7 @@ export function TimeInput({ name }: { name: inputType }) {
           size={size}
           p={{ base: "1", md: "4" }}
           _placeholder={{ color: "black" }}
+          autoComplete="off"
         />
       }
     />
