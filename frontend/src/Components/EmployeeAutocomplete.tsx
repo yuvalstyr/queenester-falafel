@@ -1,20 +1,24 @@
-import { Box, Flex } from "@chakra-ui/layout"
+import { Box } from "@chakra-ui/layout"
 import { useCombobox } from "downshift"
 import * as React from "react"
-import { useController, useFormContext } from "react-hook-form"
 import { Employee } from "../generates"
 import { ComboboxInput, ComboboxItem, ComboboxList } from "../styles/combobox"
 
 type AutoCompleteProps = {
   employees: Employee[]
   onChange: (...event: any[]) => void
+  reset: boolean
+  setReset: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export function EmployeeAutocomplete({
   employees,
   onChange,
+  reset,
+  setReset,
 }: AutoCompleteProps) {
   const [inputItems, setInputItems] = React.useState(employees)
+
   const itemToString = (item: Employee) => item?.name || ""
   const {
     getInputProps,
@@ -23,9 +27,11 @@ export function EmployeeAutocomplete({
     getMenuProps,
     getItemProps,
     highlightedIndex,
+    setInputValue,
   } = useCombobox({
     items: inputItems,
     itemToString,
+
     onInputValueChange: ({ inputValue }) => {
       const newList = employees.filter((item) =>
         itemToString(item).toLowerCase().startsWith(inputValue.toLowerCase())
@@ -39,6 +45,14 @@ export function EmployeeAutocomplete({
       onChange(selectedItem?.id || "")
     },
   })
+
+  React.useEffect(() => {
+    if (reset) {
+      setInputValue("")
+      setReset(false)
+    }
+  }, [reset])
+
   return (
     <Box position="relative">
       <Box {...getComboboxProps()}>

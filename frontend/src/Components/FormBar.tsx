@@ -2,13 +2,12 @@ import { HStack } from "@chakra-ui/layout"
 import * as React from "react"
 import { useFormContext } from "react-hook-form"
 
-export function FormBar({
-  children,
-  submitAction,
-}: {
+type BarProps = {
   children: React.ReactNode
   submitAction: OnSubmit
-}) {
+}
+
+export function FormBar({ children, submitAction }: BarProps) {
   const { handleSubmit, reset } = useFormContext()
   function onSubmit(data) {
     submitAction(data)

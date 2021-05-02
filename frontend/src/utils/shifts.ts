@@ -112,7 +112,6 @@ function useCreateShifts() {
             ["shifts", { day }],
             (old) => {
               const { allShifts: oldShifts } = old
-              console.log("create setQueryData", [...oldShifts, newShift])
               return {
                 allShifts: [...oldShifts, newShift],
               }
@@ -149,7 +148,6 @@ function useDeleteShift() {
           (old) => {
             const { allShifts: shifts } = old
             const newData = shifts.filter((s) => s.id !== removedItem.id)
-            console.log("delete setQueryData", { newData })
             return { allShifts: newData }
           }
         )

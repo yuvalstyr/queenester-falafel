@@ -1,6 +1,7 @@
 import { Spinner } from "@chakra-ui/spinner"
 import * as React from "react"
 import { Controller, FormProvider, useForm } from "react-hook-form"
+import { Employee } from "../generates"
 import { useActiveEmployees } from "../utils/employees"
 import { useCreateShifts } from "../utils/shifts"
 import { EmployeeAutocomplete } from "./EmployeeAutocomplete"
@@ -20,7 +21,6 @@ export function EmployeesShiftForm() {
     reValidateMode: "onChange",
     shouldFocusError: true,
   })
-
   const {
     data: { allEmployees: employees },
     isLoading,
@@ -28,8 +28,8 @@ export function EmployeesShiftForm() {
     isError,
     error,
   } = useActiveEmployees()
-
   const { mutate: create } = useCreateShifts()
+  const [reset, setReset] = React.useState(false)
 
   if (isIdle) return null
   if (isLoading) return <Spinner />
@@ -39,6 +39,7 @@ export function EmployeesShiftForm() {
 
   function onSubmit<EmployeeFormData>(data: EmployeeFormData) {
     create(data)
+    setReset(true)
   }
 
   return (
@@ -49,6 +50,8 @@ export function EmployeesShiftForm() {
             <EmployeeAutocomplete
               employees={employees}
               onChange={onChange}
+              reset={reset}
+              setReset={setReset}
               {...rest}
             />
           )}
