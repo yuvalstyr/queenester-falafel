@@ -1,24 +1,31 @@
-import { Input } from "@chakra-ui/input"
-import { NumberInput, NumberInputField } from "@chakra-ui/number-input"
+import { Box } from "@chakra-ui/layout"
 import * as React from "react"
 import { Controller, FormProvider, useForm } from "react-hook-form"
-import { Expense } from "../generates"
+import { Employee, Expense } from "../generates"
+import { startOfISODay } from "../utils/dateFns"
 import { useCreateExpense } from "../utils/expense"
 import { FormBar } from "./FormBar"
 import { FormButton } from "./FormButton"
+import { InputWithLabel, TextLabel } from "./InputWithLabel"
 import { ISelectedDate } from "./ShiftForm"
-import { startOfISODay } from "../utils/dateFns"
+
+export type OnSubmit = (data: Expense | Employee) => void
 
 export default function ExpenseForm({ date }: ISelectedDate) {
   const methods = useForm<Expense>({
     reValidateMode: "onChange",
     shouldFocusError: true,
+    defaultValues: {
+      name: "",
+      cost: 0,
+    },
   })
   const { mutate: create } = useCreateExpense()
 
-  function onSubmit<Expense>(data: Expense) {
-    create({ ...data, date: startOfISODay(date) })
+  const onSubmit = (data: Expense) => {
+    create({ ...data, cost: +data.cost, date: startOfISODay(date) })
   }
+
   return (
     <FormProvider {...methods}>
       <FormBar submitAction={onSubmit}>
@@ -29,43 +36,75 @@ export default function ExpenseForm({ date }: ISelectedDate) {
             required: { value: true, message: "Most Fill Expense Type!!" },
           }}
           render={({ field }) => (
-            <Input
-              borderColor={"blackAlpha.100"}
-              color={"blackAlpha.800"}
-              fontSize={{ base: "x-sm", md: "md" }}
-              size="sm"
-              onChange={(e) => field.onChange(e.target.value)}
-              placeholder="Expense Type"
-              w="250px"
-              _placeholder={{
-                color: "black",
+            <Box
+              _focusWithin={{
+                transform: "scale(1.05,1.05)",
               }}
-            />
+            >
+              <InputWithLabel
+                label={field.name}
+                onChange={field.onChange}
+                value={field.value ?? ""}
+                placeholder="_"
+              />
+              <TextLabel>{field.name}</TextLabel>
+            </Box>
           )}
         />
         <Controller
           control={methods.control}
           name="cost"
           render={({ field }) => (
-            <NumberInput size="sm">
-              <NumberInputField
-                onChange={(e) => {
-                  field.onChange(+e.target.value)
-                }}
-                borderColor="blackAlpha.100"
-                color="blackAlpha.800"
-                type="number"
-                fontSize={{ base: "x-sm", md: "md" }}
-                placeholder="Cost"
-                _placeholder={{
-                  color: "black",
-                }}
+            <Box
+              _focusWithin={{
+                transform: "scale(1.05,1.05)",
+              }}
+            >
+              <InputWithLabel
+                label={field.name}
+                onChange={field.onChange}
+                value={field.value === 0 ? "" : field.value}
+                placeholder="_"
               />
-            </NumberInput>
+              <TextLabel>{field.name}</TextLabel>
+            </Box>
           )}
         />
         <FormButton text="add" />
       </FormBar>
     </FormProvider>
   )
+}
+
+{
+  /* <Flex flexDirection="column" position="relative">
+<Input
+  borderColor={"blackAlpha.100"}
+  p={0}
+  color={"blackAlpha.800"}
+  fontSize={{ base: "x-sm", md: "md" }}
+  size="sm"
+  onChange={(e) => field.onChange(+e.target.value)}
+  placeholder="Expense Type"
+  w="250px"
+  _placeholder={{
+    color: "black",
+  }}
+  value={field.value ?? ""}
+  type="number"
+  sx={{
+    ":focus-within label": {
+      transform: "translate(0, 12px) scale(0.75)",
+    },
+  }}
+/>
+<Text
+  textTransform="capitalize"
+  position="absolute"
+  transformOrigin="top left"
+  transition="all 0.2s ease-out"
+>
+  {field.name}
+</Text>
+</Flex> */
 }

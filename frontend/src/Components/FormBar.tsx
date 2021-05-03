@@ -1,6 +1,8 @@
 import { HStack } from "@chakra-ui/layout"
 import * as React from "react"
 import { useFormContext } from "react-hook-form"
+import { Employee, Expense } from "../generates"
+import { OnSubmit } from "./ExpenseForm"
 
 type BarProps = {
   children: React.ReactNode
@@ -9,7 +11,8 @@ type BarProps = {
 
 export function FormBar({ children, submitAction }: BarProps) {
   const { handleSubmit, reset } = useFormContext()
-  function onSubmit(data) {
+
+  function onSubmit(data: Expense | Employee) {
     submitAction(data)
     reset()
   }
@@ -30,4 +33,3 @@ export function FormBar({ children, submitAction }: BarProps) {
     </HStack>
   )
 }
-type OnSubmit = <T>(arg: T) => void

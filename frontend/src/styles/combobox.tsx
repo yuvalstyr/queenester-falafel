@@ -1,22 +1,18 @@
+import { Box } from "@chakra-ui/layout"
 import * as React from "react"
-import { Input } from "@chakra-ui/input"
-import { Box, ListItem, UnorderedList } from "@chakra-ui/layout"
+import { InputWithLabel, TextLabel } from "../Components/InputWithLabel"
 
-const ComboboxInput = React.forwardRef<HTMLInputElement>(
+const ComboboxInput = React.forwardRef<HTMLInputElement, any>(
   ({ ...props }, ref) => {
     return (
-      <Input
-        borderColor={"blackAlpha.100"}
-        width="100%"
-        maxW={{ base: "125px", md: "250px" }}
-        fontSize={{ base: "x-sm", md: "md" }}
-        p={{ base: "1", md: "4" }}
-        size="md"
-        {...props}
-        ref={ref}
-        _placeholder={{ color: "black" }}
-        autoComplete="off"
-      />
+      <Box
+        _focusWithin={{
+          transform: "scale(1.05,1.05)",
+        }}
+      >
+        <InputWithLabel ref={ref} placeholder="_" {...props} />
+        <TextLabel>{props.label}</TextLabel>
+      </Box>
     )
   }
 )

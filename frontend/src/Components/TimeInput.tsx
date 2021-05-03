@@ -1,9 +1,10 @@
-import { Input } from "@chakra-ui/input"
+import { Box } from "@chakra-ui/layout"
 import { useBreakpointValue } from "@chakra-ui/media-query"
 import { addDays } from "date-fns"
 import * as React from "react"
 import DatePicker from "react-datepicker"
 import { useController, useFormContext } from "react-hook-form"
+import { InputWithLabel, TextLabel } from "./InputWithLabel"
 
 export type EmployeeFormInputs = {
   name: HTMLInputElement
@@ -12,6 +13,21 @@ export type EmployeeFormInputs = {
 }
 
 type inputType = keyof EmployeeFormInputs
+
+const DateInput = React.forwardRef<HTMLInputElement, any>(
+  ({ ...props }, ref) => {
+    return (
+      <Box
+        _focusWithin={{
+          transform: "scale(1.05,1.05)",
+        }}
+      >
+        <InputWithLabel ref={ref} placeholder="_" {...props} />
+        <TextLabel>{props.label}</TextLabel>
+      </Box>
+    )
+  }
+)
 
 export function TimeInput({ name }: { name: inputType }) {
   const { control } = useFormContext()
@@ -24,30 +40,28 @@ export function TimeInput({ name }: { name: inputType }) {
     control,
     rules: { required: { value: true, message: "Most Pick Date!!" } },
   })
+  const [date, setDate] = React.useState(null)
+  React.useEffect(() => {
+    if (typeof value === "undefined") {
+      setDate(null)
+    }
+  }, [value])
   const delta = name === "end" ? 1 : 0
+
   return (
     <DatePicker
-      placeholderText="Select date"
-      {...inputProps}
+      placeholderText="date"
       selected={value}
       showTimeSelect
       timeFormat="HH:mm"
       dateFormat="d/M HH:mm"
       timeIntervals={15}
       autoComplete="off"
+      popperPlacement="top-end"
       // TODO  change the iclude date to the day the user picks
       includeDates={[new Date(), addDays(new Date(), delta)]}
-      customInput={
-        <Input
-          isInvalid={invalid}
-          borderColor="blackAlpha.100"
-          color="black"
-          fontSize="inherit"
-          size={size}
-          p={{ base: "1", md: "4" }}
-          _placeholder={{ color: "black" }}
-        />
-      }
+      {...inputProps}
+      customInput={<DateInput label="date" />}
     />
   )
 }

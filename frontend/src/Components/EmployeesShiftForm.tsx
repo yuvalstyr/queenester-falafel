@@ -1,7 +1,6 @@
 import { Spinner } from "@chakra-ui/spinner"
 import * as React from "react"
 import { Controller, FormProvider, useForm } from "react-hook-form"
-import { Employee } from "../generates"
 import { useActiveEmployees } from "../utils/employees"
 import { useCreateShifts } from "../utils/shifts"
 import { EmployeeAutocomplete } from "./EmployeeAutocomplete"

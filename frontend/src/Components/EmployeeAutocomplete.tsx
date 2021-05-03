@@ -56,7 +56,7 @@ export function EmployeeAutocomplete({
   return (
     <Box position="relative">
       <Box {...getComboboxProps()}>
-        <ComboboxInput {...getInputProps()} placeholder="Employee..." />
+        <ComboboxInput {...getInputProps({ label: "Employee" })} />
         <ComboboxList isOpen={isOpen} {...getMenuProps()}>
           {inputItems.map((e, index) => (
             <ComboboxItem
