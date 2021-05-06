@@ -2,7 +2,7 @@ import { useQueryClient, QueryClient } from "react-query";
 
 const apiURL =
   process.env.NODE_ENV === "production"
-    ? null
+    ? "api"
     : process.env.NEXT_PUBLIC_REACT_APP_API_URL;
 
 type FetchClientProps = {
@@ -21,7 +21,7 @@ async function client({ data, endpoint, method }: FetchClientProps) {
   };
 
   return window
-    .fetch(`${endpoint}`, method === "GET" ? null : config)
+    .fetch(`${apiURL}/${endpoint}`, method === "GET" ? null : config)
     .then(async (response) => {
       if (response.status === 401) {
         // refresh the page for them
