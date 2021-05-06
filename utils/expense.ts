@@ -52,7 +52,6 @@ function useCreateExpense() {
         return () => queryClient.setQueryData("expense", previousExpense);
       },
       onSettled: (expense) => {
-        console.log({ expense });
         const day = format(new Date(expense.date), "yyyy-MM-dd");
         return queryClient.invalidateQueries(["expense", { day }]);
       },
