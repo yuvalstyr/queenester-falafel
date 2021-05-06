@@ -22,6 +22,7 @@ export default async function handler(
     // GET /api/expense/:id
     case "DELETE":
       const id = req.query.parameter as string
+      console.log({ id })
       const deleted = await prisma.expense.delete({ where: { id } })
       res.json(deleted)
       break

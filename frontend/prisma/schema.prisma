@@ -16,18 +16,20 @@ model Employee {
 }
 
 model Expense {
-  id   String    @id @default(uuid())
-  name String?
-  cost Float?
-  date DateTime?
+  id         String    @id @default(uuid())
+  name       String?
+  cost       Float?
+  date       DateTime?
+  optimistic Boolean   @default(false)
 }
 
 model Shift {
-  id       String    @id @default(uuid())
-  start    DateTime?
-  end      DateTime?
-  worker   String?
-  Employee Employee? @relation(fields: [worker], references: [id])
+  id         String    @id @default(uuid())
+  start      DateTime?
+  end        DateTime?
+  worker     String?
+  optimistic Boolean   @default(false)
+  Employee   Employee? @relation(fields: [worker], references: [id])
 
   @@index([worker], name: "Shift.worker_index")
 }

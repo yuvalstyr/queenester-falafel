@@ -7,18 +7,6 @@ import { v4 as uuidv4 } from "uuid"
 import { EmployeeFormData } from "../Components/EmployeesShiftForm"
 import { client } from "./client"
 
-const { publicRuntimeConfig } = getConfig()
-const endpoint = publicRuntimeConfig.GRAPHQL_URL
-
-const deleteShift = gql`
-  mutation deleteShift($shiftId: ID!) {
-    deleteShift(id: $shiftId) {
-      id
-      start
-    }
-  }
-`
-
 type ShiftWithWorker = Shift & { Employee: Employee }
 
 export type DayBoundary = {
@@ -26,7 +14,7 @@ export type DayBoundary = {
   endDay: string
 }
 
-function getDefualtMutationOptions() {
+function getDefaultMutationOptions() {
   return {
     onError: (_err, _variables, recover) => {
       console.log("error")
@@ -46,8 +34,8 @@ function useShifts({ startDay, endDay }: DayBoundary) {
 
 function useCreateShifts() {
   const queryClient = useQueryClient()
-  // defualt mutation behaviors
-  const defaultMutationOptions = getDefualtMutationOptions()
+  // default mutation behaviors
+  const defaultMutationOptions = getDefaultMutationOptions()
   return useMutation(
     (data: EmployeeFormData) => {
       return client({ data, endpoint: "shifts", method: "POST" })
@@ -63,10 +51,11 @@ function useCreateShifts() {
           end: end,
           worker: employee.id,
           Employee: employee,
+          optimistic: true,
         }
         // day is used as cache key
         const day = format(new Date(start), "yyyy-MM-dd")
-        // for roll back if the mutation wiil return error
+        // for roll back if the mutation will return error
         const previousShifts = queryClient.getQueryData<Shift[]>([
           "shifts",
           { day },
@@ -95,13 +84,13 @@ function useCreateShifts() {
 
 function useDeleteShift() {
   const queryClient = useQueryClient()
-  const defaultMutationOptions = getDefualtMutationOptions()
+  const defaultMutationOptions = getDefaultMutationOptions()
   return useMutation(
     ({ id }) => client({ endpoint: `shifts\\${id}`, method: "DELETE" }),
     {
       onMutate(removedItem: { id: string; start: string }) {
         const day = format(new Date(removedItem.start), "yyyy-MM-dd")
-        // for roll back if the mutation wiil return error
+        // for roll back if the mutation will return error
         const previousShifts = queryClient.getQueryData<Shift[]>([
           "shifts",
           { day },

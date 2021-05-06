@@ -1,6 +1,6 @@
 import { Expense } from ".prisma/client"
 import { format, startOfDay } from "date-fns"
-import request, { ClientError, gql } from "graphql-request"
+import { ClientError, gql } from "graphql-request"
 import getConfig from "next/config"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { v4 as uuidv4 } from "uuid"
@@ -19,7 +19,7 @@ const deleteExpense = gql`
   }
 `
 
-function getDefualtMutationOptions() {
+function getDefaultMutationOptions() {
   return {
     onError: (_err, _variables, recover) =>
       typeof recover === "function" ? recover() : null,
@@ -38,8 +38,8 @@ function useExpense({ endDay, startDay }: DayBoundary) {
 
 function useCreateExpense() {
   const queryClient = useQueryClient()
-  // defualt mutation behivors
-  const defaultMutationOptions = getDefualtMutationOptions()
+  // default mutation behaviors
+  const defaultMutationOptions = getDefaultMutationOptions()
 
   return useMutation(
     (data: Expense) => {
@@ -48,8 +48,8 @@ function useCreateExpense() {
     {
       onMutate(newItem: Expense) {
         const day = format(new Date(newItem.date), "yyyy-MM-dd")
-        console.log(`day`, day)
-        // for roll back if the mutation wiil return error
+
+        // for roll back if the mutation will return error
         const previousExpense = queryClient.getQueryData<Expense[]>([
           "expense",
           { day },
@@ -57,7 +57,7 @@ function useCreateExpense() {
         // Optimistically update to the new value
         if (previousExpense) {
           queryClient.setQueryData<Expense[]>(["expense", { day }], (old) => {
-            return [...old, { ...newItem, id: uuidv4() }]
+            return [...old, { ...newItem, id: uuidv4(), optimistic: true }]
           })
         } else {
           queryClient.setQueryData<Expense[]>(["expense", { day }], [newItem])
@@ -75,14 +75,14 @@ function useCreateExpense() {
 }
 function useDeleteExpense() {
   const queryClient = useQueryClient()
-  const defaultMutationOptions = getDefualtMutationOptions()
+  const defaultMutationOptions = getDefaultMutationOptions()
   return useMutation(
     ({ id: expenseId }) =>
       client({ endpoint: `expense\\${expenseId}`, method: "DELETE" }),
     {
       onMutate(removedItem: { id: string; date: Date }) {
         const day = format(new Date(removedItem.date), "yyyy-MM-dd")
-        const previousExpnse = queryClient.getQueryData<Expense[]>([
+        const previousExpanse = queryClient.getQueryData<Expense[]>([
           "expense",
           { day },
         ])
@@ -91,7 +91,7 @@ function useDeleteExpense() {
           return newData
         })
         return () =>
-          queryClient.setQueryData(["expense", { day }], previousExpnse)
+          queryClient.setQueryData(["expense", { day }], previousExpanse)
       },
       ...defaultMutationOptions,
     }

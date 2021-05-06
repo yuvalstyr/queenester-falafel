@@ -17,7 +17,7 @@ async function client({ data, endpoint, method }: FetchClientProps) {
       "Content-Type": "application/json",
     },
   }
-  console.log("client", config, method)
+
   return window
     .fetch(`${apiURL}/${endpoint}`, method === "GET" ? null : config)
     .then(async (response) => {

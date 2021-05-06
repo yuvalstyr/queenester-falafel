@@ -38,7 +38,7 @@ export default function ExpenseList({ date }: ISelectedDate) {
     startDay,
   })
   const size = useBreakpointValue({ base: "sm", md: "md" })
-  const { mutate: remove } = useDeleteExpense()
+  const { mutate: remove, isLoading: isDeleteLoading } = useDeleteExpense()
   if (isIdle) return null
   if (isLoading) return <Spinner />
   if (isError) {
@@ -76,6 +76,7 @@ export default function ExpenseList({ date }: ISelectedDate) {
             color="brand.red"
             background="brand.yellow"
             size={size}
+            disabled={isDeleteLoading || e.optimistic}
           />
         </List>
       ))}

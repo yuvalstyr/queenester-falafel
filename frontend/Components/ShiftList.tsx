@@ -78,7 +78,7 @@ export function ShiftList({ date }: ISelectedDate) {
             color="brand.red"
             background="brand.yellow"
             size="lg"
-            disabled={isDeleteLoading}
+            disabled={s.optimistic || isDeleteLoading}
           />
         </List>
       ))}
