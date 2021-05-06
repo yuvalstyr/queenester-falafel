@@ -33,7 +33,7 @@ export function List({ children }: { children: React.ReactNode }) {
 
 export default function ExpenseList({ date }: ISelectedDate) {
   const { endDay, startDay } = dayBoundaries(date)
-  const { data, isError, isLoading, error, isIdle } = useExpense({
+  const { data: expense, isError, isLoading, error, isIdle } = useExpense({
     endDay,
     startDay,
   })
@@ -44,8 +44,6 @@ export default function ExpenseList({ date }: ISelectedDate) {
   if (isError) {
     return <ErrorBox error={error} />
   }
-
-  const { allExpenses: expense } = data
 
   return (
     <React.Fragment>

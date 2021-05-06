@@ -10,7 +10,7 @@ import { FormButton } from "./FormButton"
 import { TimeInput } from "./TimeInput"
 
 export type EmployeeFormData = {
-  employee: number
+  employee: string
   start: Date
   end: Date
 }
@@ -20,13 +20,8 @@ export function EmployeesShiftForm() {
     reValidateMode: "onChange",
     shouldFocusError: true,
   })
-  const {
-    data: { allEmployees: employees },
-    isLoading,
-    isIdle,
-    isError,
-    error,
-  } = useActiveEmployees()
+  const { isIdle, isLoading, isError, data, error } = useActiveEmployees()
+
   const { mutate: create } = useCreateShifts()
   const [reset, setReset] = React.useState(false)
 
@@ -47,7 +42,7 @@ export function EmployeesShiftForm() {
         <Controller
           render={({ field: { ref, onChange, ...rest } }) => (
             <EmployeeAutocomplete
-              employees={employees}
+              employees={data ?? []}
               onChange={onChange}
               reset={reset}
               setReset={setReset}

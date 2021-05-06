@@ -7,7 +7,6 @@ function dayBoundaries(date: Date) {
 }
 
 function startOfISODay(date: Date) {
-  console.log(`date`, date)
   return formatISO(startOfDay(date))
 }
 

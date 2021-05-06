@@ -14,13 +14,7 @@ import { ISelectedDate } from "./ShiftForm"
 
 export function ShiftList({ date }: ISelectedDate) {
   const { endDay, startDay } = dayBoundaries(date)
-  const {
-    data: { allShifts: shifts },
-    isError,
-    isLoading,
-    error,
-    isIdle,
-  } = useShifts({
+  const { data: shifts, isError, isLoading, error, isIdle } = useShifts({
     endDay,
     startDay,
   })
@@ -33,14 +27,14 @@ export function ShiftList({ date }: ISelectedDate) {
   if (isError) {
     return <ErrorBox error={error} />
   }
-
+  console.log({ shifts })
   return (
     <React.Fragment>
       {shifts.map((s) => (
         <List key={s.id}>
           <Avatar
             background="black"
-            name={s.worker.name}
+            name={s.Employee.name}
             color="#FAEBEFFF"
             fontWeight="800"
             size={avatarSize}
@@ -50,7 +44,7 @@ export function ShiftList({ date }: ISelectedDate) {
             flexBasis="100%"
             fontSize={{ base: "xs", md: "md" }}
           >
-            {s.worker.name}
+            {s.Employee.name}
           </Text>
           <Text
             flexBasis="100%"

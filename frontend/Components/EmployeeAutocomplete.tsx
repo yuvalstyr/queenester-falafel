@@ -1,7 +1,7 @@
+import { Employee } from ".prisma/client"
 import { Box } from "@chakra-ui/layout"
 import { useCombobox } from "downshift"
 import * as React from "react"
-import { Employee } from "../generates"
 import { ComboboxInput, ComboboxItem, ComboboxList } from "../styles/combobox"
 
 type AutoCompleteProps = {

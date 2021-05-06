@@ -1,5 +1,5 @@
 module.exports = {
   publicRuntimeConfig: {
-    GRAPHQL_URL: process.env.GRAPHQL_URL,
+    REACT_APP_API_URL: process.env.REACT_APP_API_URL,
   },
-};
+}
