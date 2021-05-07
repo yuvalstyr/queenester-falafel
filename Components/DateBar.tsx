@@ -1,15 +1,15 @@
-import { Button } from "@chakra-ui/button"
-import { Box, Heading, HStack } from "@chakra-ui/layout"
-import { useBreakpointValue } from "@chakra-ui/media-query"
-import format from "date-fns/format"
-import * as React from "react"
-import ReactDatePicker from "react-datepicker"
-import { FormButton } from "./FormButton"
-import { ISelectedDate } from "./ShiftForm"
+import { Button } from "@chakra-ui/button";
+import { Box, Heading, HStack } from "@chakra-ui/layout";
+import { useBreakpointValue } from "@chakra-ui/media-query";
+import format from "date-fns/format";
+import * as React from "react";
+import ReactDatePicker from "react-datepicker";
+import { FormButton } from "./FormButton";
+import { ISelectedDate } from "./ShiftForm";
 
 export function DateBar({ date, setDate }: ISelectedDate) {
-  // todo change format of heading disply
-  const dateType = useBreakpointValue({ base: "dd/MM/yy", md: "PPPPpp" })
+  // todo change format of heading display
+  const dateType = useBreakpointValue({ base: "cccc dd/MM", md: "PPPPpp" });
   return (
     <Box>
       <Box
@@ -57,5 +57,5 @@ export function DateBar({ date, setDate }: ISelectedDate) {
         </HStack>
       </Box>
     </Box>
-  )
+  );
 }

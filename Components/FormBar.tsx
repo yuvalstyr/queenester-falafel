@@ -1,9 +1,8 @@
 import { HStack } from "@chakra-ui/layout";
 import * as React from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
-import { Employee, Expense } from "../generates";
+import { Expense } from "../generates";
 import { EmployeeFormData } from "./EmployeesShiftForm";
-import { OnSubmit } from "./ExpenseForm";
 
 type BarProps = {
   children: React.ReactNode;

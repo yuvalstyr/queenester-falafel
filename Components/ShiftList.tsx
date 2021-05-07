@@ -52,7 +52,7 @@ export function ShiftList({ date }: ISelectedDate) {
               fontSize: { base: "xs", md: "md" },
             }}
           >
-            {format(new Date(s.startDate), "dd-MM-yy HH:mm")}
+            {`${format(new Date(s.startDate), "yy-MM-dd")} ${s.startTime}`}
           </Text>
           <Text
             flexBasis="100%"
@@ -63,7 +63,7 @@ export function ShiftList({ date }: ISelectedDate) {
               fontSize: { base: "x-sm", md: "md" },
             }}
           >
-            {format(new Date(s.endDate), "dd-MM-yy HH:mm")}
+            {`${format(new Date(s.endDate), "yy-MM-dd")} ${s.endTime}`}
           </Text>
           <IconButton
             aria-label="Remove Shift"
