@@ -1,11 +1,10 @@
 import {
   Input,
-  TextProps,
-  Text,
   InputProps,
+  Text,
+  TextProps,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { chakra } from "@chakra-ui/system";
 
 // TODO change to compound
 
@@ -57,26 +56,3 @@ export function InputWithLabel(props: InputWithLabelProps) {
     />
   );
 }
-
-// export const InputWithLabel1 = chakra(Input, {
-//   baseStyle: {
-//     transition: "all 0.5s ease-out",
-//     borderColor: "blackAlpha.100",
-//     fontSize: "inherit",
-//     _placeholder: {
-//       color: "transparent",
-//     },
-//     _focus: {
-//       outline: "none",
-//       borderColor: "orange",
-//     },
-//     ":focus + p": {
-//       transform: "translateY(-3em) scale(0.8)",
-//       color: "gray.500",
-//     },
-//     ":not(:placeholder-shown) + p": {
-//       transform: "translateY(-3em) scale(0.8)",
-//       color: "gray.500",
-//     },
-//   },
-// });

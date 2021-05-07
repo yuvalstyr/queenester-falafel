@@ -34,7 +34,6 @@ export function DateTimeInput({ name }: { name: inputType }) {
   const size = useBreakpointValue({ base: "sm", md: "md" });
   const {
     field: { ref, value, ...inputProps },
-    fieldState: { invalid },
   } = useController({
     name,
     control,
@@ -58,8 +57,9 @@ export function DateTimeInput({ name }: { name: inputType }) {
       timeIntervals={15}
       autoComplete="off"
       popperPlacement="top-end"
+      withPortal={size === "sm" ? true : false}
       // TODO  change the include date to the day the user picks
-      includeDates={[new Date(), addDays(new Date(), delta)]}
+      includeDates={[new Date(date), addDays(new Date(date), delta)]}
       {...inputProps}
       customInput={<DateInput label="date" />}
     />

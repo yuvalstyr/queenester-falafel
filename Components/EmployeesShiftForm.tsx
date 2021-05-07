@@ -13,7 +13,7 @@ import { EmployeeAutocomplete } from "./EmployeeAutocomplete";
 import { ErrorBox } from "./ErrorBox";
 import { FormBar } from "./FormBar";
 import { FormButton } from "./FormButton";
-import { DateTimeInput } from "./TimeInput";
+import { DateTimeInput } from "./DateTimeInput";
 
 export type EmployeeFormData = {
   employee: string;
