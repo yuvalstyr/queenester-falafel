@@ -11,7 +11,6 @@ type ShiftWithWorker = Shift & { Employee: Employee };
 
 export type DayBoundary = {
   startDay: string;
-  endDay: string;
 };
 
 function getDefaultMutationOptions() {
@@ -23,11 +22,10 @@ function getDefaultMutationOptions() {
   };
 }
 
-function useShifts({ startDay, endDay }: DayBoundary) {
-  const day = format(new Date(startDay), "yyyy-MM-dd");
+function useShifts({ startDay }: { startDay: string }) {
   const results = useQuery<ShiftWithWorker[], ClientError>({
-    queryKey: ["shifts", { day }],
-    queryFn: () => client({ endpoint: `shifts\\${day}`, method: "GET" }),
+    queryKey: ["shifts", startDay],
+    queryFn: () => client({ endpoint: `shifts\\${startDay}`, method: "GET" }),
   });
   return { ...results };
 }
@@ -41,40 +39,40 @@ function useCreateShifts() {
       return client({ data, endpoint: "shifts", method: "POST" });
     },
     {
-      onMutate(newItem: EmployeeFormData) {
+      onMutate(newItem: Shift) {
         const employees = queryClient.getQueryData<Employee[]>("employees");
-        const employee = employees.filter((e) => e.id === newItem.employee)[0];
-        const { start, end } = newItem;
+        const employee = employees.filter((e) => e.id === newItem.worker)[0];
+        const { startDate, endTime, endDate, startTime } = newItem;
+        console.log(`newItem`, newItem);
         const newShift: ShiftWithWorker = {
           id: uuidv4(),
-          start: start,
-          end: end,
+          startDate,
+          startTime,
+          endDate,
+          endTime,
           worker: employee.id,
           Employee: employee,
           optimistic: true,
         };
-        // day is used as cache key
-        const day = format(new Date(start), "yyyy-MM-dd");
         // for roll back if the mutation will return error
         const previousShifts = queryClient.getQueryData<Shift[]>([
           "shifts",
-          { day },
+          startDate,
         ]);
 
         // Optimistically update to the new value
         if (previousShifts) {
-          queryClient.setQueryData<Shift[]>(["shifts", { day }], (old) => [
+          queryClient.setQueryData<Shift[]>(["shifts", startDate], (old) => [
             ...old,
             newShift,
           ]);
         }
 
         return () =>
-          queryClient.setQueryData(["shifts", { day }], previousShifts);
+          queryClient.setQueryData(["shifts", startDate], previousShifts);
       },
       onSettled: (shift) => {
-        const day = format(new Date(shift.start), "yyyy-MM-dd");
-        return queryClient.invalidateQueries(["shifts", { day }]);
+        return queryClient.invalidateQueries(["shifts", shift.startDate]);
       },
       ...defaultMutationOptions,
     }
@@ -92,19 +90,17 @@ function useDeleteShift() {
         // for roll back if the mutation will return error
         const previousShifts = queryClient.getQueryData<Shift[]>([
           "shifts",
-          { day },
+          day,
         ]);
 
-        queryClient.setQueryData<Shift[]>(["shifts", { day }], (old) => {
+        queryClient.setQueryData<Shift[]>(["shifts", day], (old) => {
           // filtered deleted item from cache
           return old.filter((s) => s.id !== removedItem.id);
         });
-        return () =>
-          queryClient.setQueryData(["shifts", { day }], previousShifts);
+        return () => queryClient.setQueryData(["shifts", day], previousShifts);
       },
-      onSettled: (deleteShift) => {
-        const day = format(new Date(deleteShift.start), "yyyy-MM-dd");
-        return queryClient.invalidateQueries(["shifts", { day }]);
+      onSettled: (deleteShift: Shift) => {
+        return queryClient.invalidateQueries(["shifts", deleteShift.startDate]);
       },
       ...defaultMutationOptions,
     }

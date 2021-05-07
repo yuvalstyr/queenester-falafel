@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { startOfISODay, dayBoundaries } from "../../../utils/dateFns";
 import prisma from "../../../utils/prisma";
 
 export default async function handler(
@@ -9,13 +8,11 @@ export default async function handler(
   switch (req.method) {
     // GET /api/expense/:day
     case "GET":
-      const { endDay, startDay } = dayBoundaries(
-        new Date(req.query.parameter as string)
-      );
+      const date = req.query.parameter as string;
       const shifts = await prisma.shift.findMany({
         include: { Employee: true },
         where: {
-          AND: [{ start: { gte: startDay } }, { start: { lt: endDay } }],
+          startDate: { equals: date },
         },
       });
 

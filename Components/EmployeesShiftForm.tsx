@@ -1,39 +1,50 @@
-import { Spinner } from "@chakra-ui/spinner"
-import * as React from "react"
-import { Controller, FormProvider, useForm } from "react-hook-form"
-import { useActiveEmployees } from "../utils/employees"
-import { useCreateShifts } from "../utils/shifts"
-import { EmployeeAutocomplete } from "./EmployeeAutocomplete"
-import { ErrorBox } from "./ErrorBox"
-import { FormBar } from "./FormBar"
-import { FormButton } from "./FormButton"
-import { TimeInput } from "./TimeInput"
+import { Spinner } from "@chakra-ui/spinner";
+import { format } from "date-fns";
+import * as React from "react";
+import {
+  Controller,
+  FormProvider,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
+import { useActiveEmployees } from "../utils/employees";
+import { useCreateShifts } from "../utils/shifts";
+import { EmployeeAutocomplete } from "./EmployeeAutocomplete";
+import { ErrorBox } from "./ErrorBox";
+import { FormBar } from "./FormBar";
+import { FormButton } from "./FormButton";
+import { TimeInput } from "./TimeInput";
 
 export type EmployeeFormData = {
-  employee: string
-  start: Date
-  end: Date
-}
+  employee: string;
+  start: Date;
+  end: Date;
+};
 
 export function EmployeesShiftForm() {
   const methods = useForm<EmployeeFormData>({
     reValidateMode: "onChange",
     shouldFocusError: true,
-  })
-  const { isIdle, isLoading, isError, data, error } = useActiveEmployees()
+  });
+  const { isIdle, isLoading, isError, data, error } = useActiveEmployees();
 
-  const { mutate: create } = useCreateShifts()
-  const [reset, setReset] = React.useState(false)
+  const { mutate: create } = useCreateShifts();
+  const [reset, setReset] = React.useState(false);
 
-  if (isIdle) return null
-  if (isLoading) return <Spinner />
+  if (isIdle) return null;
+  if (isLoading) return <Spinner />;
   if (isError) {
-    return <ErrorBox error={error} />
+    return <ErrorBox error={error} />;
   }
-
-  function onSubmit<EmployeeFormData>(data: EmployeeFormData) {
-    create(data)
-    setReset(true)
+  type onSubmit = SubmitHandler<EmployeeFormData>;
+  function onSubmit(data: EmployeeFormData) {
+    const startDate = format(data.start, "yyyy-MM-dd");
+    const startTime = format(data.start, "HH:mm");
+    const endDate = format(data.end, "yyyy-MM-dd");
+    const endTime = format(data.end, "HH:mm");
+    const { employee } = data;
+    create({ worker: employee, startDate, startTime, endDate, endTime });
+    setReset(true);
   }
 
   return (
@@ -57,5 +68,5 @@ export function EmployeesShiftForm() {
         <FormButton text="add" />
       </FormBar>
     </FormProvider>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-import { addDays, formatISO, startOfDay } from "date-fns";
+import { addDays, format, formatISO, startOfDay } from "date-fns";
 
 function dayBoundaries(date: Date) {
-  const startDay = formatISO(startOfDay(date));
+  const startDay = format(startOfDay(date), "");
   const endDay = formatISO(addDays(startOfDay(date), 1));
   return { startDay, endDay };
 }

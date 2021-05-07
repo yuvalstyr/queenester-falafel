@@ -9,27 +9,29 @@ datasource db {
 
 model Employee {
   id            String  @id @default(uuid())
-  name          String?
-  salaryPerHour Float?
+  name          String
+  salaryPerHour Float
   active        Boolean @default(true)
   Shift         Shift[]
 }
 
 model Expense {
-  id         String    @id @default(uuid())
-  name       String?
-  cost       Float?
-  date       DateTime?
-  optimistic Boolean   @default(false)
+  id         String  @id @default(uuid())
+  name       String
+  cost       Float
+  date       String
+  optimistic Boolean @default(false)
 }
 
 model Shift {
-  id         String    @id @default(uuid())
-  start      DateTime?
-  end        DateTime?
-  worker     String?
-  optimistic Boolean   @default(false)
-  Employee   Employee? @relation(fields: [worker], references: [id])
+  id         String   @id @default(uuid())
+  startDate  String
+  startTime  String
+  endDate    String
+  endTime    String
+  worker     String
+  optimistic Boolean  @default(false)
+  Employee   Employee @relation(fields: [worker], references: [id])
 
   @@index([worker], name: "Shift.worker_index")
 }

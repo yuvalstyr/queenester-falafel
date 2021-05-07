@@ -13,10 +13,9 @@ function getDefaultMutationOptions() {
   };
 }
 
-function useExpense({ endDay, startDay }: DayBoundary) {
-  const day = format(startOfDay(new Date(startDay)), "yyyy-MM-dd");
+function useExpense({ day }: { day: string }) {
   const result = useQuery<Expense[], ClientError>({
-    queryKey: ["expense", { day }],
+    queryKey: ["expense", day],
     queryFn: () => client({ endpoint: `expense\\${day}`, method: "GET" }),
   });
 
@@ -34,26 +33,26 @@ function useCreateExpense() {
     },
     {
       onMutate(newItem: Expense) {
-        const day = format(new Date(newItem.date), "yyyy-MM-dd");
+        const day = newItem.date;
 
         // for roll back if the mutation will return error
         const previousExpense = queryClient.getQueryData<Expense[]>([
           "expense",
-          { day },
+          day,
         ]);
         // Optimistically update to the new value
         if (previousExpense) {
-          queryClient.setQueryData<Expense[]>(["expense", { day }], (old) => {
+          queryClient.setQueryData<Expense[]>(["expense", day], (old) => {
             return [...old, { ...newItem, id: uuidv4(), optimistic: true }];
           });
         } else {
-          queryClient.setQueryData<Expense[]>(["expense", { day }], [newItem]);
+          queryClient.setQueryData<Expense[]>(["expense", day], [newItem]);
         }
         return () => queryClient.setQueryData("expense", previousExpense);
       },
       onSettled: (expense) => {
         const day = format(new Date(expense.date), "yyyy-MM-dd");
-        return queryClient.invalidateQueries(["expense", { day }]);
+        return queryClient.invalidateQueries(["expense", day]);
       },
       ...defaultMutationOptions,
     }
@@ -72,12 +71,12 @@ function useDeleteExpense() {
           "expense",
           { day },
         ]);
-        queryClient.setQueryData<Expense[]>(["expense", { day }], (old) => {
+        queryClient.setQueryData<Expense[]>(["expense", day], (old) => {
           const newData = old.filter((s) => s.id !== removedItem.id);
           return newData;
         });
         return () =>
-          queryClient.setQueryData(["expense", { day }], previousExpanse);
+          queryClient.setQueryData(["expense", day], previousExpanse);
       },
       ...defaultMutationOptions,
     }

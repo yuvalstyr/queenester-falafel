@@ -1,13 +1,13 @@
-import { IconButton } from "@chakra-ui/button"
-import { DeleteIcon } from "@chakra-ui/icons"
-import { Box, HStack, Text, VStack } from "@chakra-ui/layout"
-import { useBreakpointValue } from "@chakra-ui/media-query"
-import { Spinner } from "@chakra-ui/spinner"
-import React from "react"
-import { dayBoundaries } from "../utils/dateFns"
-import { useDeleteExpense, useExpense } from "../utils/expense"
-import { ErrorBox } from "./ErrorBox"
-import { ISelectedDate } from "./ShiftForm"
+import { IconButton } from "@chakra-ui/button";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { Box, HStack, Text, VStack } from "@chakra-ui/layout";
+import { useBreakpointValue } from "@chakra-ui/media-query";
+import { Spinner } from "@chakra-ui/spinner";
+import { format } from "date-fns";
+import React from "react";
+import { useDeleteExpense, useExpense } from "../utils/expense";
+import { ErrorBox } from "./ErrorBox";
+import { ISelectedDate } from "./ShiftForm";
 
 export function List({ children }: { children: React.ReactNode }) {
   return (
@@ -28,21 +28,20 @@ export function List({ children }: { children: React.ReactNode }) {
         {children}
       </HStack>
     </VStack>
-  )
+  );
 }
 
 export default function ExpenseList({ date }: ISelectedDate) {
-  const { endDay, startDay } = dayBoundaries(date)
+  const day = format(date, "yyyy-MM-dd");
   const { data: expense, isError, isLoading, error, isIdle } = useExpense({
-    endDay,
-    startDay,
-  })
-  const size = useBreakpointValue({ base: "sm", md: "md" })
-  const { mutate: remove, isLoading: isDeleteLoading } = useDeleteExpense()
-  if (isIdle) return null
-  if (isLoading) return <Spinner />
+    day,
+  });
+  const size = useBreakpointValue({ base: "sm", md: "md" });
+  const { mutate: remove, isLoading: isDeleteLoading } = useDeleteExpense();
+  if (isIdle) return null;
+  if (isLoading) return <Spinner />;
   if (isError) {
-    return <ErrorBox error={error} />
+    return <ErrorBox error={error} />;
   }
 
   return (
@@ -81,5 +80,5 @@ export default function ExpenseList({ date }: ISelectedDate) {
         </List>
       ))}
     </React.Fragment>
-  )
+  );
 }

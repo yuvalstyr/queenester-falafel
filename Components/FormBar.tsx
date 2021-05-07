@@ -1,20 +1,21 @@
-import { HStack } from "@chakra-ui/layout"
-import * as React from "react"
-import { useFormContext } from "react-hook-form"
-import { Employee, Expense } from "../generates"
-import { OnSubmit } from "./ExpenseForm"
+import { HStack } from "@chakra-ui/layout";
+import * as React from "react";
+import { SubmitHandler, useFormContext } from "react-hook-form";
+import { Employee, Expense } from "../generates";
+import { EmployeeFormData } from "./EmployeesShiftForm";
+import { OnSubmit } from "./ExpenseForm";
 
 type BarProps = {
-  children: React.ReactNode
-  submitAction: OnSubmit
-}
+  children: React.ReactNode;
+  submitAction: SubmitHandler<EmployeeFormData | Expense>;
+};
 
 export function FormBar({ children, submitAction }: BarProps) {
-  const { handleSubmit, reset } = useFormContext()
+  const { handleSubmit, reset } = useFormContext();
 
-  function onSubmit(data: Expense | Employee) {
-    submitAction(data)
-    reset()
+  function onSubmit(data: Expense | EmployeeFormData) {
+    submitAction(data);
+    reset();
   }
   return (
     <HStack
@@ -31,5 +32,5 @@ export function FormBar({ children, submitAction }: BarProps) {
     >
       {children}
     </HStack>
-  )
+  );
 }

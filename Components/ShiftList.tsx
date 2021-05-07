@@ -1,33 +1,31 @@
-import { Avatar } from "@chakra-ui/avatar"
-import { IconButton } from "@chakra-ui/button"
-import { DeleteIcon } from "@chakra-ui/icons"
-import { Text } from "@chakra-ui/layout"
-import { useBreakpointValue } from "@chakra-ui/media-query"
-import { Spinner } from "@chakra-ui/spinner"
-import { format } from "date-fns"
-import * as React from "react"
-import { dayBoundaries } from "../utils/dateFns"
-import { useDeleteShift, useShifts } from "../utils/shifts"
-import { ErrorBox } from "./ErrorBox"
-import { List } from "./ExpenseList"
-import { ISelectedDate } from "./ShiftForm"
+import { Avatar } from "@chakra-ui/avatar";
+import { IconButton } from "@chakra-ui/button";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { Text } from "@chakra-ui/layout";
+import { useBreakpointValue } from "@chakra-ui/media-query";
+import { Spinner } from "@chakra-ui/spinner";
+import { format } from "date-fns";
+import * as React from "react";
+import { useDeleteShift, useShifts } from "../utils/shifts";
+import { ErrorBox } from "./ErrorBox";
+import { List } from "./ExpenseList";
+import { ISelectedDate } from "./ShiftForm";
 
 export function ShiftList({ date }: ISelectedDate) {
-  const { endDay, startDay } = dayBoundaries(date)
+  const startDay = format(date, "yyyy-MM-dd");
   const { data: shifts, isError, isLoading, error, isIdle } = useShifts({
-    endDay,
     startDay,
-  })
-  const avatarSize = useBreakpointValue({ base: "sm", md: "md" })
+  });
+  const avatarSize = useBreakpointValue({ base: "sm", md: "md" });
 
-  const { mutate: remove, isLoading: isDeleteLoading } = useDeleteShift()
-  new Date()
-  if (isIdle) return null
-  if (isLoading) return <Spinner />
+  const { mutate: remove, isLoading: isDeleteLoading } = useDeleteShift();
+
+  if (isIdle) return null;
+  if (isLoading) return <Spinner />;
   if (isError) {
-    return <ErrorBox error={error} />
+    return <ErrorBox error={error} />;
   }
-  console.log({ shifts })
+  console.log({ shifts });
   return (
     <React.Fragment>
       {shifts.map((s) => (
@@ -55,7 +53,7 @@ export function ShiftList({ date }: ISelectedDate) {
               fontSize: { base: "xs", md: "md" },
             }}
           >
-            {format(new Date(s.start), "dd-MM-yy HH:mm")}
+            {format(new Date(s.startDate), "dd-MM-yy HH:mm")}
           </Text>
           <Text
             flexBasis="100%"
@@ -66,12 +64,12 @@ export function ShiftList({ date }: ISelectedDate) {
               fontSize: { base: "x-sm", md: "md" },
             }}
           >
-            {format(new Date(s.end), "dd-MM-yy HH:mm")}
+            {format(new Date(s.endDate), "dd-MM-yy HH:mm")}
           </Text>
           <IconButton
             aria-label="Remove Shift"
             icon={<DeleteIcon />}
-            onClick={() => remove({ id: s.id, start: s.start })}
+            onClick={() => remove({ id: s.id, start: s.startDate })}
             borderColor="brand.blue.400"
             borderWidth="4px"
             borderStyle="solid"
@@ -83,5 +81,5 @@ export function ShiftList({ date }: ISelectedDate) {
         </List>
       ))}
     </React.Fragment>
-  )
+  );
 }
