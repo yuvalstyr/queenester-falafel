@@ -1,3 +1,4 @@
+import { addDays, startOfDay } from "date-fns";
 import { NextApiRequest, NextApiResponse } from "next";
 import { dayBoundaries } from "../../../utils/dateFns";
 import prisma from "../../../utils/prisma";
@@ -12,12 +13,19 @@ export default async function handler(
       const { endDay, startDay } = dayBoundaries(
         new Date(req.query.parameter as string)
       );
+      const date = new Date(req.query.parameter as string);
       const expense = await prisma.expense.findMany({
         where: {
-          AND: [{ date: { gte: startDay } }, { date: { lt: endDay } }],
+          AND: [
+            { date: { gte: startOfDay(date) } },
+            { date: { lt: addDays(startOfDay(date), 1) } },
+          ],
         },
       });
-      console.log(`/api/expense/:${startDay} -> ${endDay}`, { expense });
+      console.log(
+        `/api/expense/:${startOfDay(date)} -> ${addDays(startOfDay(date), 1)}`,
+        { expense }
+      );
       res.json(expense);
       break;
     // GET /api/expense/:id
