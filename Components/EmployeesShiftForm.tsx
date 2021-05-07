@@ -13,7 +13,7 @@ import { EmployeeAutocomplete } from "./EmployeeAutocomplete";
 import { ErrorBox } from "./ErrorBox";
 import { FormBar } from "./FormBar";
 import { FormButton } from "./FormButton";
-import { TimeInput } from "./TimeInput";
+import { DateTimeInput } from "./TimeInput";
 
 export type EmployeeFormData = {
   employee: string;
@@ -63,8 +63,8 @@ export function EmployeesShiftForm() {
           control={methods.control}
           name="employee"
         />
-        <TimeInput name="start" />
-        <TimeInput name="end" />
+        <DateTimeInput name="start" />
+        <DateTimeInput name="end" />
         <FormButton text="add" />
       </FormBar>
     </FormProvider>

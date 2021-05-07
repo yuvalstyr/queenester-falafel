@@ -3,7 +3,6 @@ import { format } from "date-fns";
 import * as React from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { Employee, Expense } from "../generates";
-import { startOfISODay } from "../utils/dateFns";
 import { useCreateExpense } from "../utils/expense";
 import { FormBar } from "./FormBar";
 import { FormButton } from "./FormButton";
@@ -43,7 +42,6 @@ export default function ExpenseForm({ date }: ISelectedDate) {
               }}
             >
               <InputWithLabel
-                label={field.name}
                 onChange={field.onChange}
                 value={field.value ?? ""}
                 placeholder="_"
@@ -62,7 +60,6 @@ export default function ExpenseForm({ date }: ISelectedDate) {
               }}
             >
               <InputWithLabel
-                label={field.name}
                 onChange={field.onChange}
                 value={field.value === 0 ? "" : field.value}
                 placeholder="_"

@@ -1,18 +1,18 @@
-import { Box } from "@chakra-ui/layout"
-import { useBreakpointValue } from "@chakra-ui/media-query"
-import { addDays } from "date-fns"
-import * as React from "react"
-import DatePicker from "react-datepicker"
-import { useController, useFormContext } from "react-hook-form"
-import { InputWithLabel, TextLabel } from "./InputWithLabel"
+import { Box } from "@chakra-ui/layout";
+import { useBreakpointValue } from "@chakra-ui/media-query";
+import { addDays } from "date-fns";
+import * as React from "react";
+import DatePicker from "react-datepicker";
+import { useController, useFormContext } from "react-hook-form";
+import { InputWithLabel, TextLabel } from "./InputWithLabel";
 
 export type EmployeeFormInputs = {
-  name: HTMLInputElement
-  start: HTMLInputElement
-  end: HTMLInputElement
-}
+  name: HTMLInputElement;
+  start: HTMLInputElement;
+  end: HTMLInputElement;
+};
 
-type inputType = keyof EmployeeFormInputs
+type inputType = keyof EmployeeFormInputs;
 
 const DateInput = React.forwardRef<HTMLInputElement, any>(
   ({ ...props }, ref) => {
@@ -22,16 +22,16 @@ const DateInput = React.forwardRef<HTMLInputElement, any>(
           transform: "scale(1.05,1.05)",
         }}
       >
-        <InputWithLabel ref={ref} placeholder="_" {...props} />
+        <InputWithLabel placeholder="_" {...props} downshiftRef={ref} />
         <TextLabel>{props.label}</TextLabel>
       </Box>
-    )
+    );
   }
-)
+);
 
-export function TimeInput({ name }: { name: inputType }) {
-  const { control } = useFormContext()
-  const size = useBreakpointValue({ base: "sm", md: "md" })
+export function DateTimeInput({ name }: { name: inputType }) {
+  const { control } = useFormContext();
+  const size = useBreakpointValue({ base: "sm", md: "md" });
   const {
     field: { ref, value, ...inputProps },
     fieldState: { invalid },
@@ -39,14 +39,14 @@ export function TimeInput({ name }: { name: inputType }) {
     name,
     control,
     rules: { required: { value: true, message: "Most Pick Date!!" } },
-  })
-  const [date, setDate] = React.useState(null)
+  });
+  const [date, setDate] = React.useState(null);
   React.useEffect(() => {
     if (typeof value === "undefined") {
-      setDate(null)
+      setDate(null);
     }
-  }, [value])
-  const delta = name === "end" ? 1 : 0
+  }, [value]);
+  const delta = name === "end" ? 1 : 0;
 
   return (
     <DatePicker
@@ -58,10 +58,10 @@ export function TimeInput({ name }: { name: inputType }) {
       timeIntervals={15}
       autoComplete="off"
       popperPlacement="top-end"
-      // TODO  change the iclude date to the day the user picks
+      // TODO  change the include date to the day the user picks
       includeDates={[new Date(), addDays(new Date(), delta)]}
       {...inputProps}
       customInput={<DateInput label="date" />}
     />
-  )
+  );
 }

@@ -25,7 +25,6 @@ export function ShiftList({ date }: ISelectedDate) {
   if (isError) {
     return <ErrorBox error={error} />;
   }
-  console.log({ shifts });
   return (
     <React.Fragment>
       {shifts.map((s) => (

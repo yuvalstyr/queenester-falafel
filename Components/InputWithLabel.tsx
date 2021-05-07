@@ -1,41 +1,75 @@
-import { Input } from "@chakra-ui/input"
-import { Text } from "@chakra-ui/layout"
-import { chakra } from "@chakra-ui/system"
+import { Input, TextProps, Text, InputProps } from "@chakra-ui/react";
+import { chakra } from "@chakra-ui/system";
 
 // TODO change to compound
 
-export const TextLabel = chakra(Text, {
-  baseStyle: {
-    position: "absolute",
-    color: "gray.500",
-    transform: "translatey(-1.75em)",
-    transformOrigin: "top left",
-    transition: "all 0.2s ease-out",
-    pointerEvents: "none",
-    textTransform: "capitalize",
-    ml: "2",
-  },
-})
+export type TextLabelProps = React.PropsWithChildren<TextProps>;
 
-export const InputWithLabel = chakra(Input, {
-  baseStyle: {
-    transition: "all 0.5s ease-out",
-    borderColor: "blackAlpha.100",
-    fontSize: "inherit",
-    _placeholder: {
-      color: "transparent",
-    },
-    _focus: {
-      outline: "none",
-      borderColor: "orange",
-    },
-    ":focus + p": {
-      transform: "translateY(-3em) scale(0.8)",
-      color: "gray.500",
-    },
-    ":not(:placeholder-shown) + p": {
-      transform: "translateY(-3em) scale(0.8)",
-      color: "gray.500",
-    },
-  },
-})
+export function TextLabel(props: TextLabelProps) {
+  return (
+    <Text
+      position="absolute"
+      color="gray.500"
+      transform="translatey(-1.75em)"
+      transformOrigin="top left"
+      transition="all 0.2s ease-out"
+      pointerEvents="none"
+      textTransform="capitalize"
+      ml="2"
+      {...props}
+    />
+  );
+}
+
+export type InputWithLabelProps = React.PropsWithChildren<InputProps> & {
+  downshiftRef?: React.ForwardedRef<HTMLInputElement>;
+};
+
+export function InputWithLabel(props: InputWithLabelProps) {
+  const { downshiftRef, ...rest } = props;
+  return (
+    <Input
+      transition="all 0.5s ease-out"
+      borderColor="blackAlpha.100"
+      fontSize="inherit"
+      _placeholder={{
+        color: "transparent",
+      }}
+      sx={{
+        ":focus + p": {
+          transform: "translateY(-3em) scale(0.8)",
+          color: "gray.500",
+        },
+        ":not(:placeholder-shown) + p": {
+          transform: "translateY(-3em) scale(0.8)",
+          color: "gray.500",
+        },
+      }}
+      {...rest}
+      ref={downshiftRef}
+    />
+  );
+}
+
+// export const InputWithLabel1 = chakra(Input, {
+//   baseStyle: {
+//     transition: "all 0.5s ease-out",
+//     borderColor: "blackAlpha.100",
+//     fontSize: "inherit",
+//     _placeholder: {
+//       color: "transparent",
+//     },
+//     _focus: {
+//       outline: "none",
+//       borderColor: "orange",
+//     },
+//     ":focus + p": {
+//       transform: "translateY(-3em) scale(0.8)",
+//       color: "gray.500",
+//     },
+//     ":not(:placeholder-shown) + p": {
+//       transform: "translateY(-3em) scale(0.8)",
+//       color: "gray.500",
+//     },
+//   },
+// });

@@ -1,6 +1,6 @@
-import { Box } from "@chakra-ui/layout"
-import * as React from "react"
-import { InputWithLabel, TextLabel } from "../Components/InputWithLabel"
+import { Box } from "@chakra-ui/layout";
+import * as React from "react";
+import { InputWithLabel, TextLabel } from "../Components/InputWithLabel";
 
 const ComboboxInput = React.forwardRef<HTMLInputElement, any>(
   ({ ...props }, ref) => {
@@ -10,13 +10,13 @@ const ComboboxInput = React.forwardRef<HTMLInputElement, any>(
           transform: "scale(1.05,1.05)",
         }}
       >
-        <InputWithLabel ref={ref} placeholder="_" {...props} />
+        <InputWithLabel placeholder="_" {...props} downshiftRef={ref} />
         <TextLabel>{props.label}</TextLabel>
       </Box>
-    )
+    );
   }
-)
-type ListProps = { children: React.ReactNode; isOpen: boolean }
+);
+type ListProps = { children: React.ReactNode; isOpen: boolean };
 
 const ComboboxList = React.forwardRef<HTMLDivElement, ListProps>(
   ({ isOpen, ...props }, ref) => {
@@ -25,24 +25,24 @@ const ComboboxList = React.forwardRef<HTMLDivElement, ListProps>(
         position="absolute"
         display={isOpen ? null : "none"}
         w="100%"
-        {...props}
-        ref={ref}
         border="1px solid"
         zIndex="2"
         fontSize={{ base: "x-sm", md: "md" }}
+        {...props}
+        ref={ref}
       />
-    )
+    );
   }
-)
+);
 
 type ListItemProps = {
-  children: React.ReactNode
-  itemIndex: string
-  highlightedIndex: string
-}
+  children: React.ReactNode;
+  itemIndex: string;
+  highlightedIndex: string;
+};
 const ComboboxItem = React.forwardRef<HTMLDivElement, ListItemProps>(
   ({ itemIndex, highlightedIndex, ...props }, ref) => {
-    const isActive = itemIndex === highlightedIndex
+    const isActive = itemIndex === highlightedIndex;
 
     return (
       <Box
@@ -55,8 +55,8 @@ const ComboboxItem = React.forwardRef<HTMLDivElement, ListItemProps>(
         {...props}
         ref={ref}
       />
-    )
+    );
   }
-)
+);
 
-export { ComboboxInput, ComboboxList, ComboboxItem }
+export { ComboboxInput, ComboboxList, ComboboxItem };
