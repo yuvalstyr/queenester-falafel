@@ -5,6 +5,7 @@ import {
   TextProps,
   useBreakpointValue,
 } from "@chakra-ui/react";
+import { batchResetAndMeasure } from "framer-motion/types/render/dom/projection/utils";
 
 // TODO change to compound
 
@@ -15,11 +16,13 @@ export function TextLabel(props: TextLabelProps) {
     <Text
       position="absolute"
       color="gray.500"
-      transform={{ base: "translatey(-2.75em)", md: "translatey(-1.75em)" }}
+      background="brand.yellow"
+      transform={{ base: "translatey(-2.5em)", md: "translatey(-1.75em)" }}
       transformOrigin="top left"
       transition="all 0.2s ease-out"
       pointerEvents="none"
       textTransform="capitalize"
+      zIndex="2"
       ml="2"
       {...props}
     />
@@ -31,7 +34,7 @@ export type InputWithLabelProps = React.PropsWithChildren<InputProps> & {
 };
 
 export function InputWithLabel(props: InputWithLabelProps) {
-  const translateY = useBreakpointValue({ base: "-4em", md: "-3em" });
+  const translateY = useBreakpointValue({ base: "-3.6em", md: "-3em" });
   const { downshiftRef, ...rest } = props;
   return (
     <Input

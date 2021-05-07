@@ -27,7 +27,8 @@ export function FormBar({ children, submitAction }: BarProps) {
       color="black"
       onSubmit={handleSubmit(onSubmit)}
       justifyContent="center"
-      fontSize={{ base: "x-small", md: "xl" }}
+      fontSize={{ base: "small", md: "xl" }}
+      pt="2"
     >
       {children}
     </HStack>
