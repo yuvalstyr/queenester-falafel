@@ -1,4 +1,10 @@
-import { Input, TextProps, Text, InputProps } from "@chakra-ui/react";
+import {
+  Input,
+  TextProps,
+  Text,
+  InputProps,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { chakra } from "@chakra-ui/system";
 
 // TODO change to compound
@@ -10,7 +16,7 @@ export function TextLabel(props: TextLabelProps) {
     <Text
       position="absolute"
       color="gray.500"
-      transform="translatey(-1.75em)"
+      transform={{ base: "translatey(-2.75em)", md: "translatey(-1.75em)" }}
       transformOrigin="top left"
       transition="all 0.2s ease-out"
       pointerEvents="none"
@@ -26,6 +32,7 @@ export type InputWithLabelProps = React.PropsWithChildren<InputProps> & {
 };
 
 export function InputWithLabel(props: InputWithLabelProps) {
+  const translateY = useBreakpointValue({ base: "-4em", md: "-3em" });
   const { downshiftRef, ...rest } = props;
   return (
     <Input
@@ -37,11 +44,11 @@ export function InputWithLabel(props: InputWithLabelProps) {
       }}
       sx={{
         ":focus + p": {
-          transform: "translateY(-3em) scale(0.8)",
+          transform: `translateY(${translateY}) scale(0.8)`,
           color: "gray.500",
         },
         ":not(:placeholder-shown) + p": {
-          transform: "translateY(-3em) scale(0.8)",
+          transform: `translateY(${translateY}) scale(0.8)`,
           color: "gray.500",
         },
       }}
