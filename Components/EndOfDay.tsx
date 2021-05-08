@@ -3,6 +3,7 @@ import * as React from "react";
 import { DateBar } from "./DateBar";
 import { EmployeesCard } from "./EmployeesCard";
 import { ExpenseCard } from "./ExpenseCard";
+import { ProfitCard } from "./ProfitCard";
 import { ResponsiveCardLayout } from "./ResponsiveCardLayout";
 
 export interface ISelectedDate {
@@ -10,7 +11,7 @@ export interface ISelectedDate {
   setDate?: React.Dispatch<React.SetStateAction<Date>>;
 }
 
-export function ShiftForm() {
+export function EndOfDay() {
   const [date, setDate] = React.useState(new Date());
   return (
     <Box>
@@ -18,6 +19,7 @@ export function ShiftForm() {
       <ResponsiveCardLayout>
         <EmployeesCard date={date} />
         <ExpenseCard date={date} />
+        <ProfitCard date={date} />
       </ResponsiveCardLayout>
     </Box>
   );

@@ -23,6 +23,14 @@ model Expense {
   optimistic Boolean @default(false)
 }
 
+model Profit {
+  id         String  @id @default(uuid())
+  name       String
+  income     Float
+  date       String
+  optimistic Boolean @default(false)
+}
+
 model Shift {
   id         String   @id @default(uuid())
   startDate  String

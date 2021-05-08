@@ -16,8 +16,6 @@ export function FormCard({
     <Box
       boxShadow="dark-lg"
       p={{ base: "2", md: "8" }}
-      mb={{ base: "4", md: "16" }}
-      mt={{ base: "4", md: "16" }}
       rounded="md"
       bg="brand.yellow"
       width={{ base: "100vw", md: "30vw" }}

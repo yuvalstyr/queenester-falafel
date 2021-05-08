@@ -1,10 +1,10 @@
-import { Select } from "@chakra-ui/select"
-import * as React from "react"
-import { useController, useFormContext } from "react-hook-form"
-import { Employee } from "../generates"
+import { Employee } from ".prisma/client";
+import { Select } from "@chakra-ui/select";
+import * as React from "react";
+import { useController, useFormContext } from "react-hook-form";
 
 export function EmployeeSelect({ employees }) {
-  const { control } = useFormContext()
+  const { control } = useFormContext();
 
   const {
     field: { ref, value, ...inputProps },
@@ -13,7 +13,7 @@ export function EmployeeSelect({ employees }) {
     name: "employee",
     control,
     rules: { required: { value: true, message: "Most Pick Employee!!" } },
-  })
+  });
   return (
     <Select
       {...inputProps}
@@ -34,5 +34,5 @@ export function EmployeeSelect({ employees }) {
         </option>
       ))}
     </Select>
-  )
+  );
 }

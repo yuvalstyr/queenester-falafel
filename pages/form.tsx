@@ -1,9 +1,9 @@
-import { ShiftForm } from "../Components/ShiftForm"
+import { EndOfDay } from "../Components/EndOfDay";
 
 // type serverSideProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 function Form() {
-  return <ShiftForm />
+  return <EndOfDay />;
 }
 
-export default Form
+export default Form;

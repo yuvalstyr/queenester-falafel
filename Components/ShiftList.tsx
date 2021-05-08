@@ -9,7 +9,7 @@ import * as React from "react";
 import { useDeleteShift, useShifts } from "../utils/shifts";
 import { ErrorBox } from "./ErrorBox";
 import { List } from "./ExpenseList";
-import { ISelectedDate } from "./ShiftForm";
+import { ISelectedDate } from "./EndOfDay";
 
 export function ShiftList({ date }: ISelectedDate) {
   const startDay = format(date, "yyyy-MM-dd");

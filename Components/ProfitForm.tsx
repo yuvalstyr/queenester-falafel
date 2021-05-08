@@ -2,28 +2,28 @@ import { Box } from "@chakra-ui/layout";
 import { format } from "date-fns";
 import * as React from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
-import { useCreateExpense } from "../utils/expense";
 import { FormBar } from "./FormBar";
 import { FormButton } from "./FormButton";
 import { InputWithLabel, TextLabel } from "./InputWithLabel";
 import { ISelectedDate } from "./EndOfDay";
-import { Employee, Expense, Profit } from ".prisma/client";
+import { Profit, Employee } from ".prisma/client";
+import { useCreateProfit } from "../utils/profit";
 
-export type OnSubmit = (data: Expense | Employee | Profit) => void;
+export type OnSubmit = (data: Profit | Employee | Profit) => void;
 
-export default function ExpenseForm({ date }: ISelectedDate) {
-  const methods = useForm<Expense>({
+export default function ProfitForm({ date }: ISelectedDate) {
+  const methods = useForm<Profit>({
     reValidateMode: "onChange",
     shouldFocusError: true,
     defaultValues: {
       name: "",
-      cost: 0,
+      income: 0,
     },
   });
-  const { mutate: create } = useCreateExpense();
+  const { mutate: create } = useCreateProfit();
 
-  const onSubmit = (data: Expense) => {
-    create({ ...data, cost: +data.cost, date: format(date, "yyyy-MM-dd") });
+  const onSubmit = (data: Profit) => {
+    create({ ...data, cost: +data.income, date: format(date, "yyyy-MM-dd") });
   };
 
   return (
@@ -33,7 +33,7 @@ export default function ExpenseForm({ date }: ISelectedDate) {
           control={methods.control}
           name="name"
           rules={{
-            required: { value: true, message: "Most Fill Expense Type!!" },
+            required: { value: true, message: "Most Fill Profit Type!!" },
           }}
           render={({ field }) => (
             <Box
@@ -52,7 +52,7 @@ export default function ExpenseForm({ date }: ISelectedDate) {
         />
         <Controller
           control={methods.control}
-          name="cost"
+          name="income"
           render={({ field }) => (
             <Box
               _focusWithin={{

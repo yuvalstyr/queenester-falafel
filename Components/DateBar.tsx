@@ -5,7 +5,7 @@ import format from "date-fns/format";
 import * as React from "react";
 import ReactDatePicker from "react-datepicker";
 import { FormButton } from "./FormButton";
-import { ISelectedDate } from "./ShiftForm";
+import { ISelectedDate } from "./EndOfDay";
 
 export function DateBar({ date, setDate }: ISelectedDate) {
   // todo change format of heading display
@@ -21,11 +21,13 @@ export function DateBar({ date, setDate }: ISelectedDate) {
         rounded="md"
         bg="brand.yellow"
         width="full"
+        mb={{ base: "6", md: "16" }}
       >
         <HStack
           p="2"
+          mb="1"
+          mt="1"
           rounded="md"
-          mb="4"
           bg="brand.yellow"
           borderWidth={{ base: "8px", md: "16px" }}
           borderColor="brand.blue.400"

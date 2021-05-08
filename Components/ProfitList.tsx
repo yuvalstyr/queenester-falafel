@@ -5,7 +5,7 @@ import { useBreakpointValue } from "@chakra-ui/media-query";
 import { Spinner } from "@chakra-ui/spinner";
 import { format } from "date-fns";
 import React from "react";
-import { useDeleteExpense, useExpense } from "../utils/expense";
+import { useDeleteProfit, useProfit } from "../utils/profit";
 import { ISelectedDate } from "./EndOfDay";
 import { ErrorBox } from "./ErrorBox";
 
@@ -31,13 +31,13 @@ export function List({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function ExpenseList({ date }: ISelectedDate) {
+export default function ProfitList({ date }: ISelectedDate) {
   const day = format(date, "yyyy-MM-dd");
-  const { data: expense, isError, isLoading, error, isIdle } = useExpense({
+  const { data: profit, isError, isLoading, error, isIdle } = useProfit({
     day,
   });
   const size = useBreakpointValue({ base: "sm", md: "md" });
-  const { mutate: remove, isLoading: isDeleteLoading } = useDeleteExpense();
+  const { mutate: remove, isLoading: isDeleteLoading } = useDeleteProfit();
   if (isIdle) return null;
   if (isLoading) return <Spinner />;
   if (isError) {
@@ -46,7 +46,7 @@ export default function ExpenseList({ date }: ISelectedDate) {
 
   return (
     <React.Fragment>
-      {expense.map((e) => (
+      {profit.map((e) => (
         <List key={e.id}>
           <Text color="#101820FF" flexBasis="100%" fontSize="inherit">
             {e.name}
@@ -62,7 +62,7 @@ export default function ExpenseList({ date }: ISelectedDate) {
               fontSize: size === "sm" ? "1rem" : "1.5rem",
             }}
           >
-            {e.cost}
+            {e.income}
           </Text>
 
           <IconButton

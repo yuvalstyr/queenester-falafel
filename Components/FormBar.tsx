@@ -1,7 +1,7 @@
+import { Expense } from ".prisma/client";
 import { HStack } from "@chakra-ui/layout";
 import * as React from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
-import { Expense } from "../generates";
 import { EmployeeFormData } from "./EmployeesShiftForm";
 
 type BarProps = {

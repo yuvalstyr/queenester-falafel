@@ -1,4 +1,4 @@
-import { Expense } from ".prisma/client";
+import { Profit } from ".prisma/client";
 import { format } from "date-fns";
 import { ClientError } from "graphql-request";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -12,74 +12,73 @@ function getDefaultMutationOptions() {
   };
 }
 
-function useExpense({ day }: { day: string }) {
-  const result = useQuery<Expense[], ClientError>({
-    queryKey: ["expense", day],
-    queryFn: () => client({ endpoint: `expense\\${day}`, method: "GET" }),
+function useProfit({ day }: { day: string }) {
+  const result = useQuery<Profit[], ClientError>({
+    queryKey: ["profit", day],
+    queryFn: () => client({ endpoint: `profit\\${day}`, method: "GET" }),
   });
 
   return { ...result };
 }
 
-function useCreateExpense() {
+function useCreateProfit() {
   const queryClient = useQueryClient();
   // default mutation behaviors
   const defaultMutationOptions = getDefaultMutationOptions();
 
   return useMutation(
-    (data: Expense) => {
-      return client({ data, endpoint: "expense", method: "POST" });
+    (data: Profit) => {
+      return client({ data, endpoint: "profit", method: "POST" });
     },
     {
-      onMutate(newItem: Expense) {
+      onMutate(newItem: Profit) {
         const day = newItem.date;
 
         // for roll back if the mutation will return error
-        const previousExpense = queryClient.getQueryData<Expense[]>([
-          "expense",
+        const previousProfit = queryClient.getQueryData<Profit[]>([
+          "profit",
           day,
         ]);
         // Optimistically update to the new value
-        if (previousExpense) {
-          queryClient.setQueryData<Expense[]>(["expense", day], (old) => {
+        if (previousProfit) {
+          queryClient.setQueryData<Profit[]>(["profit", day], (old) => {
             return [...old, { ...newItem, id: uuidv4(), optimistic: true }];
           });
         } else {
-          queryClient.setQueryData<Expense[]>(["expense", day], [newItem]);
+          queryClient.setQueryData<Profit[]>(["profit", day], [newItem]);
         }
-        return () => queryClient.setQueryData("expense", previousExpense);
+        return () => queryClient.setQueryData("profit", previousProfit);
       },
-      onSettled: (expense) => {
-        const day = format(new Date(expense.date), "yyyy-MM-dd");
-        return queryClient.invalidateQueries(["expense", day]);
+      onSettled: (profit) => {
+        const day = format(new Date(profit.date), "yyyy-MM-dd");
+        return queryClient.invalidateQueries(["profit", day]);
       },
       ...defaultMutationOptions,
     }
   );
 }
-function useDeleteExpense() {
+function useDeleteProfit() {
   const queryClient = useQueryClient();
   const defaultMutationOptions = getDefaultMutationOptions();
   return useMutation(
-    ({ id: expenseId }) =>
-      client({ endpoint: `expense\\${expenseId}`, method: "DELETE" }),
+    ({ id: profitId }) =>
+      client({ endpoint: `profit\\${profitId}`, method: "DELETE" }),
     {
       onMutate(removedItem: { id: string; date: Date }) {
         const day = format(new Date(removedItem.date), "yyyy-MM-dd");
-        const previousExpanse = queryClient.getQueryData<Expense[]>([
-          "expense",
+        const previousExpanse = queryClient.getQueryData<Profit[]>([
+          "profit",
           { day },
         ]);
-        queryClient.setQueryData<Expense[]>(["expense", day], (old) => {
+        queryClient.setQueryData<Profit[]>(["profit", day], (old) => {
           const newData = old.filter((s) => s.id !== removedItem.id);
           return newData;
         });
-        return () =>
-          queryClient.setQueryData(["expense", day], previousExpanse);
+        return () => queryClient.setQueryData(["profit", day], previousExpanse);
       },
       ...defaultMutationOptions,
     }
   );
 }
 
-export { useCreateExpense, useExpense, useDeleteExpense };
+export { useCreateProfit, useProfit, useDeleteProfit };
