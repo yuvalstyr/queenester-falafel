@@ -1,13 +1,17 @@
-import { Box, Heading } from "@chakra-ui/layout"
-import * as React from "react"
+import { useDisclosure } from "@chakra-ui/hooks";
+import { Box, Heading } from "@chakra-ui/layout";
+import { Collapse, ScaleFade } from "@chakra-ui/transition";
+import * as React from "react";
 
 export function FormCard({
   title,
   children,
 }: {
-  title: string
-  children: React.ReactNode
+  title: string;
+  children: React.ReactNode;
 }) {
+  const { isOpen, onToggle } = useDisclosure();
+
   return (
     <Box
       boxShadow="dark-lg"
@@ -16,7 +20,7 @@ export function FormCard({
       mt={{ base: "4", md: "16" }}
       rounded="md"
       bg="brand.yellow"
-      width={["full", "full", "full", , "full", "50%"]}
+      width={{ base: "100vw", md: "30vw" }}
     >
       <Heading
         as="h1"
@@ -29,10 +33,13 @@ export function FormCard({
         borderWidth={{ base: "8px", md: "16px" }}
         borderColor="brand.blue.400"
         color="brand.red"
+        onClick={onToggle}
       >
         {title}
       </Heading>
-      {children}
+      <Collapse in={isOpen} animateOpacity>
+        {children}
+      </Collapse>
     </Box>
-  )
+  );
 }

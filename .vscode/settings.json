@@ -1,15 +1,15 @@
 {
-  "cSpell.words": [
-    "VERCEL",
-    "translatey"
-  ],
+  "cSpell.words": ["VERCEL", "translatey"],
   "workbench.colorCustomizations": {
-    "activityBarBadge.background": "#52cd72",
-    "activityBarBadge.foreground": "#15202b",
-    "titleBar.activeBackground": "#a04c2e",
-    "titleBar.activeForeground": "#e7e7e7",
-    "titleBar.inactiveBackground": "#a04c2e99",
-    "titleBar.inactiveForeground": "#e7e7e799"
+    "activityBarBadge.background": "#097752",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "titleBar.activeBackground": "#db9710",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveBackground": "#db971099",
+    "titleBar.inactiveForeground": "#15202b99",
+    "statusBar.background": "#db9710",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#ab760d"
   },
-  "peacock.remoteColor": "#a04c2e"
+  "peacock.remoteColor": "#db9710"
 }
