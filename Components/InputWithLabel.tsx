@@ -5,7 +5,6 @@ import {
   TextProps,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { batchResetAndMeasure } from "framer-motion/types/render/dom/projection/utils";
 
 // TODO change to compound
 
