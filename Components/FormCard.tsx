@@ -1,5 +1,7 @@
 import { useDisclosure } from "@chakra-ui/hooks";
-import { Box, Heading } from "@chakra-ui/layout";
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import { Box, Heading, HStack } from "@chakra-ui/layout";
+import { useBreakpointValue } from "@chakra-ui/media-query";
 import { Collapse, ScaleFade } from "@chakra-ui/transition";
 import * as React from "react";
 
@@ -11,6 +13,7 @@ export function FormCard({
   children: React.ReactNode;
 }) {
   const { isOpen, onToggle } = useDisclosure();
+  const size = useBreakpointValue({ base: "6", md: "8" });
 
   return (
     <Box
@@ -20,21 +23,26 @@ export function FormCard({
       bg="brand.yellow"
       width={{ base: "100vw", md: "30vw" }}
     >
-      <Heading
+      <HStack
         as="h1"
         p="2"
         rounded="md"
         mt={{ base: "-15", md: "-20" }}
         mb="4"
         bg="brand.yellow"
-        fontSize={{ base: "md", md: "2xl" }}
         borderWidth={{ base: "8px", md: "16px" }}
         borderColor="brand.blue.400"
         color="brand.red"
         onClick={onToggle}
+        justifyContent="space-between"
       >
-        {title}
-      </Heading>
+        <Heading fontSize={{ base: "md", md: "2xl" }}>{title}</Heading>
+        {isOpen ? (
+          <ChevronUpIcon w={size} h={size} />
+        ) : (
+          <ChevronDownIcon w={size} h={size} />
+        )}
+      </HStack>
       <Collapse in={isOpen} animateOpacity>
         {children}
       </Collapse>
