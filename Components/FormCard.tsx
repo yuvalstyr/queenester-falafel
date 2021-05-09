@@ -7,12 +7,14 @@ import * as React from "react";
 
 export function FormCard({
   title,
+  open,
   children,
 }: {
   title: string;
+  open?: boolean;
   children: React.ReactNode;
 }) {
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: open });
   const size = useBreakpointValue({ base: "6", md: "8" });
 
   return (
@@ -24,7 +26,6 @@ export function FormCard({
       width={{ base: "100vw", md: "30vw" }}
     >
       <HStack
-        as="h1"
         p="2"
         rounded="md"
         mt={{ base: "-15", md: "-20" }}
