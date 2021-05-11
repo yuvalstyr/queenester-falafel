@@ -23,7 +23,7 @@ export function FormCard({
       p={{ base: "2", md: "8" }}
       rounded="md"
       bg="brand.yellow"
-      width={{ base: "100vw", md: "30vw" }}
+      width={{ base: "100vw", md: "60vw", xl: "30vw" }}
     >
       <HStack
         p="2"

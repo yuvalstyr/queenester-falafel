@@ -46,7 +46,7 @@ export const Chart = ({ dbData }) => {
   const chartData = createChartData({ dbData });
 
   return (
-    <Container w={{ base: "100vw", md: "50vw" }} h="100%">
+    <Container width="100%" h="100%">
       <Bar
         data={chartData}
         type="multi"

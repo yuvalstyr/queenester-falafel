@@ -4,11 +4,16 @@ import * as React from "react";
 export function ScoreCard({ imageURL, label }): JSX.Element {
   return (
     <HStack
-      boxShadow="dark-lg"
-      p={{ base: "2", md: "8" }}
+      p="2"
       rounded="md"
+      mt={{ base: "-15", md: "-20" }}
+      mb="4"
       bg="brand.yellow"
-      width={{ base: "100vw", md: "30vw" }}
+      borderWidth={{ base: "8px", md: "16px" }}
+      borderColor="brand.blue.400"
+      color="brand.red"
+      justifyContent="space-between"
+      width={{ base: "100vw", md: "60vw", xl: "30vw" }}
     >
       <Box w="40%">
         <Image
