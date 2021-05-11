@@ -1,13 +1,12 @@
 import { Employee, Shift } from ".prisma/client";
-import { format, formatISO } from "date-fns";
-import request, { ClientError, gql } from "graphql-request";
-import getConfig from "next/config";
+import { format } from "date-fns";
+import { ClientError } from "graphql-request";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { v4 as uuidv4 } from "uuid";
 import { EmployeeFormData } from "../Components/EmployeesShiftForm";
 import { client } from "./client";
 
-type ShiftWithWorker = Shift & { Employee: Employee };
+export type ShiftWithWorker = Shift & { Employee: Employee };
 
 export type DayBoundary = {
   startDay: string;
@@ -15,7 +14,7 @@ export type DayBoundary = {
 
 function getDefaultMutationOptions() {
   return {
-    onError: (_err, _variables, recover) => {
+    onError: (_err: never, _variables: never, recover: any) => {
       console.log("error");
       return typeof recover === "function" ? recover() : null;
     },

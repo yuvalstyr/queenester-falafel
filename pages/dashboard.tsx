@@ -1,7 +1,8 @@
-import { Box, VStack } from "@chakra-ui/react";
 import * as React from "react";
+import { Box, VStack } from "@chakra-ui/react";
+import { format } from "date-fns";
 import { DateBar } from "../Components/DateBar";
-import { FormCard } from "../Components/FormCard";
+import { client } from "../utils/client";
 import { ChartCard } from "./ChartCard";
 import { ScoreCard } from "./ScoreCard";
 
@@ -11,16 +12,28 @@ const PROFIT =
 const EXPENSE =
   "https://www.taxlawforchb.com/wp-content/uploads/sites/127/2015/04/receipts-1.jpg";
 
-export default function Dashboard() {
+export default function Dashboard({ dashboardData }) {
   const [date, setDate] = React.useState(new Date());
   return (
     <Box>
       <DateBar date={date} setDate={setDate} />
       <VStack spacing="2">
-        <ChartCard />
+        <ChartCard data={dashboardData} />
         <ScoreCard imageURL={PROFIT} label="today profit" />
         <ScoreCard imageURL={EXPENSE} label="today expense" />
       </VStack>
     </Box>
   );
+}
+
+export async function getServerSideProps() {
+  const day = format(new Date("2021-05-07"), "yyyy-MM-dd");
+  const res = await fetch(`http://localhost:3000/api/aggregate/${day}`);
+  const dashboardData = await res.json();
+
+  return {
+    props: {
+      dashboardData,
+    },
+  };
 }

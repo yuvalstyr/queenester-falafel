@@ -21,7 +21,7 @@ async function client({ data, endpoint, method }: FetchClientProps) {
   };
 
   return window
-    .fetch(`${apiURL}/${endpoint}`, method === "GET" ? null : config)
+    .fetch(`${apiURL}/${endpoint}`, method === "GET" ? undefined : config)
     .then(async (response) => {
       if (response.status === 401) {
         // refresh the page for them

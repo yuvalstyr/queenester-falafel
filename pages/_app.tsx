@@ -12,7 +12,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
         <CSSReset />
-        <Component {...pageProps} />;
+        <Component {...pageProps} />
       </ChakraProvider>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>

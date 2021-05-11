@@ -1,12 +1,12 @@
 import { HStack } from "@chakra-ui/react";
 import * as React from "react";
-import { MultiType } from "../Components/Chart";
+import { Chart } from "../Components/Chart";
 import { FormCard } from "../Components/FormCard";
 
-export function ChartCard() {
+export function ChartCard({ data }) {
   return (
     <FormCard title="Weekly Performance" open>
-      <MultiType />
+      <Chart dbData={data} />
     </FormCard>
   );
 }

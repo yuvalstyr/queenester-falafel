@@ -1,4 +1,3 @@
-import { format, formatISO } from "date-fns";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../utils/prisma";
 
@@ -11,7 +10,7 @@ export default async function handle(
   const { date, name, income } = req.body;
 
   const result = await prisma.profit.create({
-    data: { date, name, income },
+    data: { date, name, income: +income },
   });
 
   res.json(result);
