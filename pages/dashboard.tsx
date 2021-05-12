@@ -30,7 +30,7 @@ export async function getServerSideProps() {
   const apiUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : process.env.Vercel_URL;
+      : process.env.NEXT_PUBLIC_REACT_APP_API_URL;
   const day = format(new Date("2021-05-07"), "yyyy-MM-dd");
   const res = await fetch(`${apiUrl}/api/aggregate/${day}`);
   const dashboardData = await res.json();
