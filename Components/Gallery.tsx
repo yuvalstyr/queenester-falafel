@@ -58,6 +58,7 @@ function Gallery() {
         <HStack mb="4">
           {buttons.map((b) => (
             <ButtonRouteLink
+              key={b.label}
               to={b.to}
               p="4"
               rounded="md"

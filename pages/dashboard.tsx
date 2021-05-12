@@ -1,9 +1,8 @@
-import * as React from "react";
 import { Box, VStack } from "@chakra-ui/react";
 import { format } from "date-fns";
-import { DateBar } from "../Components/DateBar";
-import { client } from "../utils/client";
+import * as React from "react";
 import { ChartCard } from "../Components/ChartCard";
+import { DateBar } from "../Components/DateBar";
 import { ScoreCard } from "../Components/ScoreCard";
 
 const PROFIT =
@@ -27,8 +26,13 @@ export default function Dashboard({ dashboardData }) {
 }
 
 export async function getServerSideProps() {
+  console.log(process.env.NODE_ENV);
+  const apiUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : process.env.Vercel_URL;
   const day = format(new Date("2021-05-07"), "yyyy-MM-dd");
-  const res = await fetch(`http://localhost:3000/api/aggregate/${day}`);
+  const res = await fetch(`${apiUrl}/api/aggregate/${day}`);
   const dashboardData = await res.json();
 
   return {
