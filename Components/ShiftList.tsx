@@ -13,7 +13,13 @@ import { ISelectedDate } from "./EndOfDay";
 
 export function ShiftList({ date }: ISelectedDate) {
   const startDay = format(date, "yyyy-MM-dd");
-  const { data: shifts, isError, isLoading, error, isIdle } = useShifts({
+  const {
+    data: shifts,
+    isError,
+    isLoading,
+    error,
+    isIdle,
+  } = useShifts({
     startDay,
   });
   const avatarSize = useBreakpointValue({ base: "sm", md: "md" });
@@ -68,7 +74,7 @@ export function ShiftList({ date }: ISelectedDate) {
           <IconButton
             aria-label="Remove Shift"
             icon={<DeleteIcon />}
-            onClick={() => remove({ id: s.id, start: s.startDate })}
+            onClick={() => remove({ id: s.id })}
             borderColor="brand.blue.400"
             borderWidth="4px"
             borderStyle="solid"

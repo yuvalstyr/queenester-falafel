@@ -34,7 +34,7 @@ function useCreateShifts() {
   // default mutation behaviors
   const defaultMutationOptions = getDefaultMutationOptions();
   return useMutation(
-    (data: EmployeeFormData) => {
+    (data: Omit<Shift, "id" | "optimistic">) => {
       return client({ data, endpoint: "shifts", method: "POST" });
     },
     {
@@ -82,7 +82,8 @@ function useDeleteShift() {
   const queryClient = useQueryClient();
   const defaultMutationOptions = getDefaultMutationOptions();
   return useMutation(
-    ({ id }) => client({ endpoint: `shifts\\${id}`, method: "DELETE" }),
+    ({ id }: { id: string }) =>
+      client({ endpoint: `shifts\\${id}`, method: "DELETE" }),
     {
       onMutate(removedItem: { id: string; start: string }) {
         const day = format(new Date(removedItem.start), "yyyy-MM-dd");
