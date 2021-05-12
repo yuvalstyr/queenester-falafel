@@ -2,7 +2,7 @@ import { useDisclosure } from "@chakra-ui/hooks";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { Box, Heading, HStack } from "@chakra-ui/layout";
 import { useBreakpointValue } from "@chakra-ui/media-query";
-import { Collapse, ScaleFade } from "@chakra-ui/transition";
+import { Collapse } from "@chakra-ui/transition";
 import * as React from "react";
 
 export function FormCard({

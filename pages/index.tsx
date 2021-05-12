@@ -1,4 +1,6 @@
+import Gallery from "../Components/Gallery";
+
 function Index() {
-  return <h1>Main</h1>;
+  return <Gallery />;
 }
 export default Index;
