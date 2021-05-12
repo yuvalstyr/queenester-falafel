@@ -3,8 +3,8 @@ import { Box, VStack } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { DateBar } from "../Components/DateBar";
 import { client } from "../utils/client";
-import { ChartCard } from "./ChartCard";
-import { ScoreCard } from "./ScoreCard";
+import { ChartCard } from "../Components/ChartCard";
+import { ScoreCard } from "../Components/ScoreCard";
 
 const PROFIT =
   "https://app.croneri.co.uk/sites/default/files/green%20finance.jpg";

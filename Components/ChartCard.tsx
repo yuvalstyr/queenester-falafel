@@ -1,7 +1,6 @@
-import { HStack } from "@chakra-ui/react";
 import * as React from "react";
-import { Chart } from "../Components/Chart";
-import { FormCard } from "../Components/FormCard";
+import { Chart } from "./Chart";
+import { FormCard } from "./FormCard";
 
 export function ChartCard({ data }) {
   return (
