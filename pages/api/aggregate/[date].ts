@@ -4,8 +4,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../utils/prisma";
 import { ShiftWithWorker } from "../../../utils/shifts";
 
-type groupby = Prisma.AggregateExpense;
-
 const expensePromise = (date: string) =>
   prisma.expense.groupBy({
     by: ["date"],

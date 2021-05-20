@@ -1,19 +1,7 @@
-import { Button } from "@chakra-ui/button";
-import {
-  Box,
-  Center,
-  HStack,
-  Link,
-  Text,
-  Wrap,
-  WrapItem,
-} from "@chakra-ui/layout";
-import { Container } from "next/app";
+import { Box, Text, Wrap, WrapItem } from "@chakra-ui/layout";
 import { useBreakpointValue } from "@chakra-ui/react";
+import { Container } from "next/app";
 import Image from "next/image";
-import NextLink from "next/link";
-import { useRouter } from "next/dist/client/router";
-import { ButtonRouteLink } from "./ButtonRouteLink";
 
 type Photo = {
   name: string;
@@ -29,15 +17,9 @@ const photos: Photo[] = [
   { name: "plans", type: "logo" },
 ];
 
-const buttons = [
-  { label: "Cost & Profit", to: "/form" },
-  { label: "Performance", to: "/dashboard" },
-];
-
 function Gallery() {
   const width = useBreakpointValue({ base: 150, md: 300, lg: 450 });
   const height = useBreakpointValue({ base: 150, md: 300, lg: 450 });
-  const size = useBreakpointValue({ base: "md", md: "lg" });
 
   return (
     <Box overflow="hidden" bg="brand.yellow" minH="100vh">
@@ -54,25 +36,6 @@ function Gallery() {
         </Text>
       </Container>
 
-      <Center>
-        <HStack mb="4">
-          {buttons.map((b) => (
-            <ButtonRouteLink
-              key={b.label}
-              to={b.to}
-              p="4"
-              rounded="md"
-              bg="brand.yellow"
-              borderWidth={{ base: "6px", md: "8px", lg: "10px" }}
-              borderColor="brand.blue.400"
-              color="brand.red"
-              size={size}
-            >
-              {b.label}
-            </ButtonRouteLink>
-          ))}
-        </HStack>
-      </Center>
       <Wrap px="1rem" spacing={4} justify="center">
         {photos.map((pic) => (
           <WrapItem
