@@ -1,7 +1,7 @@
 import { Box, Heading, HStack, Image, Text } from "@chakra-ui/react";
 import * as React from "react";
 
-export function ScoreCard({ imageURL, label }): JSX.Element {
+export function ScoreCard({ imageURL, label, amount }): JSX.Element {
   return (
     <HStack
       p="2"

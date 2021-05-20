@@ -24,7 +24,11 @@ export default function Dashboard() {
       <VStack spacing="2">
         <ChartCard data={data} />
         <ScoreCard imageURL={PROFIT} label="today profit" amount={data.cost} />
-        <ScoreCard imageURL={EXPENSE} label="today expense" />
+        <ScoreCard
+          imageURL={EXPENSE}
+          label="today expense"
+          amount={data.cost}
+        />
       </VStack>
     </Box>
   );
