@@ -7,9 +7,8 @@ import { ShiftWithWorker } from "../../../utils/shifts";
 const expensePromise = (date: string) =>
   prisma.expense.groupBy({
     by: ["date"],
-    sum: {
-      cost: true,
-    },
+    // @ts-ignore
+    sum: { cost: true },
     where: {
       AND: [
         {
