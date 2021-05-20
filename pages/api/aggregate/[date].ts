@@ -1,5 +1,5 @@
-import { Expense, Prisma, Shift } from ".prisma/client";
-import { format, startOfWeek, endOfWeek } from "date-fns";
+import { Prisma } from ".prisma/client";
+import { endOfWeek, format, startOfWeek } from "date-fns";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../utils/prisma";
 import { ShiftWithWorker } from "../../../utils/shifts";
