@@ -42,6 +42,7 @@ const profitPromise = (date: string) =>
   prisma.profit.groupBy({
     by: ["date"],
     sum: {
+      // @ts-ignore
       income: true,
     },
     where: {
