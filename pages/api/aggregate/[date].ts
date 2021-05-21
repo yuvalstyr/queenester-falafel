@@ -80,9 +80,7 @@ type SumOfExpenseProp = {
   // wage: { [key: string]: number };
   shifts: Omit<ShiftWithWorker, "id" | "worker" | "optimistic">[];
   expense: (Prisma.PickArray<Prisma.ExpenseGroupByOutputType, "date"[]> & {
-    sum: {
-      cost: number;
-    };
+    sum: Prisma.ExpenseSumAggregateOutputType;
   })[];
 };
 // combine sum of wage and sum of expense per day
@@ -140,10 +138,11 @@ export default async function handler(
         shiftPromise(date),
         profitPromise(date),
       ]);
-      const cost = sumOfCostPerDay({ shifts: result[1], expense: result[0] });
+      const { 0: expense, 1: shifts, 2: profit } = result;
+      const cost = sumOfCostPerDay({ shifts, expense });
       const balance = dayBalance({ cost, income: result[2] });
-      console.log(`result[2]`, result[2]);
-      const income = result[2].reduce(
+
+      const income = profit.reduce(
         (acc, curr) => ({ ...acc, [curr.date]: curr.sum.income }),
         {}
       );
