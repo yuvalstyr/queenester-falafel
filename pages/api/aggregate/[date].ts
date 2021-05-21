@@ -139,8 +139,9 @@ export default async function handler(
         profitPromise(date),
       ]);
       const { 0: expense, 1: shifts, 2: profit } = result;
+      // @ts-ignore
       const cost = sumOfCostPerDay({ shifts, expense });
-      const balance = dayBalance({ cost, income: result[2] });
+      const balance = dayBalance({ cost, income: profit });
 
       const income = profit.reduce(
         (acc, curr) => ({ ...acc, [curr.date]: curr.sum.income }),
