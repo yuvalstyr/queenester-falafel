@@ -1,18 +1,11 @@
-import { Prisma } from ".prisma/client";
+import { Employee, Shift } from ".prisma/client";
 import { endOfWeek, format, startOfWeek } from "date-fns";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../utils/prisma";
-import { ShiftWithWorker } from "../../../utils/shifts";
 
 type SumOfWageProps = {
-  shifts: Omit<ShiftWithWorker, "id" | "worker" | "optimistic">[];
-};
-
-type SumOfExpenseProp = {
-  // wage: { [key: string]: number };
-  shifts: Omit<ShiftWithWorker, "id" | "worker" | "optimistic">[];
-  expense: (Prisma.PickArray<Prisma.ExpenseGroupByOutputType, "date"[]> & {
-    sum: Prisma.ExpenseSumAggregateOutputType;
+  shifts: (Omit<Shift, "id" | "optimistic" | "worker"> & {
+    Employee: Employee;
   })[];
 };
 
@@ -22,44 +15,9 @@ type BalanceProp = {
   date: string;
 };
 
-function sumOfWagePerDay({ shifts }: SumOfWageProps) {
-  return shifts.reduce((acc, curr) => {
-    const { startDate, startTime, endDate, endTime, Employee: employee } = curr;
-    const startDateTime = new Date(`${startDate}T${startTime}`);
-    const endDateTime = new Date(`${endDate}T${endTime}`);
-    const shiftDuration =
-      (endDateTime.valueOf() - startDateTime.valueOf()) / 1000 / 60 / 60; // shift duration in hours
-    const wage = shiftDuration * employee.salaryPerHour; //calc total salary
-    if (acc[curr.startDate]) {
-      const newWage = (acc[curr.startDate] += wage);
-      return { ...acc, [curr.startDate]: newWage };
-    } else {
-      return { ...acc, [curr.startDate]: wage };
-    }
-  }, {});
-}
-
-// combine sum of wage and sum of expense per day
-function sumOfCostPerDay({ shifts, expense }: SumOfExpenseProp) {
-  const wage = sumOfWagePerDay({ shifts });
-  return expense.reduce((acc, curr) => {
-    const {
-      date,
-      sum: { cost },
-    } = curr;
-    if (acc[date]) {
-      acc[date] += cost;
-    } else {
-      acc[date] = cost;
-    }
-    return acc;
-  }, wage);
-}
-
 async function getCosts(date: string) {
   const expense = await prisma.expense.groupBy({
     by: ["date"],
-    sum: { cost: true },
     where: {
       AND: [
         {
@@ -67,6 +25,9 @@ async function getCosts(date: string) {
         },
         { date: { lte: format(endOfWeek(new Date(date)), "yyyy-MM-dd") } },
       ],
+    },
+    _sum: {
+      cost: true,
     },
   });
   const shifts = await prisma.shift.findMany({
@@ -86,13 +47,42 @@ async function getCosts(date: string) {
       Employee: true,
     },
   });
-  return sumOfCostPerDay({ shifts, expense });
+  const wage = sumOfWagePerDay({ shifts });
+  return expense.reduce((acc, curr) => {
+    const {
+      date,
+      _sum: { cost },
+    } = curr;
+    if (acc[date]) {
+      acc[date] += cost;
+    } else {
+      acc[date] = cost;
+    }
+    return acc;
+  }, wage);
+}
+
+function sumOfWagePerDay({ shifts }: SumOfWageProps) {
+  return shifts.reduce((acc, curr) => {
+    const { startDate, startTime, endDate, endTime, Employee: employee } = curr;
+    const startDateTime = new Date(`${startDate}T${startTime}`);
+    const endDateTime = new Date(`${endDate}T${endTime}`);
+    const shiftDuration =
+      (endDateTime.valueOf() - startDateTime.valueOf()) / 1000 / 60 / 60; // shift duration in hours
+    const wage = shiftDuration * employee.salaryPerHour; //calc total salary
+    if (acc[curr.startDate]) {
+      const newWage = (acc[curr.startDate] += wage);
+      return { ...acc, [curr.startDate]: newWage };
+    } else {
+      return { ...acc, [curr.startDate]: wage };
+    }
+  }, {});
 }
 
 async function getBalanceAndIncome({ cost, date }: BalanceProp) {
   const profit = await prisma.profit.groupBy({
     by: ["date"],
-    sum: {
+    _sum: {
       income: true,
     },
     where: {
@@ -107,7 +97,7 @@ async function getBalanceAndIncome({ cost, date }: BalanceProp) {
   const balance = profit.reduce((acc, curr) => {
     const {
       date,
-      sum: { income },
+      _sum: { income },
     } = curr;
     if (acc[date]) {
       acc[date] -= income;
@@ -118,7 +108,7 @@ async function getBalanceAndIncome({ cost, date }: BalanceProp) {
   }, cost);
 
   const income = profit.reduce(
-    (acc, curr) => ({ ...acc, [curr.date]: curr.sum.income }),
+    (acc, curr) => ({ ...acc, [curr.date]: curr._sum.income }),
     {}
   );
   return { balance, income };
