@@ -4,59 +4,22 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../utils/prisma";
 import { ShiftWithWorker } from "../../../utils/shifts";
 
-const expensePromise = (date: string) =>
-  prisma.expense.groupBy({
-    by: ["date"],
-    // @ts-ignore
-    sum: { cost: true },
-    where: {
-      AND: [
-        {
-          date: { gte: format(startOfWeek(new Date(date)), "yyyy-MM-dd") },
-        },
-        { date: { lte: format(endOfWeek(new Date(date)), "yyyy-MM-dd") } },
-      ],
-    },
-  });
-
-const shiftPromise = (date: string) =>
-  prisma.shift.findMany({
-    where: {
-      AND: [
-        {
-          startDate: { gte: format(startOfWeek(new Date(date)), "yyyy-MM-dd") },
-        },
-        { startDate: { lte: format(endOfWeek(new Date(date)), "yyyy-MM-dd") } },
-      ],
-    },
-    select: {
-      endDate: true,
-      endTime: true,
-      startDate: true,
-      startTime: true,
-      Employee: true,
-    },
-  });
-
-const profitPromise = (date: string) =>
-  prisma.profit.groupBy({
-    by: ["date"],
-    sum: {
-      // @ts-ignore
-      income: true,
-    },
-    where: {
-      AND: [
-        {
-          date: { gte: format(startOfWeek(new Date(date)), "yyyy-MM-dd") },
-        },
-        { date: { lte: format(endOfWeek(new Date(date)), "yyyy-MM-dd") } },
-      ],
-    },
-  });
-
 type SumOfWageProps = {
   shifts: Omit<ShiftWithWorker, "id" | "worker" | "optimistic">[];
+};
+
+type SumOfExpenseProp = {
+  // wage: { [key: string]: number };
+  shifts: Omit<ShiftWithWorker, "id" | "worker" | "optimistic">[];
+  expense: (Prisma.PickArray<Prisma.ExpenseGroupByOutputType, "date"[]> & {
+    sum: Prisma.ExpenseSumAggregateOutputType;
+  })[];
+};
+
+type BalanceProp = {
+  // wage: { [key: string]: number };
+  cost: { [key: string]: number };
+  date: string;
 };
 
 function sumOfWagePerDay({ shifts }: SumOfWageProps) {
@@ -76,13 +39,6 @@ function sumOfWagePerDay({ shifts }: SumOfWageProps) {
   }, {});
 }
 
-type SumOfExpenseProp = {
-  // wage: { [key: string]: number };
-  shifts: Omit<ShiftWithWorker, "id" | "worker" | "optimistic">[];
-  expense: (Prisma.PickArray<Prisma.ExpenseGroupByOutputType, "date"[]> & {
-    sum: Prisma.ExpenseSumAggregateOutputType;
-  })[];
-};
 // combine sum of wage and sum of expense per day
 function sumOfCostPerDay({ shifts, expense }: SumOfExpenseProp) {
   const wage = sumOfWagePerDay({ shifts });
@@ -100,18 +56,55 @@ function sumOfCostPerDay({ shifts, expense }: SumOfExpenseProp) {
   }, wage);
 }
 
-type BalanceProp = {
-  // wage: { [key: string]: number };
-  cost: { [key: string]: number };
-  income: (Prisma.PickArray<Prisma.ProfitGroupByOutputType, "date"[]> & {
-    sum: {
-      income: number;
-    };
-  })[];
-};
+async function getCosts(date: string) {
+  const expense = await prisma.expense.groupBy({
+    by: ["date"],
+    sum: { cost: true },
+    where: {
+      AND: [
+        {
+          date: { gte: format(startOfWeek(new Date(date)), "yyyy-MM-dd") },
+        },
+        { date: { lte: format(endOfWeek(new Date(date)), "yyyy-MM-dd") } },
+      ],
+    },
+  });
+  const shifts = await prisma.shift.findMany({
+    where: {
+      AND: [
+        {
+          startDate: { gte: format(startOfWeek(new Date(date)), "yyyy-MM-dd") },
+        },
+        { startDate: { lte: format(endOfWeek(new Date(date)), "yyyy-MM-dd") } },
+      ],
+    },
+    select: {
+      endDate: true,
+      endTime: true,
+      startDate: true,
+      startTime: true,
+      Employee: true,
+    },
+  });
+  return sumOfCostPerDay({ shifts, expense });
+}
 
-function dayBalance({ cost, income }: BalanceProp) {
-  return income.reduce((acc, curr) => {
+async function getBalanceAndIncome({ cost, date }: BalanceProp) {
+  const profit = await prisma.profit.groupBy({
+    by: ["date"],
+    sum: {
+      income: true,
+    },
+    where: {
+      AND: [
+        {
+          date: { gte: format(startOfWeek(new Date(date)), "yyyy-MM-dd") },
+        },
+        { date: { lte: format(endOfWeek(new Date(date)), "yyyy-MM-dd") } },
+      ],
+    },
+  });
+  const balance = profit.reduce((acc, curr) => {
     const {
       date,
       sum: { income },
@@ -123,6 +116,12 @@ function dayBalance({ cost, income }: BalanceProp) {
     }
     return acc;
   }, cost);
+
+  const income = profit.reduce(
+    (acc, curr) => ({ ...acc, [curr.date]: curr.sum.income }),
+    {}
+  );
+  return { balance, income };
 }
 
 export default async function handler(
@@ -133,20 +132,8 @@ export default async function handler(
     // GET /api/aggregate/:day
     case "GET":
       const date = req.query.date as string;
-      const result = await Promise.all([
-        expensePromise(date),
-        shiftPromise(date),
-        profitPromise(date),
-      ]);
-      const { 0: expense, 1: shifts, 2: profit } = result;
-      // @ts-ignore
-      const cost = sumOfCostPerDay({ shifts, expense });
-      const balance = dayBalance({ cost, income: profit });
-
-      const income = profit.reduce(
-        (acc, curr) => ({ ...acc, [curr.date]: curr.sum.income }),
-        {}
-      );
+      const cost = await getCosts(date);
+      const { balance, income } = await getBalanceAndIncome({ cost, date });
 
       res.json({ income, cost, balance });
       break;
