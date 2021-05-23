@@ -2,8 +2,6 @@ import { Center, HStack, StackProps, VStack } from "@chakra-ui/layout";
 import { useBreakpointValue } from "@chakra-ui/media-query";
 import * as React from "react";
 
-type props = StackProps;
-
 export function ResponsiveCardLayout({
   children,
 }: {
@@ -11,12 +9,11 @@ export function ResponsiveCardLayout({
 }) {
   const size = useBreakpointValue({ base: "sm", xl: "lg" });
 
-  const Component = size === "sm" ? VStack : HStack;
-  return (
-    <Center>
-      <Component alignItems="baseline" spacing="6">
-        {children}
-      </Component>
-    </Center>
-  );
+  const Component =
+    size === "sm" ? (
+      <VStack spacing={{ base: "6", md: "20", xl: "-20" }}>{children}</VStack>
+    ) : (
+      <HStack>{children}</HStack>
+    );
+  return <Center>{Component}</Center>;
 }

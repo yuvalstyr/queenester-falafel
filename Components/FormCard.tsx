@@ -20,7 +20,7 @@ export function FormCard({
   return (
     <Box
       boxShadow="dark-lg"
-      p={{ base: "2", md: "8" }}
+      p={{ base: "2", md: "6", xl: "8" }}
       rounded="md"
       bg="brand.yellow"
       width={{ base: "100vw", md: "60vw", xl: "30vw" }}
@@ -28,7 +28,7 @@ export function FormCard({
       <HStack
         p="2"
         rounded="md"
-        mt={{ base: "-15", md: "-20" }}
+        mt={{ base: "-15", md: "-20", xl: "-20" }}
         mb="4"
         bg="brand.yellow"
         borderWidth={{ base: "8px", md: "16px" }}
