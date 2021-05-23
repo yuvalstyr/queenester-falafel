@@ -2,6 +2,7 @@ import { Box, Heading, HStack, Image, Text } from "@chakra-ui/react";
 import * as React from "react";
 
 export function ScoreCard({ imageURL, label, amount }): JSX.Element {
+  console.log(`amount`, amount);
   return (
     <HStack
       p="2"
@@ -29,7 +30,7 @@ export function ScoreCard({ imageURL, label, amount }): JSX.Element {
         <Heading size="lg" color="brand.red" textTransform="capitalize">
           {label}
         </Heading>
-        <Text fontSize="2xl">$57</Text>
+        <Text fontSize="2xl">${amount}</Text>
       </Box>
     </HStack>
   );

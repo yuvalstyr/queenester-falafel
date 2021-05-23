@@ -1,4 +1,4 @@
-import { Employee, Shift } from ".prisma/client";
+import { Employee, Shift, Prisma } from ".prisma/client";
 import { endOfWeek, format, startOfWeek } from "date-fns";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../utils/prisma";
@@ -7,6 +7,15 @@ type SumOfWageProps = {
   shifts: (Omit<Shift, "id" | "optimistic" | "worker"> & {
     Employee: Employee;
   })[];
+};
+
+type ExpenseGrouped = Prisma.PickArray<
+  Prisma.ExpenseGroupByOutputType,
+  "date"[]
+> & {
+  _sum: {
+    cost: number;
+  };
 };
 
 type BalanceProp = {
@@ -48,7 +57,7 @@ async function getCosts(date: string) {
     },
   });
   const wage = sumOfWagePerDay({ shifts });
-  return expense.reduce((acc, curr) => {
+  const balance = expense.reduce((acc, curr) => {
     const {
       date,
       _sum: { cost },
@@ -60,6 +69,7 @@ async function getCosts(date: string) {
     }
     return acc;
   }, wage);
+  return balance;
 }
 
 function sumOfWagePerDay({ shifts }: SumOfWageProps) {
@@ -109,7 +119,7 @@ async function getBalanceAndIncome({ cost, date }: BalanceProp) {
 
   const income = profit.reduce(
     (acc, curr) => ({ ...acc, [curr.date]: curr._sum.income }),
-    {}
+    {} as { [key: string]: number }
   );
   return { balance, income };
 }

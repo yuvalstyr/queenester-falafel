@@ -17,17 +17,21 @@ export default function Dashboard() {
   const day = format(date, "yyyy-MM-dd");
   const { data, isLoading } = useAggregate({ day });
   if (isLoading && !data) return <Spinner />;
-  console.log({ data: data.cost });
+  console.log(`data`, data);
   return (
     <Box>
       <DateBar date={date} setDate={setDate} />
       <VStack spacing="2">
         <ChartCard data={data} />
-        <ScoreCard imageURL={PROFIT} label="today profit" amount={data.cost} />
+        <ScoreCard
+          imageURL={PROFIT}
+          label="today profit"
+          amount={data.income[day]}
+        />
         <ScoreCard
           imageURL={EXPENSE}
           label="today expense"
-          amount={data.cost}
+          amount={data.cost[day]}
         />
       </VStack>
     </Box>

@@ -3,9 +3,8 @@ import { useQuery } from "react-query";
 import { client } from "./client";
 
 export type Groupby = {
-  income: number;
-  cost: number;
-  balance: number;
+  income: { [key: string]: number };
+  cost: { [key: string]: number };
 };
 
 function useAggregate({ day }: { day: string }) {
