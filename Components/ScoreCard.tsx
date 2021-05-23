@@ -16,7 +16,7 @@ export function ScoreCard({ imageURL, label, amount }): JSX.Element {
       justifyContent="space-between"
       width={{ base: "100vw", md: "60vw", xl: "30vw" }}
     >
-      <Box w="40%">
+      <Box w="50%">
         <Image
           src={imageURL}
           objectFit="fill"
@@ -26,11 +26,11 @@ export function ScoreCard({ imageURL, label, amount }): JSX.Element {
           w="150px"
         />
       </Box>
-      <Box>
+      <Box flex="1">
         <Heading size="lg" color="brand.red" textTransform="capitalize">
           {label}
         </Heading>
-        <Text fontSize="2xl">${amount}</Text>
+        <Text fontSize="2xl">${amount ?? 0}</Text>
       </Box>
     </HStack>
   );
