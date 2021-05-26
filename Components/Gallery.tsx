@@ -23,19 +23,17 @@ function Gallery() {
 
   return (
     <Box overflow="hidden" bg="brand.yellow" minH="100vh">
-      <Container>
-        <Text
-          color="brand.red"
-          fontWeight="semibold"
-          mb="1rem"
-          textAlign="center"
-          textDecoration="underline"
-          fontSize={["3xl", "4xl", "5xl", "5xl"]}
-        >
-          Welcome to Fuel By Night
-        </Text>
-      </Container>
-
+      <Text
+        color="brand.red"
+        fontWeight="semibold"
+        mb="1rem"
+        textAlign="center"
+        textDecoration="underline"
+        fontSize={["3xl", "4xl", "5xl", "5xl"]}
+        flex="1"
+      >
+        Welcome to Fuel By Night
+      </Text>
       <Wrap px="1rem" spacing={4} justify="center">
         {photos.map((pic) => (
           <WrapItem
