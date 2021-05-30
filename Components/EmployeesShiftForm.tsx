@@ -21,7 +21,7 @@ export type EmployeeFormData = {
   end: Date;
 };
 
-export function EmployeesShiftForm() {
+export function EmployeesShiftForm({ date }: { date: Date }) {
   const methods = useForm<EmployeeFormData>({
     reValidateMode: "onChange",
     shouldFocusError: true,
@@ -63,8 +63,8 @@ export function EmployeesShiftForm() {
           control={methods.control}
           name="employee"
         />
-        <DateTimeInput name="start" />
-        <DateTimeInput name="end" />
+        <DateTimeInput name="start" date={date} />
+        <DateTimeInput name="end" date={date} />
         <FormButton text="add" />
       </FormBar>
     </FormProvider>

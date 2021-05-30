@@ -29,7 +29,12 @@ const DateInput = React.forwardRef<HTMLInputElement, any>(
   }
 );
 
-export function DateTimeInput({ name }: { name: inputType }) {
+type DateTimeInputProps = {
+  name: inputType;
+  date: Date;
+};
+
+export function DateTimeInput({ name, date: pickedDate }: DateTimeInputProps) {
   const { control } = useFormContext();
   const size = useBreakpointValue({ base: "sm", md: "md" });
   const {
@@ -39,14 +44,8 @@ export function DateTimeInput({ name }: { name: inputType }) {
     control,
     rules: { required: { value: true, message: "Most Pick Date!!" } },
   });
-  const [date, setDate] = React.useState(null);
-  React.useEffect(() => {
-    if (typeof value === "undefined") {
-      setDate(null);
-    }
-  }, [value]);
-  const delta = name === "end" ? 1 : 0;
 
+  const delta = name === "end" ? 1 : 0;
   return (
     <DatePicker
       placeholderText="date"
@@ -58,8 +57,10 @@ export function DateTimeInput({ name }: { name: inputType }) {
       autoComplete="off"
       popperPlacement="top-end"
       withPortal={size === "sm" ? true : false}
-      // TODO  change the include date to the day the user picks
-      includeDates={[new Date(date), addDays(new Date(date), delta)]}
+      includeDates={[
+        new Date(pickedDate),
+        addDays(new Date(pickedDate), delta),
+      ]}
       {...inputProps}
       customInput={<DateInput label="date" />}
     />

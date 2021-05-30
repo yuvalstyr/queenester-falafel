@@ -7,7 +7,7 @@ import { ISelectedDate } from "./EndOfDay";
 export function EmployeesCard({ date }: ISelectedDate): JSX.Element {
   return (
     <FormCard title={"Employees"}>
-      <EmployeesShiftForm />
+      <EmployeesShiftForm date={date} />
       <ShiftList date={date} />
     </FormCard>
   );

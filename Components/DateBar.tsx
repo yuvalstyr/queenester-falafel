@@ -4,12 +4,13 @@ import { useBreakpointValue } from "@chakra-ui/media-query";
 import format from "date-fns/format";
 import * as React from "react";
 import ReactDatePicker from "react-datepicker";
-import { FormButton } from "./FormButton";
 import { ISelectedDate } from "./EndOfDay";
 
 export function DateBar({ date, setDate }: ISelectedDate) {
   // todo change format of heading display
   const dateType = useBreakpointValue({ base: "cccc dd/MM", md: "PPPPpp" });
+  const size = useBreakpointValue({ base: "sm", md: "md" });
+
   return (
     <Box>
       <Box
@@ -40,6 +41,7 @@ export function DateBar({ date, setDate }: ISelectedDate) {
           <ReactDatePicker
             onChange={(date: Date) => setDate(date)}
             popperModifiers={{ offset: { enabled: true, offset: "-75px" } }}
+            withPortal={size === "sm" ? true : false}
             customInput={
               <Button
                 mt={{ base: "4px", md: 0 }}
