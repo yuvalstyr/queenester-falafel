@@ -14,7 +14,13 @@ export function ScoreCard({ imageURL, label, amount }): JSX.Element {
       borderStyle="solid"
       borderWidth="thick"
     >
-      <Image src={imageURL} roundedRight="xl" w="100%" flex="1" />
+      <Image
+        src={imageURL}
+        roundedRight="xl"
+        w="100%"
+        flex="1"
+        maxWidth="150px"
+      />
       <Box flex="2">
         <Heading size="lg" color="brand.red" textTransform="capitalize">
           {label}
