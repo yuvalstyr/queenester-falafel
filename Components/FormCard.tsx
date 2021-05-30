@@ -28,10 +28,10 @@ export function FormCard({
       <HStack
         p="2"
         rounded="md"
-        mt={{ base: "-15", md: "-20", xl: "-20" }}
+        mt={{ base: "-15", md: "-20", xl: "-16" }}
         mb="4"
         bg="brand.yellow"
-        borderWidth={{ base: "8px", md: "16px" }}
+        borderWidth={{ base: "8px", md: "12px" }}
         borderColor="brand.blue.400"
         color="brand.red"
         onClick={onToggle}
