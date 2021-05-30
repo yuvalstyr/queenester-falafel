@@ -26,9 +26,8 @@ const datasetsConfig = [
   },
 ];
 
-function createChartData({ dbData }) {
-  console.log({ dbData });
-  const date = formatDay({ date: new Date("2021-05-07") });
+function createChartData({ dbData, pickedDate }) {
+  const date = formatDay({ date: pickedDate });
   const days = allWeekDays({ date });
   const labels = days.map((d) =>
     formatDay({ date: new Date(d), formatConfig: "iii" })
@@ -42,9 +41,8 @@ function createChartData({ dbData }) {
   return { datasets, labels };
 }
 
-export const Chart = ({ dbData }) => {
-  const chartData = createChartData({ dbData });
-
+export const Chart = ({ dbData, pickedDate }) => {
+  const chartData = createChartData({ dbData, pickedDate });
   return (
     <Container width="100%" h="100%">
       <Bar
