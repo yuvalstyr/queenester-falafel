@@ -1,7 +1,7 @@
-import { Button, IconButton } from "@chakra-ui/button";
-import { HamburgerIcon } from "@chakra-ui/icons";
+import { Button } from "@chakra-ui/button";
 import {
   Box,
+  Center,
   Drawer as ChakraDrawer,
   DrawerBody,
   DrawerCloseButton,
@@ -10,7 +10,6 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Link,
-  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
@@ -26,7 +25,7 @@ export function Drawer({ isOpen, btnRef, onClose }) {
   return (
     <ChakraDrawer
       isOpen={isOpen}
-      placement="right"
+      placement="left"
       onClose={onClose}
       finalFocusRef={btnRef}
     >
@@ -45,7 +44,12 @@ export function Drawer({ isOpen, btnRef, onClose }) {
                 textAlign="center"
               >
                 <NextLink href={b.to} passHref>
-                  <Link color="brand.red" fontSize="2xl" fontWeight="bold">
+                  <Link
+                    color="brand.red"
+                    fontWeight="bold"
+                    fontSize={{ base: "md", md: "2xl" }}
+                    onClick={onClose}
+                  >
                     {b.label}
                   </Link>
                 </NextLink>
@@ -55,10 +59,11 @@ export function Drawer({ isOpen, btnRef, onClose }) {
         </DrawerBody>
 
         <DrawerFooter>
-          <Button variant="outline" mr={3} onClick={onClose}>
-            Cancel
-          </Button>
-          <Button colorScheme="blue">Save</Button>
+          <Center w="100%">
+            <Button variant="outline" mr={3} onClick={onClose}>
+              Cancel
+            </Button>
+          </Center>
         </DrawerFooter>
       </DrawerContent>
     </ChakraDrawer>

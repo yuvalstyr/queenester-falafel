@@ -5,28 +5,17 @@ export function ScoreCard({ imageURL, label, amount }): JSX.Element {
   console.log(`amount`, amount);
   return (
     <HStack
-      p="2"
       rounded="md"
-      mt={{ base: "-15", md: "-20" }}
-      mb="4"
       bg="brand.yellow"
-      borderWidth={{ base: "8px", md: "16px" }}
-      borderColor="brand.blue.400"
       color="brand.red"
       justifyContent="space-between"
       width={{ base: "100vw", md: "60vw", xl: "30vw" }}
+      borderColor="brand.blue.400"
+      borderStyle="solid"
+      borderWidth="thick"
     >
-      <Box w="50%">
-        <Image
-          src={imageURL}
-          objectFit="fill"
-          shadow="2xl"
-          rounded="md"
-          h="100px"
-          w="150px"
-        />
-      </Box>
-      <Box flex="1">
+      <Image src={imageURL} roundedRight="xl" w="100%" flex="1" />
+      <Box flex="2">
         <Heading size="lg" color="brand.red" textTransform="capitalize">
           {label}
         </Heading>

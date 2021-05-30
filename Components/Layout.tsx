@@ -7,7 +7,7 @@ import React from "react";
 import { Drawer } from "./Drawer";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const btnRef = React.useRef();
 

@@ -28,7 +28,6 @@ function Gallery() {
         fontWeight="semibold"
         mb="1rem"
         textAlign="center"
-        textDecoration="underline"
         fontSize={["3xl", "4xl", "5xl", "5xl"]}
         flex="1"
       >
