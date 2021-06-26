@@ -1,6 +1,5 @@
 import { Box, Text, Wrap, WrapItem } from "@chakra-ui/layout";
 import { useBreakpointValue } from "@chakra-ui/react";
-import { Container } from "next/app";
 import Image from "next/image";
 
 type Photo = {
