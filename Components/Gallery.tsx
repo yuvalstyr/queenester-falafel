@@ -38,11 +38,9 @@ function Gallery() {
           <WrapItem
             key={pic.name}
             boxShadow="base"
-            rounded="20px"
+            rounded="5px"
             overflow="hidden"
-            bg="white"
             lineHeight="0"
-            _hover={{ boxShadow: "dark-lg" }}
           >
             <Image
               src={`/${pic.name}.jpg`}

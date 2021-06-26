@@ -11,7 +11,9 @@ export function ResponsiveCardLayout({
 
   const Component =
     size === "sm" ? (
-      <VStack spacing={{ base: "6", md: "20", xl: "-20" }}>{children}</VStack>
+      <VStack spacing={{ base: "6", md: "20", xl: "-20" }} isolation="isolate">
+        {children}
+      </VStack>
     ) : (
       <HStack alignItems="baseline">{children}</HStack>
     );
