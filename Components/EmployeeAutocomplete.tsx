@@ -60,7 +60,7 @@ export function EmployeeAutocomplete({
         <ComboboxInput
           {...getInputProps({ label: "Employee", onFocus: openMenu })}
         />
-        <ComboboxList isOpen={isOpen} {...getMenuProps()}>
+        <ComboboxList isOpen={isOpen} {...getMenuProps()} zIndex="5">
           {inputItems.map((e, index) => (
             <ComboboxItem
               {...getItemProps({ item: e, index: index })}

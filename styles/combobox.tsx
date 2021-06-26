@@ -52,8 +52,8 @@ const ComboboxItem = React.forwardRef<HTMLDivElement, ListItemProps>(
         color={isActive ? "brand.red" : "inherit"}
         p={1}
         cursor="pointer"
-        {...props}
         ref={ref}
+        {...props}
       />
     );
   }
