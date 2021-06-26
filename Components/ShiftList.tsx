@@ -74,7 +74,7 @@ export function ShiftList({ date }: ISelectedDate) {
           <IconButton
             aria-label="Remove Shift"
             icon={<DeleteIcon />}
-            onClick={() => remove({ id: s.id })}
+            onClick={() => remove({ id: s.id, start: s.endDate })}
             borderColor="brand.blue.400"
             borderWidth="4px"
             borderStyle="solid"

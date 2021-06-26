@@ -3,7 +3,6 @@ import { format } from "date-fns";
 import { ClientError } from "graphql-request";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { v4 as uuidv4 } from "uuid";
-import { EmployeeFormData } from "../Components/EmployeesShiftForm";
 import { client } from "./client";
 
 export type ShiftWithWorker = Shift & { Employee: Employee };
@@ -82,7 +81,7 @@ function useDeleteShift() {
   const queryClient = useQueryClient();
   const defaultMutationOptions = getDefaultMutationOptions();
   return useMutation(
-    ({ id }: { id: string }) =>
+    ({ id }: { id: string; start: string }) =>
       client({ endpoint: `shifts\\${id}`, method: "DELETE" }),
     {
       onMutate(removedItem: { id: string; start: string }) {
