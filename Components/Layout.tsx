@@ -16,7 +16,7 @@ const links = [
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const size = useBreakpointValue({ base: "sm", xl: "lg" });
+  const size = useBreakpointValue({ base: "sm", lg: "lg" });
   const router = useRouter();
   const btnRef = React.useRef();
 
@@ -40,7 +40,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Img src="/logo.png" h="100px" />
         <HStack justifySelf="flex-start">
           {links.map((l) => (
-            <NextLink href={l.to} passHref>
+            <NextLink href={l.to} passHref key={l.label}>
               <Link
                 color="brand.red"
                 fontWeight="bold"

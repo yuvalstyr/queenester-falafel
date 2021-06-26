@@ -1,15 +1,15 @@
-import { Employee } from ".prisma/client"
-import { Box } from "@chakra-ui/layout"
-import { useCombobox } from "downshift"
-import * as React from "react"
-import { ComboboxInput, ComboboxItem, ComboboxList } from "../styles/combobox"
+import { Employee } from ".prisma/client";
+import { Box } from "@chakra-ui/layout";
+import { useCombobox } from "downshift";
+import * as React from "react";
+import { ComboboxInput, ComboboxItem, ComboboxList } from "../styles/combobox";
 
 type AutoCompleteProps = {
-  employees: Employee[]
-  onChange: (...event: any[]) => void
-  reset: boolean
-  setReset: React.Dispatch<React.SetStateAction<boolean>>
-}
+  employees: Employee[];
+  onChange: (...event: any[]) => void;
+  reset: boolean;
+  setReset: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 export function EmployeeAutocomplete({
   employees,
@@ -17,9 +17,9 @@ export function EmployeeAutocomplete({
   reset,
   setReset,
 }: AutoCompleteProps) {
-  const [inputItems, setInputItems] = React.useState(employees)
+  const [inputItems, setInputItems] = React.useState(employees);
 
-  const itemToString = (item: Employee) => item?.name || ""
+  const itemToString = (item: Employee) => item?.name || "";
   const {
     getInputProps,
     isOpen,
@@ -28,6 +28,7 @@ export function EmployeeAutocomplete({
     getItemProps,
     highlightedIndex,
     setInputValue,
+    openMenu,
   } = useCombobox({
     items: inputItems,
     itemToString,
@@ -35,28 +36,30 @@ export function EmployeeAutocomplete({
     onInputValueChange: ({ inputValue }) => {
       const newList = employees.filter((item) =>
         itemToString(item).toLowerCase().startsWith(inputValue.toLowerCase())
-      )
+      );
       if (newList.length === 1) {
-        onChange(newList[0].id)
+        onChange(newList[0].id);
       }
-      setInputItems(newList)
+      setInputItems(newList);
     },
     onSelectedItemChange: ({ selectedItem }) => {
-      onChange(selectedItem?.id || "")
+      onChange(selectedItem?.id || "");
     },
-  })
+  });
 
   React.useEffect(() => {
     if (reset) {
-      setInputValue("")
-      setReset(false)
+      setInputValue("");
+      setReset(false);
     }
-  }, [reset])
+  }, [reset]);
 
   return (
     <Box position="relative">
       <Box {...getComboboxProps()}>
-        <ComboboxInput {...getInputProps({ label: "Employee" })} />
+        <ComboboxInput
+          {...getInputProps({ label: "Employee", onFocus: openMenu })}
+        />
         <ComboboxList isOpen={isOpen} {...getMenuProps()}>
           {inputItems.map((e, index) => (
             <ComboboxItem
@@ -71,5 +74,5 @@ export function EmployeeAutocomplete({
         </ComboboxList>
       </Box>
     </Box>
-  )
+  );
 }
