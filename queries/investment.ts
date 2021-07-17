@@ -5,7 +5,7 @@ import { client } from "../utils/client"
 
 function useInvestmentTypes() {
   const results = useQuery<InvestmentType[], ClientError>({
-    queryKey: "expenseTypes",
+    queryKey: "investmentTypes",
     queryFn: () => client({ endpoint: "investment", method: "GET" }),
   })
 

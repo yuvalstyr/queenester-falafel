@@ -8,10 +8,10 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { date, name, cost, investmentTypeId } = req.body
+  const { date, name, cost, investmentTypeId: id } = req.body
 
   const result = await prisma.expense.create({
-    data: { date, name, cost, investmentTypeId },
+    data: { date, name, cost, InvestmentType: { connect: { id } } },
   })
 
   res.json(result)

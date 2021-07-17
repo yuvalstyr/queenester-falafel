@@ -1,3 +1,4 @@
+import { InvestmentType, Prisma } from "@prisma/client"
 import { Expense } from ".prisma/client"
 import { format } from "date-fns"
 import { ClientError } from "graphql-request"
@@ -5,6 +6,9 @@ import { useMutation, useQuery, useQueryClient } from "react-query"
 import { v4 as uuidv4 } from "uuid"
 import { client } from "../utils/client"
 
+export type ExpenseWithInvestment = Expense & {
+  InvestmentType: InvestmentType
+}
 function getDefaultMutationOptions() {
   return {
     onError: (_err, _variables, recover) =>
@@ -13,7 +17,7 @@ function getDefaultMutationOptions() {
 }
 
 function useExpense({ day }: { day: string }) {
-  const result = useQuery<Expense[], ClientError>({
+  const result = useQuery<ExpenseWithInvestment[], ClientError>({
     queryKey: ["expense", day],
     queryFn: () => client({ endpoint: `expense\\${day}`, method: "GET" }),
   })
@@ -27,22 +31,32 @@ function useCreateExpense() {
   const defaultMutationOptions = getDefaultMutationOptions()
 
   return useMutation(
-    (data: Expense) => {
+    (data: ExpenseWithInvestment) => {
       return client({ data, endpoint: "expense", method: "POST" })
     },
     {
       onMutate(newItem: Expense) {
+        console.log({ newItem })
+        const investmentTypes =
+          queryClient.getQueryData<InvestmentType[]>("investmentTypes")
+        const investmentType = investmentTypes.filter(
+          (i) => i.id === newItem.investmentTypeId
+        )[0]
         const day = newItem.date
-
+        const newExpense: ExpenseWithInvestment = {
+          ...newItem,
+          id: uuidv4(),
+          optimistic: true,
+          InvestmentType: investmentType,
+        }
         // for roll back if the mutation will return error
-        const previousExpense = queryClient.getQueryData<Expense[]>([
-          "expense",
-          day,
-        ])
+        const previousExpense = queryClient.getQueryData<
+          ExpenseWithInvestment[]
+        >(["expense", day])
         // Optimistically update to the new value
         if (previousExpense) {
           queryClient.setQueryData<Expense[]>(["expense", day], (old) => {
-            return [...old, { ...newItem, id: uuidv4(), optimistic: true }]
+            return [...old, newExpense]
           })
         } else {
           queryClient.setQueryData<Expense[]>(["expense", day], [newItem])

@@ -38,6 +38,7 @@ export function EmployeesShiftForm({ date }: { date: Date }) {
   }
   type onSubmit = SubmitHandler<EmployeeFormData>
   function onSubmit(data: EmployeeFormData) {
+    console.log("employee submit", data)
     const startDate = format(data.start, "yyyy-MM-dd")
     const startTime = format(data.start, "HH:mm")
     const endDate = format(data.end, "yyyy-MM-dd")

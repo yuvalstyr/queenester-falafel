@@ -41,7 +41,9 @@ export default function ExpenseForm({ date }: ISelectedDate) {
   }
   type onSubmit = SubmitHandler<Expense>
   const onSubmit = (data: Expense) => {
+    console.log("expense submit", data)
     create({ ...data, cost: +data.cost, date: format(date, "yyyy-MM-dd") })
+    setReset(true)
   }
 
   return (

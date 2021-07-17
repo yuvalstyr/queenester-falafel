@@ -55,6 +55,9 @@ export default function ExpenseList({ date }: ISelectedDate) {
       {expense.map((e) => (
         <List key={e.id}>
           <Text color="#101820FF" flexBasis="100%" fontSize="inherit">
+            {e?.InvestmentType?.name}
+          </Text>
+          <Text color="#101820FF" flexBasis="100%" fontSize="inherit">
             {e.name}
           </Text>
           <Text
