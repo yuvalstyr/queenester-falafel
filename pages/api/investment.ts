@@ -5,6 +5,6 @@ export default async function handle(
   _req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const employees = await prisma.employee.findMany({ where: { active: true } })
-  res.json(employees)
+  const types = await prisma.investmentType.findMany()
+  res.json(types)
 }

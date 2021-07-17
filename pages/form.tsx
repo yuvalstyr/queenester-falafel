@@ -1,9 +1,9 @@
-import { EndOfDay } from "../Components/EndOfDay";
+import { EndOfDay } from "../Components/EndOfDay"
 
 // type serverSideProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 function Form() {
-  return <EndOfDay />;
+  return <EndOfDay />
 }
 
-export default Form;
+export default Form

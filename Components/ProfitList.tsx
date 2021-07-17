@@ -1,13 +1,13 @@
-import { IconButton } from "@chakra-ui/button";
-import { DeleteIcon } from "@chakra-ui/icons";
-import { HStack, Text, VStack } from "@chakra-ui/layout";
-import { useBreakpointValue } from "@chakra-ui/media-query";
-import { Spinner } from "@chakra-ui/spinner";
-import { format } from "date-fns";
-import React from "react";
-import { useDeleteProfit, useProfit } from "../utils/profit";
-import { ISelectedDate } from "./EndOfDay";
-import { ErrorBox } from "./ErrorBox";
+import { IconButton } from "@chakra-ui/button"
+import { DeleteIcon } from "@chakra-ui/icons"
+import { HStack, Text, VStack } from "@chakra-ui/layout"
+import { useBreakpointValue } from "@chakra-ui/media-query"
+import { Spinner } from "@chakra-ui/spinner"
+import { format } from "date-fns"
+import React from "react"
+import { useDeleteProfit, useProfit } from "../queries/profit"
+import { ISelectedDate } from "./EndOfDay"
+import { ErrorBox } from "./ErrorBox"
 
 export function List({ children }: { children: React.ReactNode }) {
   return (
@@ -28,20 +28,26 @@ export function List({ children }: { children: React.ReactNode }) {
         {children}
       </HStack>
     </VStack>
-  );
+  )
 }
 
 export default function ProfitList({ date }: ISelectedDate) {
-  const day = format(date, "yyyy-MM-dd");
-  const { data: profit, isError, isLoading, error, isIdle } = useProfit({
+  const day = format(date, "yyyy-MM-dd")
+  const {
+    data: profit,
+    isError,
+    isLoading,
+    error,
+    isIdle,
+  } = useProfit({
     day,
-  });
-  const size = useBreakpointValue({ base: "sm", md: "md" });
-  const { mutate: remove, isLoading: isDeleteLoading } = useDeleteProfit();
-  if (isIdle) return null;
-  if (isLoading) return <Spinner />;
+  })
+  const size = useBreakpointValue({ base: "sm", md: "md" })
+  const { mutate: remove, isLoading: isDeleteLoading } = useDeleteProfit()
+  if (isIdle) return null
+  if (isLoading) return <Spinner />
   if (isError) {
-    return <ErrorBox error={error} />;
+    return <ErrorBox error={error} />
   }
 
   return (
@@ -80,5 +86,5 @@ export default function ProfitList({ date }: ISelectedDate) {
         </List>
       ))}
     </React.Fragment>
-  );
+  )
 }

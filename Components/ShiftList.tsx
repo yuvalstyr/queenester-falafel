@@ -1,18 +1,18 @@
-import { Avatar } from "@chakra-ui/avatar";
-import { IconButton } from "@chakra-ui/button";
-import { DeleteIcon } from "@chakra-ui/icons";
-import { Text } from "@chakra-ui/layout";
-import { useBreakpointValue } from "@chakra-ui/media-query";
-import { Spinner } from "@chakra-ui/spinner";
-import { format } from "date-fns";
-import * as React from "react";
-import { useDeleteShift, useShifts } from "../utils/shifts";
-import { ErrorBox } from "./ErrorBox";
-import { List } from "./ExpenseList";
-import { ISelectedDate } from "./EndOfDay";
+import { Avatar } from "@chakra-ui/avatar"
+import { IconButton } from "@chakra-ui/button"
+import { DeleteIcon } from "@chakra-ui/icons"
+import { Text } from "@chakra-ui/layout"
+import { useBreakpointValue } from "@chakra-ui/media-query"
+import { Spinner } from "@chakra-ui/spinner"
+import { format } from "date-fns"
+import * as React from "react"
+import { useDeleteShift, useShifts } from "../queries/shifts"
+import { ErrorBox } from "./ErrorBox"
+import { List } from "./ExpenseList"
+import { ISelectedDate } from "./EndOfDay"
 
 export function ShiftList({ date }: ISelectedDate) {
-  const startDay = format(date, "yyyy-MM-dd");
+  const startDay = format(date, "yyyy-MM-dd")
   const {
     data: shifts,
     isError,
@@ -21,15 +21,15 @@ export function ShiftList({ date }: ISelectedDate) {
     isIdle,
   } = useShifts({
     startDay,
-  });
-  const avatarSize = useBreakpointValue({ base: "sm", md: "md" });
+  })
+  const avatarSize = useBreakpointValue({ base: "sm", md: "md" })
 
-  const { mutate: remove, isLoading: isDeleteLoading } = useDeleteShift();
+  const { mutate: remove, isLoading: isDeleteLoading } = useDeleteShift()
 
-  if (isIdle) return null;
-  if (isLoading) return <Spinner />;
+  if (isIdle) return null
+  if (isLoading) return <Spinner />
   if (isError) {
-    return <ErrorBox error={error} />;
+    return <ErrorBox error={error} />
   }
   return (
     <React.Fragment>
@@ -86,5 +86,5 @@ export function ShiftList({ date }: ISelectedDate) {
         </List>
       ))}
     </React.Fragment>
-  );
+  )
 }
