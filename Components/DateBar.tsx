@@ -3,8 +3,10 @@ import { Box, Heading, HStack } from "@chakra-ui/layout";
 import { useBreakpointValue } from "@chakra-ui/media-query";
 import format from "date-fns/format";
 import * as React from "react";
-import ReactDatePicker from "react-datepicker";
+import ReactDatePicker, { registerLocale } from "react-datepicker";
 import { ISelectedDate } from "./EndOfDay";
+import enAu from "date-fns/locale/en-AU"; // the locale you want
+registerLocale("en-au", enAu);
 
 export function DateBar({ date, setDate }: ISelectedDate) {
   const dateType = useBreakpointValue({ base: "cccc dd/MM", md: "PPPPpp" });
@@ -41,6 +43,7 @@ export function DateBar({ date, setDate }: ISelectedDate) {
             onChange={(date: Date) => setDate(date)}
             popperModifiers={{ offset: { enabled: true, offset: "-75px" } }}
             withPortal={size === "sm" ? true : false}
+            locale="en-au"
             customInput={
               <Button
                 mt={{ base: "4px", md: 0 }}
