@@ -11,7 +11,12 @@ export default async function handle(
   const { date, name, cost, investmentTypeId: id } = req.body
 
   const result = await prisma.expense.create({
-    data: { date, name, cost, InvestmentType: { connect: { id } } },
+    data:{
+      name,
+      date,
+      cost,
+      InvestmentType:{connect:{id}}
+    }
   })
 
   res.json(result)

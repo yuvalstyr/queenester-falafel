@@ -8,6 +8,10 @@ import { InputWithLabel, TextLabel } from "./InputWithLabel"
 import { ISelectedDate } from "./EndOfDay"
 import { Profit, Employee } from ".prisma/client"
 import { useCreateProfit } from "../queries/profit"
+import { useInvestmentTypes } from "../queries/investment"
+import { Spinner } from "@chakra-ui/react"
+import { ErrorBox } from "./ErrorBox"
+import { Autocomplete } from "./Autocomplete"
 
 export type OnSubmit = (data: Profit | Employee | Profit) => void
 
@@ -18,9 +22,18 @@ export default function ProfitForm({ date }: ISelectedDate) {
     defaultValues: {
       name: "",
       income: 0,
+      investmentTypeId: "",
     },
   })
+  const { isIdle, isLoading, isError, data, error } = useInvestmentTypes()
   const { mutate: create } = useCreateProfit()
+  const [reset, setReset] = React.useState(false)
+
+  if (isIdle) return null
+  if (isLoading) return <Spinner />
+  if (isError) {
+    return <ErrorBox error={error} />
+  }
 
   const onSubmit = (data: Profit) => {
     create({ ...data, cost: +data.income, date: format(date, "yyyy-MM-dd") })
@@ -29,6 +42,20 @@ export default function ProfitForm({ date }: ISelectedDate) {
   return (
     <FormProvider {...methods}>
       <FormBar submitAction={onSubmit}>
+      <Controller
+          render={({ field: { ref, onChange, ...rest } }) => (
+            <Autocomplete
+              data={data ?? []}
+              onChange={onChange}
+              reset={reset}
+              setReset={setReset}
+              label="Type"
+              {...rest}
+            />
+          )}
+          control={methods.control}
+          name="investmentTypeId"
+        />
         <Controller
           control={methods.control}
           name="name"
