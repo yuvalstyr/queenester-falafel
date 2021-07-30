@@ -36,7 +36,6 @@ function useCreateExpense() {
     },
     {
       onMutate(newItem: Expense) {
-        console.log({ newItem })
         const investmentTypes =
           queryClient.getQueryData<InvestmentType[]>("investmentTypes")
         const investmentType = investmentTypes.filter(
@@ -67,6 +66,9 @@ function useCreateExpense() {
         const day = format(new Date(expense.date), "yyyy-MM-dd")
         return queryClient.invalidateQueries(["expense", day])
       },
+      onSuccess: (_data, expense) => {
+        queryClient.refetchQueries(["aggregate", expense.date])
+      },
       ...defaultMutationOptions,
     }
   )
@@ -90,6 +92,11 @@ function useDeleteExpense() {
           return newData
         })
         return () => queryClient.setQueryData(["expense", day], previousExpanse)
+      },
+      onSuccess: (_data, expense) => {
+        const { date } = expense
+        const day = format(date, "yyyy-MM-dd")
+        queryClient.refetchQueries(["aggregate", day])
       },
       ...defaultMutationOptions,
     }

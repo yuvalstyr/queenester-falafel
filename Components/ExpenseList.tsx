@@ -6,7 +6,7 @@ import { Spinner } from "@chakra-ui/spinner"
 import { format } from "date-fns"
 import React from "react"
 import { useDeleteExpense, useExpense } from "../queries/expense"
-import { ISelectedDate } from "./EndOfDay"
+import { ISelectedDate } from "./Forms"
 import { ErrorBox } from "./ErrorBox"
 
 export function List({ children }: { children: React.ReactNode }) {

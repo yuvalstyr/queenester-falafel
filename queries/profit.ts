@@ -53,6 +53,9 @@ function useCreateProfit() {
         const day = format(new Date(profit.date), "yyyy-MM-dd")
         return queryClient.invalidateQueries(["profit", day])
       },
+      onSuccess: (_data, profit) => {
+        queryClient.refetchQueries(["aggregate", profit.date])
+      },
       ...defaultMutationOptions,
     }
   )
@@ -75,6 +78,11 @@ function useDeleteProfit() {
           return newData
         })
         return () => queryClient.setQueryData(["profit", day], previousExpanse)
+      },
+      onSuccess: (_data, profit) => {
+        const { date } = profit
+        const day = format(date, "yyyy-MM-dd")
+        queryClient.refetchQueries(["aggregate", day])
       },
       ...defaultMutationOptions,
     }

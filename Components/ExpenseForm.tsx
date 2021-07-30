@@ -11,7 +11,7 @@ import { useCreateExpense, useExpense } from "../queries/expense"
 import { FormBar } from "./FormBar"
 import { FormButton } from "./FormButton"
 import { InputWithLabel, TextLabel } from "./InputWithLabel"
-import { ISelectedDate } from "./EndOfDay"
+import { ISelectedDate } from "./Forms"
 import { Employee, Expense, Profit } from ".prisma/client"
 import { useInvestmentTypes } from "../queries/investment"
 import { Spinner } from "@chakra-ui/react"
@@ -41,7 +41,6 @@ export default function ExpenseForm({ date }: ISelectedDate) {
   }
   type onSubmit = SubmitHandler<Expense>
   const onSubmit = (data: Expense) => {
-    console.log("expense submit", data)
     create({ ...data, cost: +data.cost, date: format(date, "yyyy-MM-dd") })
     setReset(true)
   }

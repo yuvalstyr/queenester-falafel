@@ -1,16 +1,16 @@
-import { Button } from "@chakra-ui/button";
-import { Box, Heading, HStack } from "@chakra-ui/layout";
-import { useBreakpointValue } from "@chakra-ui/media-query";
-import format from "date-fns/format";
-import * as React from "react";
-import ReactDatePicker, { registerLocale } from "react-datepicker";
-import { ISelectedDate } from "./EndOfDay";
-import enAu from "date-fns/locale/en-AU"; // the locale you want
-registerLocale("en-au", enAu);
+import { Button } from "@chakra-ui/button"
+import { Box, Heading, HStack } from "@chakra-ui/layout"
+import { useBreakpointValue } from "@chakra-ui/media-query"
+import format from "date-fns/format"
+import * as React from "react"
+import ReactDatePicker, { registerLocale } from "react-datepicker"
+import { ISelectedDate } from "./Forms"
+import enAu from "date-fns/locale/en-AU" // the locale you want
+registerLocale("en-au", enAu)
 
 export function DateBar({ date, setDate }: ISelectedDate) {
-  const dateType = useBreakpointValue({ base: "cccc dd/MM", md: "PPPPpp" });
-  const size = useBreakpointValue({ base: "sm", md: "md" });
+  const dateType = useBreakpointValue({ base: "cccc dd/MM", md: "PPPPpp" })
+  const size = useBreakpointValue({ base: "sm", md: "md" })
 
   return (
     <Box>
@@ -23,7 +23,6 @@ export function DateBar({ date, setDate }: ISelectedDate) {
         rounded="md"
         bg="brand.yellow"
         width="full"
-        mb={{ base: "6", md: "16" }}
       >
         <HStack
           p="2"
@@ -63,5 +62,5 @@ export function DateBar({ date, setDate }: ISelectedDate) {
         </HStack>
       </Box>
     </Box>
-  );
+  )
 }

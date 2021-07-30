@@ -7,7 +7,8 @@
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "start": "next start",
     "build": "next build",
-    "ts": "tsc --noEmit --incremental"
+    "ts": "tsc --noEmit --incremental",
+    "ts-node": "ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\""
   },
   "keywords": [],
   "author": "",
@@ -17,7 +18,7 @@
     "@chakra-ui/react": "^1.5.1",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.3.0",
-    "@prisma/client": "^2.22.1",
+    "@prisma/client": "^2.28.0",
     "chart.js": "^3.2.1",
     "date-fns": "2.21.1",
     "dotenv": "^8.5.1",
@@ -31,15 +32,17 @@
     "react-datepicker": "^3.8.0",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.2.1",
+    "react-icons": "^4.2.0",
     "react-query": "^3.16.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@types/node": "^14.14.41",
+    "@types/node": "^14.17.6",
     "@types/react": "^17.0.3",
     "@types/react-datepicker": "^3.1.8",
     "@types/uuid": "^8.3.0",
-    "prisma": "^2.22.1",
-    "typescript": "^4.2.4"
+    "prisma": "^2.28.0",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5"
   }
 }

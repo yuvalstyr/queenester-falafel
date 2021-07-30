@@ -41,7 +41,6 @@ function useCreateShifts() {
         const employees = queryClient.getQueryData<Employee[]>("employees")
         const employee = employees.filter((e) => e.id === newItem.worker)[0]
         const { startDate, endTime, endDate, startTime } = newItem
-        console.log(`newItem`, newItem)
         const newShift: ShiftWithWorker = {
           id: uuidv4(),
           startDate,
@@ -72,6 +71,9 @@ function useCreateShifts() {
       onSettled: (shift) => {
         return queryClient.invalidateQueries(["shifts", shift.startDate])
       },
+      onSuccess: (_data, shift) => {
+        queryClient.refetchQueries(["aggregate", shift.startDate])
+      },
       ...defaultMutationOptions,
     }
   )
@@ -100,6 +102,10 @@ function useDeleteShift() {
       },
       onSettled: (deleteShift: Shift) => {
         return queryClient.invalidateQueries(["shifts", deleteShift.startDate])
+      },
+      onSuccess: (data, shift) => {
+        console.log({ shift })
+        queryClient.refetchQueries(["aggregate", shift.start])
       },
       ...defaultMutationOptions,
     }

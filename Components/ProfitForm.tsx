@@ -5,7 +5,7 @@ import { Controller, FormProvider, useForm } from "react-hook-form"
 import { FormBar } from "./FormBar"
 import { FormButton } from "./FormButton"
 import { InputWithLabel, TextLabel } from "./InputWithLabel"
-import { ISelectedDate } from "./EndOfDay"
+import { ISelectedDate } from "./Forms"
 import { Profit, Employee } from ".prisma/client"
 import { useCreateProfit } from "../queries/profit"
 import { useInvestmentTypes } from "../queries/investment"
@@ -42,7 +42,7 @@ export default function ProfitForm({ date }: ISelectedDate) {
   return (
     <FormProvider {...methods}>
       <FormBar submitAction={onSubmit}>
-      <Controller
+        <Controller
           render={({ field: { ref, onChange, ...rest } }) => (
             <Autocomplete
               data={data ?? []}

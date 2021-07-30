@@ -5,16 +5,9 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "pwa-node",
-      "request": "launch",
-      "name": "Launch Program",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${file}"
-    },
-    {
       "type": "node",
       "request": "attach",
-      "name": "attach",
+      "name": "Launch Program",
       "skipFiles": ["<node_internals>/**"],
       "port": 9229
     }

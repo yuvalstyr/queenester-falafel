@@ -15,6 +15,15 @@ CREATE TABLE "Expense" (
     "cost" DOUBLE PRECISION NOT NULL,
     "date" TEXT NOT NULL,
     "optimistic" BOOLEAN NOT NULL DEFAULT false,
+    "investmentTypeId" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "InvestmentType" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -26,6 +35,7 @@ CREATE TABLE "Profit" (
     "income" DOUBLE PRECISION NOT NULL,
     "date" TEXT NOT NULL,
     "optimistic" BOOLEAN NOT NULL DEFAULT false,
+    "investmentTypeId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -58,6 +68,12 @@ CREATE INDEX "Shift.worker_index" ON "Shift"("worker");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User.email_unique" ON "User"("email");
+
+-- AddForeignKey
+ALTER TABLE "Expense" ADD FOREIGN KEY ("investmentTypeId") REFERENCES "InvestmentType"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Profit" ADD FOREIGN KEY ("investmentTypeId") REFERENCES "InvestmentType"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Shift" ADD FOREIGN KEY ("worker") REFERENCES "Employee"("id") ON DELETE CASCADE ON UPDATE CASCADE;
