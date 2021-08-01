@@ -22,6 +22,7 @@ type BalanceProp = {
   // wage: { [key: string]: number };
   cost: { [key: string]: number }
   date: string
+  by: "week" | "day"
 }
 
 async function getCosts(date: string) {
@@ -92,6 +93,7 @@ function sumOfWagePerDay({ shifts }: SumOfWageProps) {
 
 async function getBalanceAndIncome({ cost, date }: BalanceProp) {
   const costObj = { ...cost }
+
   const profit = await prisma.profit.groupBy({
     by: ["date"],
     _sum: {
@@ -112,7 +114,7 @@ async function getBalanceAndIncome({ cost, date }: BalanceProp) {
       _sum: { income },
     } = curr
     if (acc[date]) {
-      acc[date] -= income
+      acc[date] = -1 * acc[date] + income
     } else {
       acc[date] = income
     }

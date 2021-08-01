@@ -16,6 +16,16 @@ export default function Dashboard() {
   const [date, setDate] = React.useState(new Date())
   const day = format(date, "yyyy-MM-dd")
   const { data, isLoading } = useAggregate({ day })
+
+  const weeklyIncome = Object.values(data.income).reduce(
+    (acc, curr) => acc + curr,
+    0
+  )
+  const weeklyExpense = Object.values(data.cost).reduce(
+    (acc, curr) => acc + curr,
+    0
+  )
+
   if (isLoading && !data) return <Spinner />
   return (
     <Box>
@@ -24,13 +34,13 @@ export default function Dashboard() {
         <ChartCard data={data} date={date} />
         <ScoreCard
           imageURL={PROFIT}
-          label="today profit"
-          amount={data.income[day]}
+          label="Weekly profit"
+          amount={weeklyIncome}
         />
         <ScoreCard
           imageURL={EXPENSE}
-          label="today expense"
-          amount={data.cost[day]}
+          label="Weekly expense"
+          amount={weeklyExpense  }
         />
       </VStack>
     </Box>
