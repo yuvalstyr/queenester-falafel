@@ -17,14 +17,12 @@ export default function Dashboard() {
   const day = format(date, "yyyy-MM-dd")
   const { data, isLoading } = useAggregate({ day })
 
-  const weeklyIncome = Object.values(data.income).reduce(
-    (acc, curr) => acc + curr,
-    0
-  )
-  const weeklyExpense = Object.values(data.cost).reduce(
-    (acc, curr) => acc + curr,
-    0
-  )
+  const weeklyIncome = data?.income
+    ? Object.values(data.income).reduce((acc, curr) => acc + curr, 0)
+    : undefined
+  const weeklyExpense = data?.cost
+    ? Object.values(data.cost).reduce((acc, curr) => acc + curr, 0)
+    : undefined
 
   if (isLoading && !data) return <Spinner />
   return (
@@ -40,7 +38,7 @@ export default function Dashboard() {
         <ScoreCard
           imageURL={EXPENSE}
           label="Weekly expense"
-          amount={weeklyExpense  }
+          amount={weeklyExpense}
         />
       </VStack>
     </Box>
