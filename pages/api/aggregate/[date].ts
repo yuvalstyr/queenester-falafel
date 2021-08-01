@@ -19,10 +19,8 @@ type ExpenseGrouped = Prisma.PickArray<
 }
 
 type BalanceProp = {
-  // wage: { [key: string]: number };
   cost: { [key: string]: number }
   date: string
-  by: "week" | "day"
 }
 
 async function getCosts(date: string) {
