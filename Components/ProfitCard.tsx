@@ -1,8 +1,8 @@
-import * as React from "react";
-import ProfitForm from "./ProfitForm";
-import ProfitList from "./ProfitList";
-import { FormCard } from "./FormCard";
-import { ISelectedDate } from "./EndOfDay";
+import * as React from "react"
+import ProfitForm from "./ProfitForm"
+import ProfitList from "./ProfitList"
+import { FormCard } from "./FormCard"
+import { ISelectedDate } from "./Forms"
 
 export function ProfitCard({ date }: ISelectedDate) {
   return (
@@ -10,5 +10,5 @@ export function ProfitCard({ date }: ISelectedDate) {
       <ProfitForm date={date} />
       <ProfitList date={date} />
     </FormCard>
-  );
+  )
 }

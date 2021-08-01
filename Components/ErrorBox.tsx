@@ -4,7 +4,8 @@ import * as React from "react"
 
 function getMessageFromClientError({ error }: { error: ClientError }) {
   const errorParse = JSON.parse(JSON.stringify(error))
-  return errorParse.response.errors[0].message
+  console.log({ errorParse })
+  return errorParse.response?.errors[0]?.message
 }
 
 export function ErrorBox({ error }: { error: string | ClientError }) {

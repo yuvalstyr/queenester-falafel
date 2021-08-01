@@ -17,19 +17,30 @@ model Employee {
 }
 
 model Expense {
-  id         String  @id @default(uuid())
-  name       String
-  cost       Float
-  date       String
-  optimistic Boolean @default(false)
+  id               String         @id @default(uuid())
+  name             String
+  cost             Float
+  date             String
+  optimistic       Boolean        @default(false)
+  InvestmentType   InvestmentType @relation(fields: [investmentTypeId], references: [id])
+  investmentTypeId String
+}
+
+model InvestmentType {
+  id      String    @id @default(uuid())
+  name    String
+  expense Expense[]
+  profit  Profit[]
 }
 
 model Profit {
-  id         String  @id @default(uuid())
-  name       String
-  income     Float
-  date       String
-  optimistic Boolean @default(false)
+  id               String         @id @default(uuid())
+  name             String
+  income           Float
+  date             String
+  optimistic       Boolean        @default(false)
+  InvestmentType   InvestmentType @relation(fields: [investmentTypeId], references: [id])
+  investmentTypeId String
 }
 
 model Shift {

@@ -1,28 +1,29 @@
-import { Employee, Shift, Prisma } from ".prisma/client";
-import { endOfWeek, format, startOfWeek } from "date-fns";
-import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../../utils/prisma";
+import { Employee, Shift, Prisma } from ".prisma/client"
+import { endOfWeek, format, startOfWeek } from "date-fns"
+import { NextApiRequest, NextApiResponse } from "next"
+import prisma from "../../../utils/prisma"
 
 type SumOfWageProps = {
   shifts: (Omit<Shift, "id" | "optimistic" | "worker"> & {
-    Employee: Employee;
-  })[];
-};
+    Employee: Employee
+  })[]
+}
 
 type ExpenseGrouped = Prisma.PickArray<
   Prisma.ExpenseGroupByOutputType,
   "date"[]
 > & {
   _sum: {
-    cost: number;
-  };
-};
+    cost: number
+  }
+}
 
 type BalanceProp = {
   // wage: { [key: string]: number };
-  cost: { [key: string]: number };
-  date: string;
-};
+  cost: { [key: string]: number }
+  date: string
+  by: "week" | "day"
+}
 
 async function getCosts(date: string) {
   const expense = await prisma.expense.groupBy({
@@ -38,7 +39,7 @@ async function getCosts(date: string) {
     _sum: {
       cost: true,
     },
-  });
+  })
   const shifts = await prisma.shift.findMany({
     where: {
       AND: [
@@ -55,41 +56,44 @@ async function getCosts(date: string) {
       startTime: true,
       Employee: true,
     },
-  });
-  const wage = sumOfWagePerDay({ shifts });
-  const balance = expense.reduce((acc, curr) => {
+  })
+  const wage = sumOfWagePerDay({ shifts })
+  const costs = expense.reduce((acc, curr) => {
     const {
       date,
       _sum: { cost },
-    } = curr;
+    } = curr
     if (acc[date]) {
-      acc[date] += cost;
+      acc[date] += cost
     } else {
-      acc[date] = cost;
+      acc[date] = cost
     }
-    return acc;
-  }, wage);
-  return balance;
+    return acc
+  }, wage)
+
+  return costs
 }
 
 function sumOfWagePerDay({ shifts }: SumOfWageProps) {
   return shifts.reduce((acc, curr) => {
-    const { startDate, startTime, endDate, endTime, Employee: employee } = curr;
-    const startDateTime = new Date(`${startDate}T${startTime}`);
-    const endDateTime = new Date(`${endDate}T${endTime}`);
+    const { startDate, startTime, endDate, endTime, Employee: employee } = curr
+    const startDateTime = new Date(`${startDate}T${startTime}`)
+    const endDateTime = new Date(`${endDate}T${endTime}`)
     const shiftDuration =
-      (endDateTime.valueOf() - startDateTime.valueOf()) / 1000 / 60 / 60; // shift duration in hours
-    const wage = shiftDuration * employee.salaryPerHour; //calc total salary
+      (endDateTime.valueOf() - startDateTime.valueOf()) / 1000 / 60 / 60 // shift duration in hours
+    const wage = shiftDuration * employee.salaryPerHour //calc total salary
     if (acc[curr.startDate]) {
-      const newWage = (acc[curr.startDate] += wage);
-      return { ...acc, [curr.startDate]: newWage };
+      const newWage = (acc[curr.startDate] += wage)
+      return { ...acc, [curr.startDate]: newWage }
     } else {
-      return { ...acc, [curr.startDate]: wage };
+      return { ...acc, [curr.startDate]: wage }
     }
-  }, {});
+  }, {})
 }
 
 async function getBalanceAndIncome({ cost, date }: BalanceProp) {
+  const costObj = { ...cost }
+
   const profit = await prisma.profit.groupBy({
     by: ["date"],
     _sum: {
@@ -103,25 +107,25 @@ async function getBalanceAndIncome({ cost, date }: BalanceProp) {
         { date: { lte: format(endOfWeek(new Date(date)), "yyyy-MM-dd") } },
       ],
     },
-  });
+  })
   const balance = profit.reduce((acc, curr) => {
     const {
       date,
       _sum: { income },
-    } = curr;
+    } = curr
     if (acc[date]) {
-      acc[date] -= income;
+      acc[date] = -1 * acc[date] + income
     } else {
-      acc[date] = income;
+      acc[date] = income
     }
-    return acc;
-  }, cost);
+    return acc
+  }, costObj)
 
   const income = profit.reduce(
     (acc, curr) => ({ ...acc, [curr.date]: curr._sum.income }),
     {} as { [key: string]: number }
-  );
-  return { balance, income };
+  )
+  return { balance, income }
 }
 
 export default async function handler(
@@ -131,15 +135,15 @@ export default async function handler(
   switch (req.method) {
     // GET /api/aggregate/:day
     case "GET":
-      const date = req.query.date as string;
-      const cost = await getCosts(date);
-      const { balance, income } = await getBalanceAndIncome({ cost, date });
+      const date = req.query.date as string
+      const cost = await getCosts(date)
 
-      res.json({ income, cost, balance });
-      break;
+      const { balance, income } = await getBalanceAndIncome({ cost, date })
+      res.json({ income, cost, balance })
+      break
     default:
       throw new Error(
         `The HTTP ${req.method} method is not supported at this route.`
-      );
+      )
   }
 }

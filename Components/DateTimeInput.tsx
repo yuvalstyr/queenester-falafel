@@ -2,9 +2,11 @@ import { Box } from "@chakra-ui/layout";
 import { useBreakpointValue } from "@chakra-ui/media-query";
 import { addDays } from "date-fns";
 import * as React from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
 import { useController, useFormContext } from "react-hook-form";
 import { InputWithLabel, TextLabel } from "./InputWithLabel";
+import enAu from "date-fns/locale/en-AU"; // the locale you want
+registerLocale("en-au", enAu);
 
 export type EmployeeFormInputs = {
   name: HTMLInputElement;
@@ -56,6 +58,7 @@ export function DateTimeInput({ name, date: pickedDate }: DateTimeInputProps) {
       timeIntervals={15}
       autoComplete="off"
       popperPlacement="top-end"
+      locale='en-au'
       withPortal={size === "sm" ? true : false}
       includeDates={[
         new Date(pickedDate),

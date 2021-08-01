@@ -1,8 +1,7 @@
-import { Box, Heading, HStack, Image, Text } from "@chakra-ui/react";
-import * as React from "react";
+import { Box, Heading, HStack, Image, Text } from "@chakra-ui/react"
+import * as React from "react"
 
 export function ScoreCard({ imageURL, label, amount }): JSX.Element {
-  console.log(`amount`, amount);
   return (
     <HStack
       rounded="md"
@@ -28,5 +27,5 @@ export function ScoreCard({ imageURL, label, amount }): JSX.Element {
         <Text fontSize="2xl">${amount ?? 0}</Text>
       </Box>
     </HStack>
-  );
+  )
 }
