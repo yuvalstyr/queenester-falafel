@@ -1,6 +1,5 @@
 import { Container } from "@chakra-ui/layout"
 import React from "react"
-import { Bar } from "react-chartjs-2"
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,24 +9,28 @@ import {
   Tooltip,
   Legend,
 } from "chart.js"
+import { Bar } from "react-chartjs-2"
 import { allWeekDays, formatDay } from "../utils/dateFns"
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const datasetsConfig = [
   {
-    type: "bar",
     label: "Cost",
     backgroundColor: "rgb(255, 99, 132)",
     borderColor: "white",
     borderWidth: 2,
   },
   {
-    type: "bar",
     label: "Income",
     backgroundColor: "rgb(75, 192, 192)",
   },
 ]
+
+const options = {
+  responsive: true,
+  maintainAspectRatio: true,
+}
 
 function createChartData({ dbData, pickedDate }) {
   const date = formatDay({ date: pickedDate })
@@ -48,13 +51,7 @@ export const Chart = ({ dbData, pickedDate }) => {
   const chartData = createChartData({ dbData, pickedDate })
   return (
     <Container width="100%" h="100%">
-      <Bar
-        data={chartData}
-        options={{
-          responsive: true,
-          maintainAspectRatio: true,
-        }}
-      />
+      <Bar data={chartData} options={options} />
     </Container>
   )
 }
