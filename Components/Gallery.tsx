@@ -30,7 +30,7 @@ function Gallery() {
         fontSize={["3xl", "4xl", "5xl", "5xl"]}
         flex="1"
       >
-        Welcome to Fuel By Night
+        Welcome to queenester-falafel
       </Text>
       <Wrap px="1rem" spacing={4} justify="center">
         {photos.map((pic) => (
