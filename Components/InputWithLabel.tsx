@@ -4,18 +4,18 @@ import {
   Text,
   TextProps,
   useBreakpointValue,
-} from "@chakra-ui/react";
+} from "@chakra-ui/react"
 
 // TODO change to compound
 
-export type TextLabelProps = React.PropsWithChildren<TextProps>;
+export type TextLabelProps = React.PropsWithChildren<TextProps>
 
 export function TextLabel(props: TextLabelProps) {
   return (
     <Text
       position="absolute"
       color="gray.500"
-      background="brand.yellow"
+      background="brand.white"
       transform={{ base: "translatey(-2.5em)", md: "translatey(-1.75em)" }}
       transformOrigin="top left"
       transition="all 0.2s ease-out"
@@ -25,16 +25,16 @@ export function TextLabel(props: TextLabelProps) {
       ml="2"
       {...props}
     />
-  );
+  )
 }
 
 export type InputWithLabelProps = React.PropsWithChildren<InputProps> & {
-  downshiftRef?: React.ForwardedRef<HTMLInputElement>;
-};
+  downshiftRef?: React.ForwardedRef<HTMLInputElement>
+}
 
 export function InputWithLabel(props: InputWithLabelProps) {
-  const translateY = useBreakpointValue({ base: "-3.6em", md: "-3em" });
-  const { downshiftRef, ...rest } = props;
+  const translateY = useBreakpointValue({ base: "-3.6em", md: "-3em" })
+  const { downshiftRef, ...rest } = props
   return (
     <Input
       transition="all 0.5s ease-out"
@@ -56,5 +56,5 @@ export function InputWithLabel(props: InputWithLabelProps) {
       {...rest}
       ref={downshiftRef}
     />
-  );
+  )
 }

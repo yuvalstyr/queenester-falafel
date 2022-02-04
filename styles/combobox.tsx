@@ -1,6 +1,6 @@
-import { Box } from "@chakra-ui/layout";
-import * as React from "react";
-import { InputWithLabel, TextLabel } from "../Components/InputWithLabel";
+import { Box } from "@chakra-ui/layout"
+import * as React from "react"
+import { InputWithLabel, TextLabel } from "../Components/InputWithLabel"
 
 const ComboboxInput = React.forwardRef<HTMLInputElement, any>(
   ({ ...props }, ref) => {
@@ -13,10 +13,10 @@ const ComboboxInput = React.forwardRef<HTMLInputElement, any>(
         <InputWithLabel placeholder="_" {...props} downshiftRef={ref} />
         <TextLabel>{props.label}</TextLabel>
       </Box>
-    );
+    )
   }
-);
-type ListProps = { children: React.ReactNode; isOpen: boolean };
+)
+type ListProps = { children: React.ReactNode; isOpen: boolean }
 
 const ComboboxList = React.forwardRef<HTMLDivElement, ListProps>(
   ({ isOpen, ...props }, ref) => {
@@ -31,32 +31,32 @@ const ComboboxList = React.forwardRef<HTMLDivElement, ListProps>(
         {...props}
         ref={ref}
       />
-    );
+    )
   }
-);
+)
 
 type ListItemProps = {
-  children: React.ReactNode;
-  itemIndex: string;
-  highlightedIndex: string;
-};
+  children: React.ReactNode
+  itemIndex: string
+  highlightedIndex: string
+}
 const ComboboxItem = React.forwardRef<HTMLDivElement, ListItemProps>(
   ({ itemIndex, highlightedIndex, ...props }, ref) => {
-    const isActive = itemIndex === highlightedIndex;
+    const isActive = itemIndex === highlightedIndex
 
     return (
       <Box
         borderBottom="1px solid lightgray"
         transition="all 0.2s"
-        bg={isActive ? "brand.blue.400" : "brand.yellow"}
-        color={isActive ? "brand.red" : "inherit"}
+        bg={isActive ? "brand.border" : "brand.white"}
+        color={isActive ? "brand.white" : "inherit"}
         p={1}
         cursor="pointer"
         ref={ref}
         {...props}
       />
-    );
+    )
   }
-);
+)
 
-export { ComboboxInput, ComboboxList, ComboboxItem };
+export { ComboboxInput, ComboboxList, ComboboxItem }

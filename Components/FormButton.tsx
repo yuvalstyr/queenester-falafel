@@ -10,11 +10,12 @@ export function FormButton({ text }: { text: String }) {
       // width={{ base: "50px", md: "150px" }}
       p={{ base: 0 }}
       fontSize={{ base: "x-sm", md: "md" }}
-      background="brand.blue.400"
-      color="brand.red"
+      background="brand.gray"
+      color="brand.black"
       fontWeight="700"
       type="submit"
       size={size}
+      borderColor="brand.border"
     >
       {text}
     </Button>

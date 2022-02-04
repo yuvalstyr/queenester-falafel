@@ -79,7 +79,7 @@ export default function ProfitList({ date }: ISelectedDate) {
             borderWidth="4px"
             borderStyle="solid"
             color="brand.red"
-            background="brand.yellow"
+            background="brand.white"
             size={size}
             disabled={isDeleteLoading || e.optimistic}
           />

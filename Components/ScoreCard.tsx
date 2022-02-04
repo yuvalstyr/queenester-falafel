@@ -5,8 +5,8 @@ export function ScoreCard({ imageURL, label, amount }): JSX.Element {
   return (
     <HStack
       rounded="md"
-      bg="brand.yellow"
-      color="brand.red"
+      bg="brand.white"
+      color="brand.black"
       justifyContent="space-between"
       width={{ base: "100vw", md: "60vw", xl: "30vw" }}
       borderColor="brand.blue.400"

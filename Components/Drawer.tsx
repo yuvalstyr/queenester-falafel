@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/button";
+import { Button } from "@chakra-ui/button"
 import {
   Box,
   Center,
@@ -11,15 +11,15 @@ import {
   DrawerOverlay,
   Link,
   VStack,
-} from "@chakra-ui/react";
-import NextLink from "next/link";
-import * as React from "react";
+} from "@chakra-ui/react"
+import NextLink from "next/link"
+import * as React from "react"
 
 const buttons = [
   { label: "Home", to: "/" },
   { label: "Cost & Profit", to: "/form" },
   { label: "Performance", to: "/dashboard" },
-];
+]
 
 export function Drawer({ isOpen, btnRef, onClose }) {
   return (
@@ -30,9 +30,9 @@ export function Drawer({ isOpen, btnRef, onClose }) {
       finalFocusRef={btnRef}
     >
       <DrawerOverlay />
-      <DrawerContent bg="brand.yellow">
+      <DrawerContent bg="brand.white">
         <DrawerCloseButton />
-        <DrawerHeader>Fuel By Night</DrawerHeader>
+        <DrawerHeader>Queenester Falafel</DrawerHeader>
         <DrawerBody>
           <VStack spacing="8">
             {buttons.map((b) => (
@@ -45,7 +45,7 @@ export function Drawer({ isOpen, btnRef, onClose }) {
               >
                 <NextLink href={b.to} passHref>
                   <Link
-                    color="brand.red"
+                    color="brand.black"
                     fontWeight="bold"
                     fontSize={{ base: "md", md: "2xl" }}
                     onClick={onClose}
@@ -67,5 +67,5 @@ export function Drawer({ isOpen, btnRef, onClose }) {
         </DrawerFooter>
       </DrawerContent>
     </ChakraDrawer>
-  );
+  )
 }

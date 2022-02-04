@@ -1,7 +1,4 @@
-const apiURL =
-  process.env.NODE_ENV === "production"
-    ? "api"
-    : process.env.NEXT_PUBLIC_REACT_APP_API_URL
+const apiURL = "api"
 
 type FetchClientProps = {
   endpoint: string

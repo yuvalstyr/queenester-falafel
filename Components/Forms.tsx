@@ -17,10 +17,16 @@ export interface ISelectedDate {
 
 function PerformanceCard({ label, cost }: { label: string; cost: string }) {
   return (
-    <HStack bg="brand.yellow" p="6">
+    <HStack
+      bg="brand.white"
+      border="2px"
+      borderColor="brand.border"
+      borderRadius="md"
+      p="5"
+    >
       <Avatar
-        icon={<Icon as={FaDollarSign} fontSize="1.5rem" color="brand.red" />}
-        bg="brand.blue.400"
+        icon={<Icon as={FaDollarSign} fontSize="1.5rem" />}
+        bg="brand.gray"
         borderRadius="4rem"
         borderColor={label === "cost" ? "brand.red" : "green"}
         borderWidth="3px"

@@ -78,8 +78,8 @@ export function ShiftList({ date }: ISelectedDate) {
             borderColor="brand.blue.400"
             borderWidth="4px"
             borderStyle="solid"
-            color="brand.red"
-            background="brand.yellow"
+            color="brand.black"
+            background="brand.white"
             size="lg"
             disabled={s.optimistic || isDeleteLoading}
           />

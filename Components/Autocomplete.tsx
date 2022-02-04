@@ -5,7 +5,6 @@ import { useCombobox } from "downshift"
 import * as React from "react"
 import { ComboboxInput, ComboboxItem, ComboboxList } from "../styles/combobox"
 import { autocompleteIdentity, AutocompleteTypes } from "../types"
-import { createTypedArray } from "../utils/guards"
 
 type AutoCompleteProps = {
   data: AutocompleteTypes

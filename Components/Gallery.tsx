@@ -1,29 +1,29 @@
-import { Box, Text, Wrap, WrapItem } from "@chakra-ui/layout";
-import { useBreakpointValue } from "@chakra-ui/react";
-import Image from "next/image";
+import { Box, Text, Wrap, WrapItem } from "@chakra-ui/layout"
+import { useBreakpointValue } from "@chakra-ui/react"
+import Image from "next/image"
 
 type Photo = {
-  name: string;
-  type: "button" | "pic" | "logo";
-};
+  name: string
+  type: "button" | "pic" | "logo"
+}
 
 const photos: Photo[] = [
   { name: "logo", type: "logo" },
-  { name: "mom", type: "pic" },
-  { name: "balagan", type: "pic" },
-  { name: "dinner", type: "pic" },
-  { name: "pita", type: "pic" },
-  { name: "plans", type: "logo" },
-];
+  { name: "boorekas", type: "pic" },
+  { name: "falafel", type: "pic" },
+  { name: "shakshuka", type: "pic" },
+  { name: "street1", type: "pic" },
+  { name: "street2", type: "logo" },
+]
 
 function Gallery() {
-  const width = useBreakpointValue({ base: 150, md: 300, lg: 450 });
-  const height = useBreakpointValue({ base: 150, md: 300, lg: 450 });
+  const width = useBreakpointValue({ base: 150, md: 300, lg: 450 })
+  const height = useBreakpointValue({ base: 150, md: 300, lg: 450 })
 
   return (
-    <Box overflow="hidden" bg="brand.yellow" minH="100vh">
+    <Box overflow="hidden" minH="100vh">
       <Text
-        color="brand.red"
+        color="brand.black"
         fontWeight="semibold"
         mb="1rem"
         textAlign="center"
@@ -42,7 +42,7 @@ function Gallery() {
             lineHeight="0"
           >
             <Image
-              src={`/${pic.name}.jpg`}
+              src={`/${pic.name}.png`}
               height={height ?? 300}
               width={width ?? 300}
               alt={pic.name}
@@ -51,7 +51,7 @@ function Gallery() {
         ))}
       </Wrap>
     </Box>
-  );
+  )
 }
 
-export default Gallery;
+export default Gallery

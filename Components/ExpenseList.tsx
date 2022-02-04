@@ -65,7 +65,7 @@ export default function ExpenseList({ date }: ISelectedDate) {
             flexBasis="100%"
             _before={{
               content: `"$"`,
-              color: "brand.red",
+              color: "brand.black",
               fontWeight: 800,
               pr: "2px",
               fontSize: size === "sm" ? "1rem" : "1.5rem",
@@ -81,8 +81,8 @@ export default function ExpenseList({ date }: ISelectedDate) {
             borderColor="brand.blue.400"
             borderWidth="4px"
             borderStyle="solid"
-            color="brand.red"
-            background="brand.yellow"
+            color="brand.black"
+            background="brand.white"
             size={size}
             disabled={isDeleteLoading || e.optimistic}
           />

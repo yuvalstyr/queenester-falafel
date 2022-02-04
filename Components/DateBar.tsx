@@ -21,7 +21,7 @@ export function DateBar({ date, setDate }: ISelectedDate) {
         pr="0"
         pl="0"
         rounded="md"
-        bg="brand.yellow"
+        bg="brand.white"
         width="full"
       >
         <HStack
@@ -29,10 +29,10 @@ export function DateBar({ date, setDate }: ISelectedDate) {
           mb="1"
           mt="1"
           rounded="md"
-          bg="brand.yellow"
+          bg="brand.white"
           borderWidth={{ base: "8px", md: "16px" }}
-          borderColor="brand.blue.400"
-          color="brand.red"
+          borderColor="brand.gray"
+          color="brand.black"
           justifyContent="space-around"
         >
           <Heading fontSize={{ base: "md", md: "2xl" }}>
@@ -49,10 +49,11 @@ export function DateBar({ date, setDate }: ISelectedDate) {
                 variant="solid"
                 width={{ base: "100px", md: "150px" }}
                 fontSize={{ base: "sm", md: "xl" }}
-                background="brand.blue.400"
-                color="brand.red"
+                borderColor="brand.border"
+                borderWidth="3px"
+                bg="Background.white"
+                color="brand.black"
                 fontWeight="700"
-                borderColor="blackAlpha.100"
                 _placeholder={{ color: "black" }}
               >
                 Pick A Day

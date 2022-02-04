@@ -1,21 +1,24 @@
 import { Container } from "@chakra-ui/layout"
 import React from "react"
 import { Bar } from "react-chartjs-2"
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js"
 import { allWeekDays, formatDay } from "../utils/dateFns"
 
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+
 const datasetsConfig = [
-  {
-    type: "line",
-    label: "Balance",
-    borderColor: "rgb(54, 162, 235)",
-    borderWidth: 2,
-    fill: false,
-  },
   {
     type: "bar",
     label: "Cost",
     backgroundColor: "rgb(255, 99, 132)",
-
     borderColor: "white",
     borderWidth: 2,
   },
