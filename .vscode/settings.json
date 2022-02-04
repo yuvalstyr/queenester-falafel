@@ -11,5 +11,5 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cSpell.words": ["chakra", "Queenester", "Yuval"]
+  "cSpell.words": ["chakra", "chartjs", "Queenester", "Yuval"]
 }

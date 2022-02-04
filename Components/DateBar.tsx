@@ -40,7 +40,15 @@ export function DateBar({ date, setDate }: ISelectedDate) {
           </Heading>
           <ReactDatePicker
             onChange={(date: Date) => setDate(date)}
-            popperModifiers={{ offset: { enabled: true, offset: "-75px" } }}
+            // popperModifiers={{ offset: { enabled: true, offset: "-75px" } }}
+            popperModifiers={[
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 0],
+                },
+              },
+            ]}
             withPortal={size === "sm" ? true : false}
             locale="en-au"
             customInput={
