@@ -52,6 +52,7 @@ export function EmployeesShiftForm({ date }: { date: Date }) {
     <FormProvider {...methods}>
       <FormBar submitAction={onSubmit}>
         <Controller
+          rules={{ required: true }}
           render={({ field: { ref, onChange, ...rest } }) => (
             <Autocomplete
               data={data ?? []}

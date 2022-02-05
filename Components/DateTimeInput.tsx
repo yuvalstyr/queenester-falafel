@@ -1,20 +1,20 @@
-import { Box } from "@chakra-ui/layout";
-import { useBreakpointValue } from "@chakra-ui/media-query";
-import { addDays } from "date-fns";
-import * as React from "react";
-import DatePicker, { registerLocale } from "react-datepicker";
-import { useController, useFormContext } from "react-hook-form";
-import { InputWithLabel, TextLabel } from "./InputWithLabel";
-import enAu from "date-fns/locale/en-AU"; // the locale you want
-registerLocale("en-au", enAu);
+import { Box } from "@chakra-ui/layout"
+import { useBreakpointValue } from "@chakra-ui/media-query"
+import { addDays } from "date-fns"
+import * as React from "react"
+import DatePicker, { registerLocale } from "react-datepicker"
+import { useController, useFormContext } from "react-hook-form"
+import { InputWithLabel, TextLabel } from "./InputWithLabel"
+import enAu from "date-fns/locale/en-AU" // the locale you want
+registerLocale("en-au", enAu)
 
 export type EmployeeFormInputs = {
-  name: HTMLInputElement;
-  start: HTMLInputElement;
-  end: HTMLInputElement;
-};
+  name: HTMLInputElement
+  start: HTMLInputElement
+  end: HTMLInputElement
+}
 
-type inputType = keyof EmployeeFormInputs;
+type inputType = keyof EmployeeFormInputs
 
 const DateInput = React.forwardRef<HTMLInputElement, any>(
   ({ ...props }, ref) => {
@@ -27,27 +27,32 @@ const DateInput = React.forwardRef<HTMLInputElement, any>(
         <InputWithLabel placeholder="_" {...props} downshiftRef={ref} />
         <TextLabel>{props.label}</TextLabel>
       </Box>
-    );
+    )
   }
-);
+)
 
 type DateTimeInputProps = {
-  name: inputType;
-  date: Date;
-};
+  name: inputType
+  date: Date
+}
 
 export function DateTimeInput({ name, date: pickedDate }: DateTimeInputProps) {
-  const { control } = useFormContext();
-  const size = useBreakpointValue({ base: "sm", md: "md" });
+  const { control, reset, setValue } = useFormContext()
+  const size = useBreakpointValue({ base: "sm", md: "md" })
   const {
     field: { ref, value, ...inputProps },
   } = useController({
     name,
     control,
+    defaultValue: pickedDate,
     rules: { required: { value: true, message: "Most Pick Date!!" } },
-  });
+  })
 
-  const delta = name === "end" ? 1 : 0;
+  React.useEffect(() => {
+    setValue(name, pickedDate)
+  }, [pickedDate])
+
+  const delta = name === "end" ? 1 : 0
   return (
     <DatePicker
       placeholderText="date"
@@ -58,14 +63,14 @@ export function DateTimeInput({ name, date: pickedDate }: DateTimeInputProps) {
       timeIntervals={15}
       autoComplete="off"
       popperPlacement="top-end"
-      locale='en-au'
+      locale="en-au"
       withPortal={size === "sm" ? true : false}
       includeDates={[
         new Date(pickedDate),
         addDays(new Date(pickedDate), delta),
       ]}
-      {...inputProps}
       customInput={<DateInput label="date" />}
+      {...inputProps}
     />
-  );
+  )
 }
