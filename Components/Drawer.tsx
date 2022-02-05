@@ -19,6 +19,7 @@ const buttons = [
   { label: "Home", to: "/" },
   { label: "Cost & Profit", to: "/form" },
   { label: "Performance", to: "/dashboard" },
+  { label: "Employees", to: "/shiftList" },
 ]
 
 export function Drawer({ isOpen, btnRef, onClose }) {

@@ -5,6 +5,7 @@ import { client } from "../utils/client"
 export type GroupBy = {
   income: { [key: string]: number }
   cost: { [key: string]: number }
+  employeeWeeklyCost: { [key: string]: { wage: number; count: number } }
 }
 
 function useAggregate({ day }: { day: string }) {

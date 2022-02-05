@@ -12,6 +12,7 @@ const links = [
   { label: "Home", to: "/" },
   { label: "Cost & Profit", to: "/form" },
   { label: "Performance", to: "/dashboard" },
+  { label: "Employees", to: "/shiftList" },
 ]
 
 export default function Layout({ children }: { children: React.ReactNode }) {

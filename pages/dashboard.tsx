@@ -28,19 +28,23 @@ export default function Dashboard() {
   return (
     <Box>
       <DateBar date={date} setDate={setDate} />
-      <VStack spacing="2">
-        <ChartCard data={data} date={date} />
-        <ScoreCard
-          imageURL={PROFIT}
-          label="Weekly profit"
-          amount={weeklyIncome}
-        />
-        <ScoreCard
-          imageURL={EXPENSE}
-          label="Weekly expense"
-          amount={weeklyExpense}
-        />
-      </VStack>
+      {isLoading && !data ? (
+        <Spinner />
+      ) : (
+        <VStack spacing="2">
+          <ChartCard data={data} date={date} />
+          <ScoreCard
+            imageURL={PROFIT}
+            label="Weekly profit"
+            amount={weeklyIncome}
+          />
+          <ScoreCard
+            imageURL={EXPENSE}
+            label="Weekly expense"
+            amount={weeklyExpense}
+          />
+        </VStack>
+      )}
     </Box>
   )
 }
