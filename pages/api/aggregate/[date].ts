@@ -24,14 +24,14 @@ type BalanceProp = {
 }
 
 async function getCosts(date: string) {
+  const lowWeekConstraint = format(startOfWeek(new Date(date)), "yyyy-MM-dd")
+  const highWeekConstraint = format(endOfWeek(new Date(date)), "yyyy-MM-dd")
   const expense = await prisma.expense.groupBy({
     by: ["date"],
     where: {
       AND: [
-        {
-          date: { gte: format(startOfWeek(new Date(date)), "yyyy-MM-dd") },
-        },
-        { date: { lte: format(endOfWeek(new Date(date)), "yyyy-MM-dd") } },
+        { date: { gte: lowWeekConstraint } },
+        { date: { lte: highWeekConstraint } },
       ],
     },
     _sum: {
@@ -41,10 +41,8 @@ async function getCosts(date: string) {
   const shifts = await prisma.shift.findMany({
     where: {
       AND: [
-        {
-          startDate: { gte: format(startOfWeek(new Date(date)), "yyyy-MM-dd") },
-        },
-        { startDate: { lte: format(endOfWeek(new Date(date)), "yyyy-MM-dd") } },
+        { startDate: { gte: lowWeekConstraint } },
+        { startDate: { lte: highWeekConstraint } },
       ],
     },
     select: {
@@ -68,8 +66,8 @@ async function getCosts(date: string) {
     }
     return acc
   }, wage)
-
-  return costs
+  const employeeWeeklyCost = employeeSumOfWagePerWeek({ shifts })
+  return { cost: costs, employeeWeeklyCost }
 }
 
 function sumOfWagePerDay({ shifts }: SumOfWageProps) {
@@ -79,12 +77,31 @@ function sumOfWagePerDay({ shifts }: SumOfWageProps) {
     const endDateTime = new Date(`${endDate}T${endTime}`)
     const shiftDuration =
       (endDateTime.valueOf() - startDateTime.valueOf()) / 1000 / 60 / 60 // shift duration in hours
-    const wage = shiftDuration * employee.salaryPerHour //calc total salary
+    const wage = shiftDuration * employee.salaryPerHour // calc total salary
     if (acc[curr.startDate]) {
       const newWage = (acc[curr.startDate] += wage)
       return { ...acc, [curr.startDate]: newWage }
     } else {
       return { ...acc, [curr.startDate]: wage }
+    }
+  }, {})
+}
+
+function employeeSumOfWagePerWeek({ shifts }: SumOfWageProps) {
+  return shifts.reduce((acc, curr) => {
+    const { startDate, startTime, endDate, endTime, Employee: employee } = curr
+    const startDateTime = new Date(`${startDate}T${startTime}`)
+    const endDateTime = new Date(`${endDate}T${endTime}`)
+    const shiftDuration =
+      (endDateTime.valueOf() - startDateTime.valueOf()) / 1000 / 60 / 60 // shift duration in hours
+    const wage = shiftDuration * employee.salaryPerHour // calc total salary
+    if (acc[employee.name]) {
+      const newWage = (acc[employee.name].wage += wage)
+      const newCount = acc[employee.name].count + 1
+      const newTotal = { wage: newWage, count: newCount }
+      return { ...acc, [employee.name]: newTotal }
+    } else {
+      return { ...acc, [employee.name]: { wage, count: 1 } }
     }
   }, {})
 }
@@ -134,10 +151,10 @@ export default async function handler(
     // GET /api/aggregate/:day
     case "GET":
       const date = req.query.date as string
-      const cost = await getCosts(date)
+      const { cost, employeeWeeklyCost } = await getCosts(date)
 
       const { balance, income } = await getBalanceAndIncome({ cost, date })
-      res.json({ income, cost, balance })
+      res.json({ income, cost, balance, employeeWeeklyCost })
       break
     default:
       throw new Error(

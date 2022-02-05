@@ -1,14 +1,14 @@
 import { ClientError } from "graphql-request"
-import { useQuery, useQueryClient } from "react-query"
+import { useQuery } from "react-query"
 import { client } from "../utils/client"
 
-export type Groupby = {
+export type GroupBy = {
   income: { [key: string]: number }
   cost: { [key: string]: number }
 }
 
 function useAggregate({ day }: { day: string }) {
-  const result = useQuery<Groupby, ClientError>({
+  const result = useQuery<GroupBy, ClientError>({
     queryKey: ["aggregate", day],
     queryFn: () => client({ endpoint: `aggregate/${day}`, method: "GET" }),
   })
