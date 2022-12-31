@@ -23,7 +23,7 @@ export function ShiftList({ date }: ISelectedDate) {
     startDay,
   })
   const avatarSize = useBreakpointValue({ base: "sm", md: "md" })
-
+  console.log("shifts :>> ", shifts)
   const { mutate: remove, isLoading: isDeleteLoading } = useDeleteShift()
 
   if (isIdle) return null
