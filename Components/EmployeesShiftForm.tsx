@@ -1,3 +1,4 @@
+import { Select } from "@chakra-ui/react"
 import { Spinner } from "@chakra-ui/spinner"
 import { format } from "date-fns"
 import * as React from "react"
@@ -9,11 +10,10 @@ import {
 } from "react-hook-form"
 import { useActiveEmployees } from "../queries/employees"
 import { useCreateShifts } from "../queries/shifts"
-import { Autocomplete } from "./Autocomplete"
+import { DateTimeInput } from "./DateTimeInput"
 import { ErrorBox } from "./ErrorBox"
 import { FormBar } from "./FormBar"
 import { FormButton } from "./FormButton"
-import { DateTimeInput } from "./DateTimeInput"
 
 export type EmployeeFormData = {
   employee: string
@@ -54,14 +54,13 @@ export function EmployeesShiftForm({ date }: { date: Date }) {
         <Controller
           rules={{ required: true }}
           render={({ field: { ref, onChange, ...rest } }) => (
-            <Autocomplete
-              data={data ?? []}
-              onChange={onChange}
-              reset={reset}
-              setReset={setReset}
-              label="Employee"
-              {...rest}
-            />
+            <Select>
+              {data.map((i) => (
+                <option key={i.id} value={i.id}>
+                  {i.name}
+                </option>
+              ))}
+            </Select>
           )}
           control={methods.control}
           name="employee"
