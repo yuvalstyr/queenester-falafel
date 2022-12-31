@@ -1,9 +1,12 @@
 import { Button, ButtonProps } from "@chakra-ui/react"
 import NextLink, { LinkProps as NextLinkProps } from "next/link"
 import React from "react"
-/* @ts-ignore */
+
 export interface ButtonRouteLinkProps
-  extends Omit<NextLinkProps, "as" | "href" | "onClick">,
+  extends Omit<
+      NextLinkProps,
+      "as" | "href" | "onMouseEnter" | "onClick" | "onTouchStart"
+    >,
     ButtonProps {
   to: string
 }

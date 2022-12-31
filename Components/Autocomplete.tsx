@@ -29,7 +29,6 @@ export function Autocomplete({
   const {
     getInputProps,
     isOpen,
-    getComboboxProps,
     getMenuProps,
     getItemProps,
     highlightedIndex,
@@ -62,7 +61,7 @@ export function Autocomplete({
 
   return (
     <Box position="relative">
-      <Box {...getComboboxProps()}>
+      <Box>
         <ComboboxInput {...getInputProps({ label, onFocus: openMenu })} />
         <ComboboxList isOpen={isOpen} {...getMenuProps()} zIndex="5">
           {items?.map((item, index: number) => {
