@@ -63,7 +63,7 @@ export function Autocomplete({
     <Box position="relative">
       <Box>
         <ComboboxInput {...getInputProps({ label, onFocus: openMenu })} />
-        <ComboboxList isOpen={isOpen} {...getMenuProps()} zIndex="5">
+        <ComboboxList isOpen={isOpen} {...getMenuProps()} zIndex="500">
           {items?.map((item, index: number) => {
             return (
               <ComboboxItem

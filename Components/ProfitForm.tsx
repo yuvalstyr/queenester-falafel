@@ -1,17 +1,16 @@
+import { Employee, Profit } from ".prisma/client"
 import { Box } from "@chakra-ui/layout"
+import { Select, Spinner } from "@chakra-ui/react"
 import { format } from "date-fns"
 import * as React from "react"
 import { Controller, FormProvider, useForm } from "react-hook-form"
+import { useInvestmentTypes } from "../queries/investment"
+import { useCreateProfit } from "../queries/profit"
+import { ErrorBox } from "./ErrorBox"
 import { FormBar } from "./FormBar"
 import { FormButton } from "./FormButton"
-import { InputWithLabel, TextLabel } from "./InputWithLabel"
 import { ISelectedDate } from "./Forms"
-import { Profit, Employee } from ".prisma/client"
-import { useCreateProfit } from "../queries/profit"
-import { useInvestmentTypes } from "../queries/investment"
-import { Spinner } from "@chakra-ui/react"
-import { ErrorBox } from "./ErrorBox"
-import { Autocomplete } from "./Autocomplete"
+import { InputWithLabel, TextLabel } from "./InputWithLabel"
 
 export type OnSubmit = (data: Profit | Employee | Profit) => void
 
@@ -44,14 +43,13 @@ export default function ProfitForm({ date }: ISelectedDate) {
       <FormBar submitAction={onSubmit}>
         <Controller
           render={({ field: { ref, onChange, ...rest } }) => (
-            <Autocomplete
-              data={data ?? []}
-              onChange={onChange}
-              reset={reset}
-              setReset={setReset}
-              label="Type"
-              {...rest}
-            />
+            <Select>
+              {data.map((i) => (
+                <option key={i.id} value={i.id}>
+                  {i.name}
+                </option>
+              ))}
+            </Select>
           )}
           control={methods.control}
           name="investmentTypeId"
