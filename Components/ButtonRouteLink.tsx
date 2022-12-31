@@ -1,11 +1,11 @@
-import { Button, ButtonProps } from "@chakra-ui/react";
-import NextLink, { LinkProps as NextLinkProps } from "next/link";
-import React from "react";
-
+import { Button, ButtonProps } from "@chakra-ui/react"
+import NextLink, { LinkProps as NextLinkProps } from "next/link"
+import React from "react"
+/* @ts-ignore */
 export interface ButtonRouteLinkProps
-  extends Omit<NextLinkProps, "as" | "href">,
+  extends Omit<NextLinkProps, "as" | "href" | "onClick">,
     ButtonProps {
-  to: string;
+  to: string
 }
 
 export const ButtonRouteLink: React.FC<ButtonRouteLinkProps> = ({
@@ -18,4 +18,4 @@ export const ButtonRouteLink: React.FC<ButtonRouteLinkProps> = ({
       {children}
     </Button>
   </NextLink>
-);
+)
